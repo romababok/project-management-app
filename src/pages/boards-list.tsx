@@ -37,7 +37,7 @@ export const BoardsListPage: React.FC = () => {
         </Button>
         <Row gutter={[24, 24]}>
           {boards.map((el) => (
-            <BoardComponent key={uuid()} id={uuid()} title={el.title} />
+            <BoardComponent key={uuid()} id={el._id} title={el.title} />
           ))}
         </Row>
       </div>
