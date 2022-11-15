@@ -37,3 +37,14 @@
     transform: translateY(0px);
   }
 }
+.sign_footerSchool {
+  a {
+    div {
+      width: 6rem;
+      height: 2rem;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-image: url(./images/rss-logo.svg);
+    }
+  }
+}

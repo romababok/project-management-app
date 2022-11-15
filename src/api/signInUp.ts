@@ -1,7 +1,5 @@
 import axios from "axios";
-
-export const baseApiUrl =
-  "https://final-task-backend-production-e57b.up.railway.app";
+import { baseApiUrl } from ".";
 
 export interface SignInRequest {
   name: string;

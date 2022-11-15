@@ -33,6 +33,10 @@ export const authSignIn = createAsyncThunk(
   }
 );
 
+const setError = (state: AuthState) => {
+  state.status = "failed";
+};
+
 export const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -56,9 +60,7 @@ export const authSlice = createSlice({
         state.status = "idle";
         state.userData = action.payload;
       })
-      .addCase(authSignIn.rejected, (state) => {
-        state.status = "failed";
-      });
+      .addCase(authSignIn.rejected, setError);
   },
 });
 
