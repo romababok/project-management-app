@@ -2,9 +2,10 @@ import React, { FC, useState } from "react";
 import { Content } from "antd/lib/layout/layout";
 import { Button, Modal } from "antd";
 import { DeleteOutlined } from '@ant-design/icons';
-import TasksList from "./tasks-list";
-import { useAppDispatch } from "../app/hooks";
-import { columnsDelete } from "../features/columns/columns-slice";
+import TasksList from "../task-list/tasks-list";
+import { useAppDispatch } from "../../app/hooks";
+import { columnsDelete } from "../../features/columns/columns-slice";
+import './column.styles.scss';
 
 type ColumnProps = {
   board: string,
@@ -29,8 +30,8 @@ const Column: FC<ColumnProps> = ({ board, id, title }) => {
     setIsDeleteModalOpen(false);
   };
   return (
-    <Content style={{ padding: "0 50px", minHeight: "70vh", backgroundColor: "#ccc", borderRadius: 3}}>
-      <div>
+    // <Content className="column">
+      <div className="column">
         {title}
         <Button type="text" danger icon={<DeleteOutlined />}onClick={showDeleteModal} />
         <TasksList />
@@ -38,7 +39,7 @@ const Column: FC<ColumnProps> = ({ board, id, title }) => {
           <p>Are you sure you want to delete this column?</p>
         </Modal>
       </div>
-    </Content>
+    // </Content>
   )
 };
 

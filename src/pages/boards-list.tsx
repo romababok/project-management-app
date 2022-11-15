@@ -5,7 +5,7 @@ import { Button, Row } from "antd";
 import { v4 as uuid } from "uuid";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { createBoard, getAllBoards } from "../features/boards/boards-slice";
-import { CreateBoardRequest } from "../api";
+import { CreateBoardRequest } from "../api/boards";
 
 export const BoardsListPage: React.FC = () => {
   const { boards } = useAppSelector((state) => state.boards);

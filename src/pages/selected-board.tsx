@@ -1,7 +1,7 @@
 import React from "react";
 import { Content } from "antd/lib/layout/layout";
 import { useParams } from "react-router";
-import ColumnsList from "../components/columns-list";
+import ColumnsList from "../components/columns-list/columns-list";
 
 export const SelectedBoardPage: React.FC = () => {
   const { boardId } = useParams();

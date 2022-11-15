@@ -20,18 +20,18 @@ export type Task = {
   users: string[]
 }
 
-export const getAllTasks = async (boardId: string, columnId: string): Promise<Task[]> =>
-  await axios.get(baseApiUrl + `/boards/${boardId}/columns/${columnId}/tasks`);
+export const getAllTasks = async (boardId: string, columnId: string) =>
+  await axios.get<Task[]>(baseApiUrl + `/boards/${boardId}/columns/${columnId}/tasks`);
 
-export const createTask = async (boardId: string, columnId: string, request: TaskRequest): Promise<Task>  =>
-  await axios.post(baseApiUrl + `/boards/${boardId}/columns/${columnId}/tasks`, request);  
+export const createTask = async (boardId: string, columnId: string, request: TaskRequest)  =>
+  await axios.post<Task>(baseApiUrl + `/boards/${boardId}/columns/${columnId}/tasks`, request);  
 
-export const updateTask = async (boardId: string, columnId: string, taskId: string, request: TaskRequest): Promise<Task> =>
-  await axios.put(baseApiUrl + `/boards/${boardId}/columns/${columnId}/tasks/${taskId}`, request);
+export const updateTask = async (boardId: string, columnId: string, taskId: string, request: TaskRequest) =>
+  await axios.put<Task>(baseApiUrl + `/boards/${boardId}/columns/${columnId}/tasks/${taskId}`, request);
 
-export const deleteTask = async (boardId: string, columnId: string, taskId: string): Promise<Task> =>
-  await axios.delete(baseApiUrl + `/boards/${boardId}/columns/${columnId}/tasks/${taskId}`);  
+export const deleteTask = async (boardId: string, columnId: string, taskId: string) =>
+  await axios.delete<Task>(baseApiUrl + `/boards/${boardId}/columns/${columnId}/tasks/${taskId}`);  
 
-export const getTask = async (boardId: string, columnId: string, taskId: string): Promise<Task> =>
-  await axios.get(baseApiUrl + `/boards/${boardId}/columns/${columnId}/tasks/${taskId}`); 
+export const getTask = async (boardId: string, columnId: string, taskId: string) =>
+  await axios.get<Task>(baseApiUrl + `/boards/${boardId}/columns/${columnId}/tasks/${taskId}`); 
   

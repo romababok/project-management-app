@@ -1,5 +1,5 @@
-import axios from "axios";
-import { baseApiUrl } from ".";
+import axios, { AxiosResponse} from "axios";
+import { baseApiUrl } from "./index";
 
 export type ColumnsRequest = {
   title: string,
@@ -13,17 +13,17 @@ export type Column = {
   boardId: string
 }
 
-export const getAllColumns = async (boardId: string): Promise<Column[]> =>
-  await axios.get(baseApiUrl + `/boards/${boardId}/columns`);
+export const getAllColumns = async (boardId: string) =>
+  await axios.get<Column[]>(baseApiUrl + `/boards/${boardId}/columns`);
 
-export const createColumn = async (boardId: string, request: ColumnsRequest): Promise<Column> =>
-  await axios.post(baseApiUrl + `/boards/${boardId}/columns`, request);
+export const createColumn = async (boardId: string, request: ColumnsRequest) =>
+  await axios.post<Column>(baseApiUrl + `/boards/${boardId}/columns`, request);
 
-export const updateColumn = async (boardId: string, columnId: string, request: ColumnsRequest): Promise<Column> =>
-  await axios.put(baseApiUrl + `/boards/${boardId}/columns/${columnId}`, request);
+export const updateColumn = async (boardId: string, columnId: string, request: ColumnsRequest) =>
+  await axios.put<Column>(baseApiUrl + `/boards/${boardId}/columns/${columnId}`, request);
 
-export const deleteColumn = async (boardId: string, columnId: string): Promise<Column> =>
-  await axios.delete(baseApiUrl + `/boards/${boardId}/columns/${columnId}`); 
+export const deleteColumn = async (boardId: string, columnId: string) =>
+  await axios.delete<Column>(baseApiUrl + `/boards/${boardId}/columns/${columnId}`); 
   
   
  

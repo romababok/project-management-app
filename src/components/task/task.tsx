@@ -1,10 +1,11 @@
 import React, { FC } from "react";
 import { Content } from "antd/lib/layout/layout";
+import './task.styles.scss';
 
 const Task: FC = () => {
   return (
     <Content>
-      <div style={{ padding: "0 50px", height: 20, backgroundColor: "#fff", borderRadius: 5}}>
+      <div className="task">
         Task
       </div>
     </Content>

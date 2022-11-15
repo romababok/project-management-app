@@ -20,7 +20,7 @@ export const tasksCreate = createAsyncThunk(
   async ({ boardId, columnId, request }: {boardId: string, columnId: string, request: TaskRequest}) => {
     try {
       const response = await createTask(boardId, columnId, request);
-      return response;
+      return response.data;
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);
@@ -34,7 +34,7 @@ export const tasksDelete = createAsyncThunk(
   async ({ boardId, columnId, taskId }: {boardId: string, columnId: string, taskId: string}) => {
     try {
       const response = await deleteTask(boardId, columnId, taskId);
-      return response;
+      return response.data;
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);
@@ -48,7 +48,7 @@ export const tasksUpdate = createAsyncThunk(
   async ({ boardId, columnId, taskId, request }: {boardId: string, columnId: string, taskId: string, request: TaskRequest}) => {
     try {
       const response = await updateTask(boardId, columnId, taskId, request);
-      return response;
+      return response.data;
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);
@@ -58,11 +58,11 @@ export const tasksUpdate = createAsyncThunk(
 );
 
 export const tasksGetAll = createAsyncThunk(
-  "columns/getAll",
+  "tasks/getAll",
   async ({ boardId, columnId }: {boardId: string, columnId: string}) => {
     try {
       const response = await getAllTasks(boardId, columnId);
-      return response;
+      return response.data;
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);
@@ -132,6 +132,6 @@ const tasksSlice = createSlice({
   },
 });
 
-export const selectTasks = (state: RootState) => state.taskList;
+export const selectTasks = (state: RootState) => state.taskList.taskList;
 
 export default tasksSlice.reducer;

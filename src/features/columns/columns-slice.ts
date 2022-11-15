@@ -12,7 +12,7 @@ export const columnsCreate = createAsyncThunk(
   async ({ boardId, request }: ThunkArgsType) => {
     try {
       const response = await createColumn(boardId, request);
-      return response;
+      return response.data;
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);
@@ -26,7 +26,7 @@ export const columnsDelete = createAsyncThunk(
   async ({ boardId, columnId }: {boardId: string, columnId: string}) => {
     try {
       const response = await deleteColumn(boardId, columnId);
-      return response;
+      return response.data;
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);
@@ -40,7 +40,7 @@ export const columnsUpdate = createAsyncThunk(
   async ({ boardId, columnId, request }: {boardId: string, columnId: string, request: ColumnsRequest}) => {
     try {
       const response = await updateColumn(boardId, columnId, request);
-      return response;
+      return response.data;
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);
@@ -54,7 +54,7 @@ export const columnsGetAll = createAsyncThunk(
   async (boardId: string) => {
     try {
       const response = await getAllColumns(boardId);
-      return response;
+      return response.data;
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);
