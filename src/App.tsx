@@ -1,6 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import "./App.css";
+import "./App.scss";
 import { WelcomePage } from "./pages/welcome";
 import { PageLayout } from "./components";
 import {
@@ -19,6 +19,7 @@ function App() {
         <Route path="/" element={<PageLayout />}>
           <Route index element={<WelcomePage />} />
           <Route path="login" element={<LoginPage />} />
+          <Route path="registration" element={<LoginPage />} />
           <Route path="boards" element={<BoardsListPage />} />
           <Route path="boards/:boardId" element={<SelectedBoardPage />} />
           <Route path="users" element={<UserPage />} />
