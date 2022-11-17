@@ -1,0 +1,88 @@
+$text-color: black;
+$link-hoverColor: #69c0ff;
+$switcher-color: #1890ff;
+
+.logo__link{
+  float: left;
+  .logo {
+    width: 40px;
+    height: 41px;
+    margin: 10px 40px 10px 0;
+    background-image: url(../../assets/icons/yellow.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center center;
+  }
+}
+
+
+#menuBtn{
+  width: 40px;
+  height: 41px;
+  display: none;
+}
+
+.menuBtn__icon {
+  font-size: 24px;
+}
+
+
+@media (max-width: 600px) {
+  #menuBtn{
+    display: block;
+    position: absolute;
+    margin-top: 10px;
+    right: 20px;
+  }
+
+  #header__menu{
+    display: none;
+  }
+}
+.drawer__contant{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  margin-left: 3rem;
+}
+#drawer__link {
+  color: $text-color;
+  font-size: 1.4rem;
+}
+#drawer__link:hover{
+  color: $link-hoverColor;
+  transition: all 0.3s;
+}
+#link__icon{
+  font-size: 1rem;
+  margin-right: 0.5rem;
+}
+.language__block{
+  position: absolute;
+  top: 0;
+  right: 300px;
+}
+@media (max-width: 700px) {
+  .language__block{
+    right: 250px;
+  }
+}
+@media (max-width: 600px) {
+  .language__block{
+    right: 100px;
+  }
+}
+.language__blockToken{
+  position: absolute;
+  top: 0;
+  right: 120px;
+}
+#language{
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 18px;
+}
+#switcher {
+  background-color: $switcher-color;
+  border: 0.5px solid yellow;
+}
