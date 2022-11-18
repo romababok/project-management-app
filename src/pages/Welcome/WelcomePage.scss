@@ -1,0 +1,149 @@
+$icon-color: #0050b3;
+
+.welcome__block {
+    padding: 6rem 0;
+    background-image: url(../../assets/images/main-image.jpg);
+    background-repeat: no-repeat;
+    background-size: 700px 500px;
+    background-position: right center;
+}
+@media (max-width: 1200px) {
+    .welcome__block {
+        background-size: 500px 350px;
+    }
+}
+@media (max-width: 1000px) {
+    .welcome__block {
+        background-position: right bottom;
+    }
+}
+@media (max-width: 769px) {
+    .welcome__block {
+        background-size: 500px 300px;
+        background-position: center bottom;
+        background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.5) 100%), url(../../assets/images/main-image.jpg);
+    }
+}
+@media (max-width: 500px) {
+    .welcome__block {
+        background-image: none;
+    }
+}
+#welcome__col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 60vh;
+}
+@media (max-width: 950px) {
+    #welcome__col {
+        justify-content: flex-start;
+    }
+}
+@media (max-width: 768px) {
+    #welcome__col {
+        height: auto;
+    }
+}
+.advantages__section,
+.team__section {
+    padding: 3rem 0;
+}
+#section__title {
+    font-size: 2.8rem;
+}
+
+.advantage__card {
+    padding: 1rem;
+    border: 1px dashed  #40a9ff;
+    border-radius: 20px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+    height: 15rem;
+    width: 20rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 3rem;
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 400px) {
+    .advantage__card{
+        width: 12rem;
+        font-size: 16px;
+    }
+}
+#advantage__card-icon {
+    font-size: 3rem;
+    color: $icon-color;
+}
+#advantage__card__text{
+    font-size: 18px;
+}
+
+.team__container {
+    padding: 5rem 0rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+@media (max-width: 800px) {
+    .team__container {
+        flex-direction: column;
+    }
+}
+
+.left__cards,
+.right__cards {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
+}
+.team__card{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+}
+@media (max-width: 1000px) {
+    .team__card {
+        flex-direction: column;
+        width: 80%;
+    }
+}
+@media (max-width: 700px) {
+    .team__card {
+        width: 100%;
+    }
+}
+.card__contant{
+    flex: 0 0 60%;
+}
+#team__card__text{
+    font-size: 16px;
+}
+
+.video__container {
+    padding: 5rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.player{
+    width: 500px;
+    height: 200px;
+    background-color: rgba(0, 0, 0, 0.216);
+}
+
+@media (max-width: 600px) {
+    .player{
+        width: 300px;
+        height: 100px;
+    }
+}
