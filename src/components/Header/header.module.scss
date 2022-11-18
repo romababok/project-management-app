@@ -45,6 +45,25 @@ $switcher-color: #1890ff;
     }
   }
 }
+.header__menu{
+  .menu__login{
+    margin-left: auto;
+  }
+  .menu__user{
+    margin-left: auto;
+    .menu__userIcon{
+      font-size: 20px;
+    }
+    .user__profile{
+      margin-left: auto;
+      font-size: 24px;
+    }
+  }
+}
+.user__profile{
+  margin-left: auto;
+  font-size: 18px;
+}
 
 .drawer__contant{
   display: flex;

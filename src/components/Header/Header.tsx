@@ -59,7 +59,7 @@ const HeaderOfApp = () => {
           )}
           {!token ? (
             <>
-              <Menu.Item style={{ marginLeft: "auto" }} key="/login">
+              <Menu.Item className={styles.menu__login} key="/login">
                 <Link to="/login">Login</Link>
               </Menu.Item>
               <Menu.Item key="/registration">
@@ -69,13 +69,13 @@ const HeaderOfApp = () => {
           ) : (
             <Menu.SubMenu
               key="/user"
-              title={<UserOutlined style={{ fontSize: "20px" }} />}
-              style={{ marginLeft: "auto" }}
+              title={<UserOutlined className={styles.menu__userIcon} />}
+              className={styles.menu__user}
             >
-              <Menu.Item style={{ marginLeft: "auto", fontSize: "16px" }} key="/profile">
+              <Menu.Item className={styles.user__profile} key="/profile">
                 <Link to="/profile">Profile</Link>
               </Menu.Item>
-              <Menu.Item key="/logout" style={{ marginLeft: "auto", fontSize: "16px" }}>
+              <Menu.Item key="/logout" className={styles.user__profile} >
                 <Link to="/welcome">Logout</Link>
               </Menu.Item>
             </Menu.SubMenu>
