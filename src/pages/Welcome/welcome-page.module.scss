@@ -1,10 +1,12 @@
 $primary-color: #0050b3;
 $border-color: #40a9ff;
 
-.main__content{
-    background-color: #fff;
-    padding: 3rem 0;
-    min-height: 70vh;
+.main__wrapper {
+    .main__content{
+        background-color: #fff;
+        padding: 3rem 2rem;
+        min-height: 70vh;
+    }
 }
 
 .welcome__block {
@@ -130,7 +132,7 @@ $border-color: #40a9ff;
 }
 
 .team__container {
-    padding: 3rem 0rem;
+    padding: 2rem 0rem;
     display: flex;
     flex-direction: row;
     align-items: center;
