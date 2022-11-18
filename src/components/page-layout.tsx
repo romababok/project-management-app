@@ -1,7 +1,7 @@
 import { Layout } from "antd";
 import React from "react";
 import { Outlet } from "react-router-dom";
-import FooterOfApp from "./Footer/Footer";
+import FooterOfApp from "./footer/footer";
 import HeaderOfApp from "./header/header";
 
 export const PageLayout: React.FC = () => {
