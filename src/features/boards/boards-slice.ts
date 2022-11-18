@@ -1,12 +1,7 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import {
-  createBoardAPI,
-  CreateBoardRequest,
-  getBoardByIdAPI,
-  getAllBoardsAPI,
-} from "../../api";
-import axios from "axios";
-import { notification } from "antd";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createBoardAPI, CreateBoardRequest, getBoardByIdAPI, getAllBoardsAPI } from '../../api';
+import axios from 'axios';
+import { notification } from 'antd';
 
 export interface Board {
   _id: string;
@@ -18,23 +13,23 @@ export interface Board {
 export interface BoardsState {
   boards: Board[];
   currentBoard: Board | null;
-  status: "idle" | "loading" | "failed";
+  status: 'idle' | 'loading' | 'failed';
 }
 
 const initialState: BoardsState = {
-  boards: [{ title: "", users: [], owner: "", _id: "" }],
+  boards: [{ title: '', users: [], owner: '', _id: '' }],
   currentBoard: null,
-  status: "idle",
+  status: 'idle',
 };
 
-export const getAllBoards = createAsyncThunk("boards/getBoards", async () => {
+export const getAllBoards = createAsyncThunk('boards/getBoards', async () => {
   try {
     const response = await getAllBoardsAPI();
     return response.data;
   } catch (err) {
     if (axios.isAxiosError(err)) {
       notification.error({
-        message: "Request failed with code " + err.response?.status,
+        message: 'Request failed with code ' + err.response?.status,
         description: err.response?.data.message,
       });
     }
@@ -42,15 +37,15 @@ export const getAllBoards = createAsyncThunk("boards/getBoards", async () => {
 });
 
 export const createBoard = createAsyncThunk(
-  "boards/createBoard",
-  async (request: CreateBoardRequest, thunkApi) => {
+  'boards/createBoard',
+  async (request: CreateBoardRequest) => {
     try {
       const response = await createBoardAPI(request);
       return response.data;
     } catch (err) {
       if (axios.isAxiosError(err)) {
         notification.error({
-          message: "Request failed with code " + err.response?.status,
+          message: 'Request failed with code ' + err.response?.status,
           description: err.response?.data.message,
         });
       }
@@ -58,58 +53,55 @@ export const createBoard = createAsyncThunk(
   }
 );
 
-export const getBoardById = createAsyncThunk(
-  "boards/getBoardById",
-  async (boardId: string) => {
-    try {
-      const response = await getBoardByIdAPI(boardId);
-      return response.data;
-    } catch (err) {
-      if (axios.isAxiosError(err)) {
-        notification.error({
-          message: "Request failed with code " + err.response?.status,
-          description: err.response?.data.message,
-        });
-      }
+export const getBoardById = createAsyncThunk('boards/getBoardById', async (boardId: string) => {
+  try {
+    const response = await getBoardByIdAPI(boardId);
+    return response.data;
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      notification.error({
+        message: 'Request failed with code ' + err.response?.status,
+        description: err.response?.data.message,
+      });
     }
   }
-);
+});
 
 export const boardsSlice = createSlice({
-  name: "boards",
+  name: 'boards',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getAllBoards.pending, (state) => {
-        state.status = "loading";
+        state.status = 'loading';
       })
       .addCase(getAllBoards.fulfilled, (state, action) => {
-        state.status = "idle";
+        state.status = 'idle';
         state.boards = [...action.payload, initialState.boards];
       })
       .addCase(getAllBoards.rejected, (state) => {
-        state.status = "failed";
+        state.status = 'failed';
       })
       .addCase(createBoard.pending, (state) => {
-        state.status = "loading";
+        state.status = 'loading';
       })
       .addCase(createBoard.fulfilled, (state, action) => {
-        state.status = "idle";
+        state.status = 'idle';
         state.boards.push(action.payload);
       })
       .addCase(createBoard.rejected, (state) => {
-        state.status = "failed";
+        state.status = 'failed';
       })
       .addCase(getBoardById.pending, (state) => {
-        state.status = "loading";
+        state.status = 'loading';
       })
       .addCase(getBoardById.fulfilled, (state, action) => {
-        state.status = "idle";
+        state.status = 'idle';
         state.currentBoard = action.payload;
       })
       .addCase(getBoardById.rejected, (state) => {
-        state.status = "failed";
+        state.status = 'failed';
       });
   },
 });

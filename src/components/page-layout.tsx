@@ -1,9 +1,9 @@
-import { Col, Layout, Menu, Row } from "antd";
-import React from "react";
-import { Link, Outlet, useLocation } from "react-router-dom";
-import { Footer, Header } from "antd/lib/layout/layout";
-import { useAppSelector } from "../app/hooks";
-import { LogoutOutlined, UserOutlined } from "@ant-design/icons";
+import { Layout, Menu } from 'antd';
+import React from 'react';
+import { Link, Outlet, useLocation } from 'react-router-dom';
+import { Footer, Header } from 'antd/lib/layout/layout';
+import { useAppSelector } from '../app/hooks';
+import { UserOutlined } from '@ant-design/icons';
 
 export const PageLayout: React.FC = () => {
   const location = useLocation();
@@ -25,7 +25,7 @@ export const PageLayout: React.FC = () => {
 
           {!token ? (
             <>
-              <Menu.Item style={{ marginLeft: "auto" }} key="/login">
+              <Menu.Item style={{ marginLeft: 'auto' }} key="/login">
                 <Link to="/login">Login</Link>
               </Menu.Item>
               <Menu.Item key="/registration">
@@ -35,10 +35,10 @@ export const PageLayout: React.FC = () => {
           ) : (
             <Menu.SubMenu
               key="/user"
-              title={<UserOutlined style={{ fontSize: "16px" }} />}
-              style={{ marginLeft: "auto" }}
+              title={<UserOutlined style={{ fontSize: '16px' }} />}
+              style={{ marginLeft: 'auto' }}
             >
-              <Menu.Item style={{ marginLeft: "auto" }} key="/profile">
+              <Menu.Item style={{ marginLeft: 'auto' }} key="/profile">
                 <Link to="/profile">Profile</Link>
               </Menu.Item>
               <Menu.Item key="/logout">
@@ -49,7 +49,7 @@ export const PageLayout: React.FC = () => {
         </Menu>
       </Header>
       <Outlet />
-      <Footer style={{ textAlign: "center" }}></Footer>
+      <Footer style={{ textAlign: 'center' }}></Footer>
     </Layout>
   );
 };
