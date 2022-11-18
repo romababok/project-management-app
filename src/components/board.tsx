@@ -13,7 +13,13 @@ export const BoardComponent: React.FC<BoardComponentProps> = (
 ) => {
   return (
     <Col span={6}>
-      <Card title={<Link to={props.id}>{props.title}</Link>}>
+      <Card
+        title={
+          <Link to={props.id} >
+            {props.title}
+          </Link>
+        }
+      >
         <List
           dataSource={props.tasks}
           renderItem={(item) => <List.Item>{item}</List.Item>}

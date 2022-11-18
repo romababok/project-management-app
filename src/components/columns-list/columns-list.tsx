@@ -1,6 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import { Content } from "antd/lib/layout/layout";
-import { Button, Input, Modal, Row } from "antd";
+import { Button, Input, Modal } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import Column from "../column/column";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
@@ -21,6 +20,7 @@ const ColumnsList: FC<ColumnsListProps> = ({ board }) => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    dispatch({ type: "tasks/resetTasks" });
     dispatch(columnsGetAll(board ?? ""));
   }, []);
 
@@ -46,38 +46,36 @@ const ColumnsList: FC<ColumnsListProps> = ({ board }) => {
   };
 
   return (
-    // <Content className="columns-container">
-      <div className="columns-container">
-          {columns &&
-            columns.map((column) => {
-              return (
-                <Column
-                  key={column._id}
-                  title={column.title}
-                  id={column._id}
-                  board={board ?? ""}
-                />
-              );
-            })}
-        <Button icon={<PlusOutlined />} onClick={showModal}>
-          Add Column
-        </Button>
-        <Modal
-          title="Add Column"
-          open={isModalOpen}
-          onOk={handleOk}
-          onCancel={handleCancel}
-        >
-          <form>
-            <Input
-              placeholder="Add title"
-              defaultValue="New Column"
-              onChange={(e) => setNewColumnTitle(e.target.value)}
+    <div className="columns-container">
+      {columns &&
+        columns.map((column) => {
+          return (
+            <Column
+              key={column._id}
+              title={column.title}
+              id={column._id}
+              board={board ?? ""}
             />
-          </form>
-        </Modal>
-      </div>
-    // </Content>
+          );
+        })}
+      <Button icon={<PlusOutlined />} onClick={showModal}>
+        Add Column
+      </Button>
+      <Modal
+        title="Add Column"
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <form>
+          <Input
+            placeholder="Add title"
+            defaultValue="New Column"
+            onChange={(e) => setNewColumnTitle(e.target.value)}
+          />
+        </form>
+      </Modal>
+    </div>
   );
 };
 

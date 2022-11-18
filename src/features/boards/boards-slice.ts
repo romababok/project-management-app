@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
   createBoardAPI,
   CreateBoardRequest,
@@ -7,6 +7,7 @@ import {
 } from "../../api";
 import axios from "axios";
 import { notification } from "antd";
+import { RootState } from "../../app/store";
 
 export interface Board {
   _id: string;

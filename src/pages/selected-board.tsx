@@ -9,8 +9,6 @@ export const SelectedBoardPage: React.FC = () => {
   return (
     <Content style={{ padding: "0 50px", minHeight: "70vh" }}>
       <div className="site-layout-content">
-        <h1>SelectedBoard</h1>
-        {boardId}
         <ColumnsList board = {boardId}/>
       </div>
     </Content>
