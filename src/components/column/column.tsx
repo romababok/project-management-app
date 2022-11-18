@@ -1,52 +1,45 @@
-import React, { FC, useState } from "react";
-import { Button, Modal } from "antd";
+import React, { FC } from "react";
+import { Button, Popconfirm } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import TasksList from "../task-list/tasks-list";
 import { useAppDispatch } from "../../app/hooks";
 import { columnsDelete } from "../../features/columns/columns-slice";
 import "./column.styles.scss";
+import { useParams } from "react-router-dom";
 
 type ColumnProps = {
-  board: string;
   id: string;
   title: string;
 };
 
-const Column: FC<ColumnProps> = ({ board, id, title }) => {
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+const Column: FC<ColumnProps> = ({ id, title }) => {
   const dispatch = useAppDispatch();
-
-  const showDeleteModal = () => {
-    setIsDeleteModalOpen(true);
-  };
+  const { boardId } = useParams();
 
   const handleDeleteOk = () => {
-    setIsDeleteModalOpen(false);
-    dispatch(columnsDelete({ boardId: board, columnId: id }));
-  };
-
-  const handleDeleteCancel = () => {
-    setIsDeleteModalOpen(false);
+    if (boardId) {
+      dispatch(columnsDelete({ boardId: boardId, columnId: id }));
+    }
   };
 
   return (
     <div className="column">
       {title}
-      <Button
+      <Popconfirm
+        placement="bottomRight"
+        title="Are you sure you want to delete this column?"
+        onConfirm={handleDeleteOk}
+        okText="Yes"
+        cancelText="No"
+      >
+        <Button
         type="text"
         danger
         icon={<DeleteOutlined />}
-        onClick={showDeleteModal}
       />
-      <TasksList board={board} columnId={id} />
-      <Modal
-        title="Delete Column"
-        open={isDeleteModalOpen}
-        onOk={handleDeleteOk}
-        onCancel={handleDeleteCancel}
-      >
-        <p>Are you sure you want to delete this column?</p>
-      </Modal>
+      </Popconfirm>
+      <TasksList columnId={id} />
+
     </div>
   );
 };

@@ -6,7 +6,7 @@ import {
   Task,
   TaskRequest,
   updateTask,
-} from "../../api/updateTasks";
+} from "../../api/tasks";
 import { RootState } from "../../app/store";
 
 type InitialStateType = {

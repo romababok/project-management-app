@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { Column, ColumnsRequest, createColumn, deleteColumn, getAllColumns, updateColumn } from "../../api/updateColumns";
+import { Column, ColumnsRequest, createColumn, deleteColumn, getAllColumns, updateColumn } from "../../api/сolumns";
 import { RootState } from "../../app/store";
 
 type ThunkArgsType = {

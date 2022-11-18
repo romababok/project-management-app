@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import { Button, Input, Modal } from "antd";
+import { Button, Form, Input, Modal } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import Column from "../column/column";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
@@ -9,19 +9,20 @@ import {
   selectColumns,
 } from "../../features/columns/columns-slice";
 import "./columns-list.styles.scss";
+import { useParams } from "react-router-dom";
 
-type ColumnsListProps = {
-  board: string | undefined;
-};
-
-const ColumnsList: FC<ColumnsListProps> = ({ board }) => {
+const ColumnsList: FC = () => {
+  const { boardId } = useParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [newColumnTitle, setNewColumnTitle] = useState("");
   const dispatch = useAppDispatch();
+  const [form] = Form.useForm<{ title: string }>();
+  const columnTitle = Form.useWatch('title', form);
 
   useEffect(() => {
     dispatch({ type: "tasks/resetTasks" });
-    dispatch(columnsGetAll(board ?? ""));
+    if (boardId) {
+      dispatch(columnsGetAll(boardId));
+    }
   }, []);
 
   const columns = useAppSelector(selectColumns);
@@ -32,13 +33,14 @@ const ColumnsList: FC<ColumnsListProps> = ({ board }) => {
 
   const handleOk = () => {
     setIsModalOpen(false);
-    dispatch(
-      columnsCreate({
-        boardId: board ?? "",
-        request: { title: newColumnTitle || "New Column", order: 1 },
-      })
-    );
-    setNewColumnTitle("");
+    if (boardId) {
+      dispatch(
+        columnsCreate({
+          boardId: boardId,
+          request: { title: columnTitle || "New Column", order: 1 },
+        })
+      );
+    }
   };
 
   const handleCancel = () => {
@@ -47,14 +49,12 @@ const ColumnsList: FC<ColumnsListProps> = ({ board }) => {
 
   return (
     <div className="columns-container">
-      {columns &&
-        columns.map((column) => {
+      {columns?.map((column) => {
           return (
             <Column
               key={column._id}
               title={column.title}
               id={column._id}
-              board={board ?? ""}
             />
           );
         })}
@@ -67,13 +67,11 @@ const ColumnsList: FC<ColumnsListProps> = ({ board }) => {
         onOk={handleOk}
         onCancel={handleCancel}
       >
-        <form>
-          <Input
-            placeholder="Add title"
-            defaultValue="New Column"
-            onChange={(e) => setNewColumnTitle(e.target.value)}
-          />
-        </form>
+        <Form form={form} layout="vertical" autoComplete="off">
+          <Form.Item name="title" label="Title">
+            <Input/>
+          </Form.Item>
+        </Form>
       </Modal>
     </div>
   );
