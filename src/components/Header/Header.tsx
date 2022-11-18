@@ -26,7 +26,7 @@ const HeaderOfApp = () => {
     };
     
     return (
-      <Header>
+      <Header className={styles.header}>
         <Link className={styles.logo__link} to="/"><div className={styles.main__logo} /></Link>
         <Button className={styles.menu__btn} type="primary" shape="circle" icon={<MenuOutlined className={styles.menu__icon} style={{fontSize: "18px"}}/>} onClick={showDrawer}></Button>
         <Drawer width={"320px"} placement="right"  onClose={onClose} open={open}>
@@ -72,10 +72,10 @@ const HeaderOfApp = () => {
               title={<UserOutlined style={{ fontSize: "20px" }} />}
               style={{ marginLeft: "auto" }}
             >
-              <Menu.Item style={{ marginLeft: "auto" }} key="/profile">
+              <Menu.Item style={{ marginLeft: "auto", fontSize: "16px" }} key="/profile">
                 <Link to="/profile">Profile</Link>
               </Menu.Item>
-              <Menu.Item key="/logout">
+              <Menu.Item key="/logout" style={{ marginLeft: "auto", fontSize: "16px" }}>
                 <Link to="/welcome">Logout</Link>
               </Menu.Item>
             </Menu.SubMenu>

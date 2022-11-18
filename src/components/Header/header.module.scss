@@ -14,30 +14,35 @@ $switcher-color: #1890ff;
     background-position: center center;
   }
 }
-
-.menu__btn{
-  width: 40px;
-  height: 41px;
-  display: none;
-  .menu__icon {
-    font-size: 24px;
+.header {
+  .menu__btn{
+    width: 40px;
+    height: 41px;
+    display: none;
+    .menu__icon {
+      font-size: 24px;
+    }
   }
 }
-.header__menu{
-  font-size: 18px;
+.header {
+  .header__menu{
+    font-size: 18px;
+  }
 }
-
 
 @media (max-width: 600px) {
-  .menu__btn{
-    display: block;
-    position: absolute;
-    margin-top: 10px;
-    right: 20px;
+  .header{
+    .menu__btn{
+      display: block;
+      position: absolute;
+      margin-top: 10px;
+      right: 20px;
+    }
   }
-
-  .header__menu{
-    display: none;
+  .header{
+    .header__menu{
+      display: none;
+    }
   }
 }
 
@@ -47,6 +52,7 @@ $switcher-color: #1890ff;
   align-items: flex-start;
   justify-content: center;
   margin-left: 3rem;
+
 }
 .drawer__link {
   color: $text-color;
@@ -78,13 +84,16 @@ $switcher-color: #1890ff;
 .language__blockToken{
   position: absolute;
   top: 0;
-  right: 120px;
+  right: 130px;
 }
-.language{
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 18px;
-}
-.language__switcher {
-  background-color: $switcher-color;
-  border: 0.5px solid yellow;
+.language__block,
+.language__blockToken{
+  .language{
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 18px;
+  }
+  .language__switcher {
+    background-color: $switcher-color;
+    border: 0.5px solid yellow;
+  }
 }
