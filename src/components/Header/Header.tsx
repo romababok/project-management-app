@@ -4,7 +4,7 @@ import { Menu, Button, Drawer, Switch, Typography, Space } from "antd";
 import { Link, useLocation } from "react-router-dom";
 import { useAppSelector } from "../../app/hooks";
 import { HomeOutlined, KeyOutlined, LogoutOutlined, MenuOutlined, PlusCircleOutlined, PushpinOutlined, ToolOutlined, UserOutlined } from "@ant-design/icons";
-import './Header.scss';
+import styles from "./header.module.scss";
 
 const { Text } = Typography;
 
@@ -12,7 +12,7 @@ const HeaderOfApp = () => {
     const location = useLocation();
     const token = useAppSelector((state) => state.auth.userData?.token);
 
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState<boolean>(false);
 
     const showDrawer = () => {
       setOpen(true);
@@ -27,28 +27,28 @@ const HeaderOfApp = () => {
     
     return (
       <Header>
-        <Link className="logo__link" to="/"><div className="logo" /></Link>
-        <Button id="menuBtn" type="primary" shape="circle" icon={<MenuOutlined style={{fontSize: "18px"}}/>} onClick={showDrawer}></Button>
+        <Link className={styles.logo__link} to="/"><div className={styles.main__logo} /></Link>
+        <Button className={styles.menu__btn} type="primary" shape="circle" icon={<MenuOutlined className={styles.menu__icon} style={{fontSize: "18px"}}/>} onClick={showDrawer}></Button>
         <Drawer width={"320px"} placement="right"  onClose={onClose} open={open}>
-          <div className="drawer__contant">
-            <Link to="/" onClick={onClose} id="drawer__link"><HomeOutlined  id="link__icon"/>Welcome</Link>
+          <div className={styles.drawer__contant}>
+            <Link to="/" onClick={onClose} className={styles.drawer__link}><HomeOutlined  className={styles.link__icon}/>Welcome</Link>
             {!token ? (
               <>
-              <Link to="/login" onClick={onClose} id="drawer__link"><KeyOutlined id="link__icon"/> Login</Link>
-              <Link to="/registration" onClick={onClose} id="drawer__link"><PlusCircleOutlined id="link__icon"/>Sign up</Link>
+              <Link to="/login" onClick={onClose} className={styles.drawer__link}><KeyOutlined className={styles.link__icon}/> Login</Link>
+              <Link to="/registration" onClick={onClose} className={styles.drawer__link}><PlusCircleOutlined className={styles.link__icon}/>Sign up</Link>
               </>
             ) : (
               <>
-              <Link to="/boards" onClick={onClose} id="drawer__link"><PushpinOutlined id="link__icon"/> Board</Link>
-              <Link to="/boards" onClick={onClose} id="drawer__link"><ToolOutlined id="link__icon"/> Edit profile</Link>
-              <Link to="/welcome" onClick={onClose} id="drawer__link"><LogoutOutlined id="link__icon"/>Logout</Link>
+              <Link to="/boards" onClick={onClose} className={styles.drawer__link}><PushpinOutlined className={styles.link__icon}/> Board</Link>
+              <Link to="/boards" onClick={onClose} className={styles.drawer__link}><ToolOutlined className={styles.link__icon}/> Edit profile</Link>
+              <Link to="/welcome" onClick={onClose} className={styles.drawer__link}><LogoutOutlined className={styles.link__icon}/>Logout</Link>
               </>
             )}
             
           </div>
       </Drawer>
 
-        <Menu theme="dark" mode="horizontal" id="header__menu" selectedKeys={[location.pathname]} style={{fontSize: '18px'}}>
+        <Menu theme="dark" className={styles.header__menu} mode="horizontal" selectedKeys={[location.pathname]}>
           <Menu.Item key="/">
             <Link to="/">Welcome</Link>
           </Menu.Item>
@@ -69,7 +69,7 @@ const HeaderOfApp = () => {
           ) : (
             <Menu.SubMenu
               key="/user"
-              title={<UserOutlined style={{ fontSize: "16px" }} />}
+              title={<UserOutlined style={{ fontSize: "20px" }} />}
               style={{ marginLeft: "auto" }}
             >
               <Menu.Item style={{ marginLeft: "auto" }} key="/profile">
@@ -81,11 +81,11 @@ const HeaderOfApp = () => {
             </Menu.SubMenu>
           )}
         </Menu>
-        <div className={token ? "language__blockToken" : "language__block"}>
+        <div className={token ? styles.language__blockToken : styles.language__block}>
           <Space>
-            <Text id="language">En</Text>
-            <Switch id="switcher" defaultChecked onChange={onChange} />
-            <Text id="language">Ru</Text>
+            <Text className={styles.language}>En</Text>
+            <Switch className={styles.language__switcher} defaultChecked onChange={onChange} />
+            <Text className={styles.language}>Ru</Text>
           </Space>
         </div>
       </Header>

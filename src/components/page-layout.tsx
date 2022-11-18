@@ -2,7 +2,7 @@ import { Layout } from "antd";
 import React from "react";
 import { Outlet } from "react-router-dom";
 import FooterOfApp from "./Footer/Footer";
-import HeaderOfApp from "./Header/Header";
+import HeaderOfApp from "./header/header";
 
 export const PageLayout: React.FC = () => {
 
