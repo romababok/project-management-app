@@ -1,7 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import "./App.scss";
-import { WelcomePage } from "./pages/Welcome/WelcomePage";
+import { WelcomePage } from "./pages/welcome/welcome-page";
 import { PageLayout } from "./components";
 import {
   BoardsListPage,

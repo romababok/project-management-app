@@ -1,12 +1,25 @@
-$icon-color: #0050b3;
+$primary-color: #0050b3;
+$border-color: #40a9ff;
+
+.main__content{
+    background-color: #fff;
+    padding: 3rem 0;
+    min-height: 70vh;
+}
 
 .welcome__block {
-    padding: 6rem 0;
+    padding: 5rem 0;
     background-image: url(../../assets/images/main-image.jpg);
     background-repeat: no-repeat;
     background-size: 700px 500px;
     background-position: right center;
 }
+@media (max-width: 1400px) {
+    .welcome__block {
+        background-size: 900px 700px;
+    }
+}
+
 @media (max-width: 1200px) {
     .welcome__block {
         background-size: 500px 350px;
@@ -29,34 +42,59 @@ $icon-color: #0050b3;
         background-image: none;
     }
 }
-#welcome__col {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 60vh;
+.welcome__row {
+    .welcome__col {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 60vh;
+    }
 }
 @media (max-width: 950px) {
-    #welcome__col {
-        justify-content: flex-start;
+    .welcome__row {
+        .welcome__col {
+            justify-content: flex-start;
+        }
     }
 }
 @media (max-width: 768px) {
-    #welcome__col {
+    .welcome__row{
+        .welcome__col {
+            height: auto;
+        }
+    }
+}
+.welcome__col{
+    .welcome__text{
+        font-size: 24px;
+        margin-top: 1rem;
+        margin-bottom: 2rem;
+    }
+    .welcome__button{
+        width: 10rem;
         height: auto;
+        font-size: 18px;
+    }
+}
+.main__content{
+    .devider{
+        background-color: $primary-color;
     }
 }
 .advantages__section,
-.team__section {
-    padding: 3rem 0;
-}
-#section__title {
-    font-size: 2.8rem;
+.team__section,
+.video__section {
+    padding: 4rem 0;
+    .section__title {
+        font-size: 2.8rem;
+        margin-bottom: 4rem;
+    }
 }
 
 .advantage__card {
     padding: 1rem;
-    border: 1px dashed  #40a9ff;
+    border: 1px dashed $border-color;
     border-radius: 20px;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
     height: 15rem;
@@ -67,28 +105,37 @@ $icon-color: #0050b3;
     justify-content: flex-start;
     gap: 3rem;
     margin-bottom: 1rem;
+    .advantage__icon {
+        font-size: 3rem;
+        color: $primary-color;
+    }
+    .advantage__text{
+        font-size: 18px;
+    }
 }
 
 @media (max-width: 400px) {
     .advantage__card{
         width: 12rem;
         font-size: 16px;
+        .advantage__icon {
+            font-size: 2rem;
+            color: $primary-color;
+        }
+        .advantage__text{
+            font-size: 16px;
+        }
     }
-}
-#advantage__card-icon {
-    font-size: 3rem;
-    color: $icon-color;
-}
-#advantage__card__text{
-    font-size: 18px;
+  
 }
 
 .team__container {
-    padding: 5rem 0rem;
+    padding: 3rem 0rem;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    gap: 1rem;
 }
 @media (max-width: 800px) {
     .team__container {
@@ -104,28 +151,38 @@ $icon-color: #0050b3;
     justify-content: center;
     gap: 3rem;
 }
-.team__card{
+.member__card{
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: row;
+    gap: 1rem;
+    .member__avatar {
+        width: 10rem;
+        height: 10rem;
+        box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.1);
+    }
 }
 @media (max-width: 1000px) {
-    .team__card {
+    .member__card {
         flex-direction: column;
         width: 80%;
     }
 }
 @media (max-width: 700px) {
-    .team__card {
+    .member__card {
         width: 100%;
     }
 }
-.card__contant{
+.member__content{
     flex: 0 0 60%;
-}
-#team__card__text{
-    font-size: 16px;
+    .member__description{
+        font-size: 18px;
+        text-align: center;
+    }
+    .member__position{
+        margin-bottom: 1rem;
+    }
 }
 
 .video__container {
