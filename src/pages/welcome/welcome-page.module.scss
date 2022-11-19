@@ -1,0 +1,208 @@
+$primary-color: #0050b3;
+$border-color: #40a9ff;
+
+.main__wrapper {
+    .main__content{
+        background-color: #fff;
+        padding: 3rem 2rem;
+        min-height: 70vh;
+    }
+}
+
+.welcome__block {
+    padding: 5rem 0;
+    background-image: url(../../assets/images/main-image.jpg);
+    background-repeat: no-repeat;
+    background-size: 700px 500px;
+    background-position: right center;
+}
+@media (max-width: 1400px) {
+    .welcome__block {
+        background-size: 900px 700px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .welcome__block {
+        background-size: 500px 350px;
+    }
+}
+@media (max-width: 1000px) {
+    .welcome__block {
+        background-position: right bottom;
+    }
+}
+@media (max-width: 769px) {
+    .welcome__block {
+        background-size: 500px 300px;
+        background-position: center bottom;
+        background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.5) 100%), url(../../assets/images/main-image.jpg);
+    }
+}
+@media (max-width: 500px) {
+    .welcome__block {
+        background-image: none;
+    }
+}
+.welcome__row {
+    .welcome__col {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 60vh;
+    }
+}
+@media (max-width: 950px) {
+    .welcome__row {
+        .welcome__col {
+            justify-content: flex-start;
+        }
+    }
+}
+@media (max-width: 768px) {
+    .welcome__row{
+        .welcome__col {
+            height: auto;
+        }
+    }
+}
+.welcome__col{
+    .welcome__text{
+        font-size: 24px;
+        margin-top: 1rem;
+        margin-bottom: 2rem;
+    }
+    .welcome__button{
+        width: 10rem;
+        height: auto;
+        font-size: 18px;
+    }
+}
+.main__content{
+    .devider{
+        background-color: $primary-color;
+    }
+}
+.advantages__section,
+.team__section,
+.video__section {
+    padding: 4rem 0;
+    .section__title {
+        font-size: 2.8rem;
+        margin-bottom: 4rem;
+    }
+}
+
+.advantage__card {
+    padding: 1rem;
+    border: 1px dashed $border-color;
+    border-radius: 20px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+    height: 15rem;
+    width: 20rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 3rem;
+    margin-bottom: 1rem;
+    .advantage__icon {
+        font-size: 3rem;
+        color: $primary-color;
+    }
+    .advantage__text{
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 400px) {
+    .advantage__card{
+        width: 12rem;
+        font-size: 16px;
+        .advantage__icon {
+            font-size: 2rem;
+            color: $primary-color;
+        }
+        .advantage__text{
+            font-size: 16px;
+        }
+    }
+  
+}
+
+.team__container {
+    padding: 2rem 0rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+@media (max-width: 800px) {
+    .team__container {
+        flex-direction: column;
+    }
+}
+
+.left__cards,
+.right__cards {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
+}
+.member__card{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    gap: 1rem;
+    .member__avatar {
+        width: 10rem;
+        height: 10rem;
+        box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.1);
+    }
+}
+@media (max-width: 1000px) {
+    .member__card {
+        flex-direction: column;
+        width: 80%;
+    }
+}
+@media (max-width: 700px) {
+    .member__card {
+        width: 100%;
+    }
+}
+.member__content{
+    flex: 0 0 60%;
+    .member__description{
+        font-size: 18px;
+        text-align: center;
+    }
+    .member__position{
+        margin-bottom: 1rem;
+    }
+}
+
+.video__container {
+    padding: 5rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.player{
+    width: 500px;
+    height: 200px;
+    background-color: rgba(0, 0, 0, 0.216);
+}
+
+@media (max-width: 600px) {
+    .player{
+        width: 300px;
+        height: 100px;
+    }
+}

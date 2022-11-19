@@ -1,4 +1,4 @@
-export * from './welcome';
+export * from './welcome/welcome-page';
 export * from './login';
 export * from './boards-list';
 export * from './selected-board';
