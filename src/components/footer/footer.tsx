@@ -2,10 +2,12 @@ import React from 'react';
 import { Footer } from 'antd/lib/layout/layout';
 import { Col, Row, Typography } from 'antd';
 import styles from './footer.module.scss';
+import { useTranslation } from 'react-i18next';
 
 const { Text, Link } = Typography;
 
 const FooterOfApp = () => {
+  const { t } = useTranslation();
   return (
     <div className={styles.footer__block}>
       <Footer className={styles.footer}>
@@ -37,21 +39,21 @@ const FooterOfApp = () => {
             className={styles.footer__right}
           >
             <Link href="https://github.com/olgad21" target="_blank" className={styles.footer__link}>
-              Olga
+              {t('Footer the first name')}
             </Link>
             <Link
               href="https://github.com/romababok"
               target="_blank"
               className={styles.footer__link}
             >
-              Roman
+              {t('Footer the second name')}
             </Link>
             <Link
               href="https://github.com/takeAmoment"
               target="_blank"
               className={styles.footer__link}
             >
-              Aleksandra
+              {t('Footer the third name')}
             </Link>
           </Col>
         </Row>
