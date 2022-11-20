@@ -150,7 +150,5 @@ const columnsSlice = createSlice({
 });
 
 export const selectColumns = (state: RootState) => state.columns.columns;
-export const selectIsColumnsLoaded = (state: RootState) =>
-  state.columns.status === 'succeeded' || state.columns.status === 'failed';
 
 export default columnsSlice.reducer;

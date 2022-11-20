@@ -23,7 +23,6 @@ const TasksList: FC<TaskListProps> = ({ columnId }) => {
 
   useEffect(() => {
     if (boardId) {
-      console.log(2222);
       dispatch(tasksGetAll({ boardId: boardId, columnId: columnId }));
     }
   }, []);

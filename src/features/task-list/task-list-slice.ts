@@ -137,7 +137,6 @@ const tasksSlice = createSlice({
       .addCase(tasksGetAll.fulfilled, (state, action) => {
         state.status = 'succeeded';
         if (action.payload) {
-          console.log(state.taskList, action.payload, 1111);
           state.taskList = [...state.taskList, ...action.payload];
         }
       })
