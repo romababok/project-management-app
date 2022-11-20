@@ -4,7 +4,7 @@ import ColumnsList from "../components/columns-list/columns-list";
 
 export const SelectedBoardPage: React.FC = () => {
   return (
-    <Content style={{ padding: "0 50px", minHeight: "70vh" }}>
+    <Content style={{ padding: '0 50px', minHeight: '70vh' }}>
       <div className="site-layout-content">
         <ColumnsList />
       </div>

@@ -1,6 +1,6 @@
-import React from "react";
-import { Card, Col, List } from "antd";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Card, Col, List } from 'antd';
+import { Link } from 'react-router-dom';
 
 interface BoardComponentProps {
   id: string;
@@ -8,9 +8,7 @@ interface BoardComponentProps {
   tasks?: string[];
 }
 
-export const BoardComponent: React.FC<BoardComponentProps> = (
-  props: BoardComponentProps
-) => {
+export const BoardComponent: React.FC<BoardComponentProps> = (props: BoardComponentProps) => {
   return (
     <Col span={6}>
       <Card

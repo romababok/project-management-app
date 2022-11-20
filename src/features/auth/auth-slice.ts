@@ -1,6 +1,6 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { RootState } from "../../app/store";
-import { signIn, signUp, SignUpRequest } from "../../api";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { RootState } from '../../app/store';
+import { signIn, signUp, SignUpRequest } from '../../api';
 
 export interface AuthState {
   userData: {
@@ -9,55 +9,49 @@ export interface AuthState {
     login: string;
     token: string | null;
   } | null;
-  status: "idle" | "loading" | "failed";
+  status: 'idle' | 'loading' | 'failed';
 }
 
 const initialState: AuthState = {
   userData: null,
-  status: "idle",
+  status: 'idle',
 };
 
-export const authSignUp = createAsyncThunk(
-  "auth/signUp",
-  async (request: SignUpRequest) => {
-    const response = await signUp(request);
-    return response.data;
-  }
-);
+export const authSignUp = createAsyncThunk('auth/signUp', async (request: SignUpRequest) => {
+  const response = await signUp(request);
+  return response.data;
+});
 
-export const authSignIn = createAsyncThunk(
-  "auth/signIn",
-  async (request: SignUpRequest) => {
-    const response = await signIn(request);
-    return response.data;
-  }
-);
+export const authSignIn = createAsyncThunk('auth/signIn', async (request: SignUpRequest) => {
+  const response = await signIn(request);
+  return response.data;
+});
 
 const setError = (state: AuthState) => {
-  state.status = "failed";
+  state.status = 'failed';
 };
 
 export const authSlice = createSlice({
-  name: "auth",
+  name: 'auth',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(authSignUp.pending, (state) => {
-        state.status = "loading";
+        state.status = 'loading';
       })
       .addCase(authSignUp.fulfilled, (state, action) => {
-        state.status = "idle";
+        state.status = 'idle';
         state.userData = action.payload;
       })
       .addCase(authSignUp.rejected, (state) => {
-        state.status = "failed";
+        state.status = 'failed';
       })
       .addCase(authSignIn.pending, (state) => {
-        state.status = "loading";
+        state.status = 'loading';
       })
       .addCase(authSignIn.fulfilled, (state, action) => {
-        state.status = "idle";
+        state.status = 'idle';
         state.userData = action.payload;
       })
       .addCase(authSignIn.rejected, setError);

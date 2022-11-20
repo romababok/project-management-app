@@ -1,5 +1,5 @@
-import axios from "axios";
-import { baseApiUrl } from ".";
+import axios from 'axios';
+import { baseApiUrl } from '.';
 
 export interface CreateBoardRequest {
   title: string;
@@ -7,11 +7,10 @@ export interface CreateBoardRequest {
   users: string[];
 }
 
-export const getAllBoardsAPI = async () =>
-  await axios.get(baseApiUrl + "/boards");
+export const getAllBoardsAPI = async () => await axios.get(baseApiUrl + '/boards');
 
 export const createBoardAPI = async (request: CreateBoardRequest) => {
-  return await axios.post(baseApiUrl + "/boards", request);
+  return await axios.post(baseApiUrl + '/boards', request);
 };
 export const getBoardByIdAPI = async (boardId: string) => {
   return await axios.get(baseApiUrl + `/boards/${boardId}`);

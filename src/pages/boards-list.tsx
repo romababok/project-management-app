@@ -13,23 +13,21 @@ export const BoardsListPage: React.FC = () => {
 
   useEffect(() => {
     dispatch(getAllBoards());
-  }, []);
+  }, [dispatch]);
 
   const createBoardHandler = (values: CreateBoardRequest) => {
     dispatch(createBoard({ ...values }));
   };
 
   return (
-    <Content
-      style={{ padding: "0 50px", minHeight: "70vh", marginTop: "2rem" }}
-    >
+    <Content style={{ padding: '0 50px', minHeight: '70vh', marginTop: '2rem' }}>
       <div className="site-layout-content">
         <Button
           onClick={() => {
             createBoardHandler({
-              title: "qwdqwd",
-              owner: "qwdqwd",
-              users: ["amahasla"],
+              title: 'qwdqwd',
+              owner: 'qwdqwd',
+              users: ['amahasla'],
             });
           }}
         >
