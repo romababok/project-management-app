@@ -8,18 +8,18 @@ import { useParams } from 'react-router-dom';
 import { Content } from 'antd/lib/layout/layout';
 import TasksList from '../task-list/tasks-list';
 
-type ColumnProps = {
-  id: string;
+interface ColumnProps {
+  columnId: string;
   title: string;
-};
+}
 
-const Column: FC<ColumnProps> = ({ id, title }) => {
+const Column: FC<ColumnProps> = ({ columnId, title }) => {
   const dispatch = useAppDispatch();
   const { boardId } = useParams();
 
   const handleDeleteOk = () => {
     if (boardId) {
-      dispatch(columnsDelete({ boardId: boardId, columnId: id }));
+      dispatch(columnsDelete({ boardId: boardId, columnId: columnId }));
     }
   };
 
@@ -35,7 +35,7 @@ const Column: FC<ColumnProps> = ({ id, title }) => {
       >
         <Button type="text" danger icon={<DeleteOutlined />} />
       </Popconfirm>
-      <TasksList columnId={id} />
+      <TasksList columnId={columnId} />
     </Content>
   );
 };

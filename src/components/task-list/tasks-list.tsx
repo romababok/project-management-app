@@ -8,9 +8,9 @@ import { selectTasks, tasksCreate, tasksGetAll } from '../../features/task-list/
 import { useParams } from 'react-router-dom';
 import styles from './task-list.module.scss';
 
-type TaskListProps = {
+interface TaskListProps {
   columnId: string;
-};
+}
 
 const TasksList: FC<TaskListProps> = ({ columnId }) => {
   const { boardId } = useParams();
@@ -62,7 +62,12 @@ const TasksList: FC<TaskListProps> = ({ columnId }) => {
         dataSource={tasks.filter((task) => task.columnId === columnId)}
         renderItem={(task) => (
           <List.Item>
-            <Task title={task.title} desc={task.description} columnId={columnId} id={task._id} />
+            <Task
+              title={task.title}
+              desc={task.description}
+              columnId={columnId}
+              taskId={task._id}
+            />
           </List.Item>
         )}
       ></List>

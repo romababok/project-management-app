@@ -7,20 +7,20 @@ import { useAppDispatch } from '../../app/hooks';
 import { tasksDelete } from '../../features/task-list/task-list-slice';
 import { useParams } from 'react-router-dom';
 
-type TaskProps = {
+interface TaskProps {
   title: string;
   desc: string;
   columnId: string;
-  id: string;
-};
+  taskId: string;
+}
 
-const Task: FC<TaskProps> = ({ title, desc, columnId, id }) => {
+const Task: FC<TaskProps> = ({ title, desc, columnId, taskId }) => {
   const dispatch = useAppDispatch();
   const { boardId } = useParams();
 
   const handleDeleteOk = () => {
     if (boardId) {
-      dispatch(tasksDelete({ boardId: boardId, columnId: columnId, taskId: id }));
+      dispatch(tasksDelete({ boardId: boardId, columnId: columnId, taskId: taskId }));
     }
   };
 

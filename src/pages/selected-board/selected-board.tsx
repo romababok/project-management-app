@@ -66,7 +66,7 @@ export const SelectedBoardPage: React.FC = () => {
           dataSource={columns}
           renderItem={(column) => (
             <List.Item>
-              <Column title={column.title} id={column._id}></Column>
+              <Column title={column.title} columnId={column._id}></Column>
             </List.Item>
           )}
         ></List>

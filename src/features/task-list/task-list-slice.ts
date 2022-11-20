@@ -1,21 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import {
-  createTask,
-  deleteTask,
-  getAllTasks,
-  Task,
-  TaskRequest,
-  updateTask,
-} from '../../api/tasks';
+import { createTask, deleteTask, getAllTasks, TaskRequest, updateTask } from '../../api/tasks';
 import { RootState } from '../../app/store';
+import { InitialStateTasks } from '../../Interfaces';
 
-type InitialStateType = {
-  taskList: Task[];
-  status: 'idle' | 'loading' | 'succeeded' | 'failed';
-  error: string | null;
-};
-
-const initialState: InitialStateType = {
+const initialState: InitialStateTasks = {
   taskList: [],
   status: 'idle',
   error: null,

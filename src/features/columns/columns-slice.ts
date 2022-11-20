@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import {
-  Column,
   ColumnsRequest,
   createColumn,
   deleteColumn,
@@ -8,15 +7,16 @@ import {
   updateColumn,
 } from '../../api/сolumns';
 import { RootState } from '../../app/store';
+import { InitialStateColumns } from '../../Interfaces';
 
-type ThunkArgsType = {
+interface ThunkArgsInterface {
   boardId: string;
   request: ColumnsRequest;
-};
+}
 
 export const columnsCreate = createAsyncThunk(
   'columns/create',
-  async ({ boardId, request }: ThunkArgsType) => {
+  async ({ boardId, request }: ThunkArgsInterface) => {
     try {
       const response = await createColumn(boardId, request);
       return response.data;
@@ -75,13 +75,7 @@ export const columnsGetAll = createAsyncThunk('columns/getAll', async (boardId: 
   }
 });
 
-type InitialStateType = {
-  columns: Column[];
-  status: 'idle' | 'loading' | 'succeeded' | 'failed';
-  error: string | null;
-};
-
-const initialState: InitialStateType = {
+const initialState: InitialStateColumns = {
   columns: [],
   status: 'idle',
   error: null,
