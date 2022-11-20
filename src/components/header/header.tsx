@@ -25,7 +25,7 @@ const HeaderOfApp = () => {
   const langFromStorage = localStorage.getItem('lang');
 
   const [open, setOpen] = useState<boolean>(false);
-  const [lang, setLang] = useState<string>(langFromStorage ? langFromStorage : 'en');
+  const [lang, setLang] = useState<string>(langFromStorage ?? 'en');
 
   useEffect(() => {
     localStorage.setItem('lang', lang);
@@ -136,7 +136,7 @@ const HeaderOfApp = () => {
           <Text className={styles.language}>En</Text>
           <Switch
             className={styles.language__switcher}
-            defaultChecked={lang === 'en' ? false : true}
+            defaultChecked={lang !== 'en'}
             onChange={onChange}
           />
           <Text className={styles.language}>Ru</Text>

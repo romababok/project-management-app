@@ -39,7 +39,7 @@ export const WelcomePage: React.FC = () => {
         <Divider className={styles.devider} />
         <section className={styles.advantages__section}>
           <Title level={2} className={styles.section__title}>
-            {t('Avantages title')}
+            {t('Advantages title')}
           </Title>
           <Row gutter={{ xs: 8, sm: 16, md: 24, xl: 32 }} justify="center">
             <Col className={styles.gutter__row}>
