@@ -62,5 +62,6 @@ export const authSlice = createSlice({
 // the state. Selectors can also be defined inline where they're used instead of
 // in the slice file. For example: `useSelector((state: RootState) => state.counter.value)`
 export const bearerKey = (state: RootState) => state.auth.userData?.token;
+export const selectUser = (state: RootState) => state.auth.userData;
 
 export default authSlice.reducer;
