@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import {
   createTask,
   deleteTask,
@@ -6,23 +6,23 @@ import {
   Task,
   TaskRequest,
   updateTask,
-} from "../../api/tasks";
-import { RootState } from "../../app/store";
+} from '../../api/tasks';
+import { RootState } from '../../app/store';
 
 type InitialStateType = {
   taskList: Task[];
-  status: "idle" | "loading" | "succeeded" | "failed";
+  status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
 };
 
 const initialState: InitialStateType = {
   taskList: [],
-  status: "idle",
+  status: 'idle',
   error: null,
 };
 
 export const tasksCreate = createAsyncThunk(
-  "tasks/create",
+  'tasks/create',
   async ({
     boardId,
     columnId,
@@ -44,16 +44,8 @@ export const tasksCreate = createAsyncThunk(
 );
 
 export const tasksDelete = createAsyncThunk(
-  "tasks/delete",
-  async ({
-    boardId,
-    columnId,
-    taskId,
-  }: {
-    boardId: string;
-    columnId: string;
-    taskId: string;
-  }) => {
+  'tasks/delete',
+  async ({ boardId, columnId, taskId }: { boardId: string; columnId: string; taskId: string }) => {
     try {
       const response = await deleteTask(boardId, columnId, taskId);
       return response.data;
@@ -66,7 +58,7 @@ export const tasksDelete = createAsyncThunk(
 );
 
 export const tasksUpdate = createAsyncThunk(
-  "tasks/update",
+  'tasks/update',
   async ({
     boardId,
     columnId,
@@ -90,7 +82,7 @@ export const tasksUpdate = createAsyncThunk(
 );
 
 export const tasksGetAll = createAsyncThunk(
-  "tasks/getAll",
+  'tasks/getAll',
   async ({ boardId, columnId }: { boardId: string; columnId: string }) => {
     try {
       const response = await getAllTasks(boardId, columnId);
@@ -104,68 +96,68 @@ export const tasksGetAll = createAsyncThunk(
 );
 
 const tasksSlice = createSlice({
-  name: "tasks",
+  name: 'tasks',
   initialState,
   reducers: {
     resetTasks: (state) => {
+      state.status = 'idle';
       state.taskList = [];
     },
   },
   extraReducers(builder) {
     builder
       .addCase(tasksCreate.fulfilled, (state, action) => {
-        state.status = "succeeded";
+        state.status = 'succeeded';
         if (action.payload) {
           state.taskList = [...state.taskList, action.payload];
         }
       })
       .addCase(tasksCreate.pending, (state) => {
-        state.status = "loading";
+        state.status = 'loading';
       })
       .addCase(tasksCreate.rejected, (state) => {
-        state.status = "failed";
+        state.status = 'failed';
       })
       .addCase(tasksDelete.fulfilled, (state, action) => {
-        state.status = "succeeded";
+        state.status = 'succeeded';
         if (action.payload) {
-          const updatedTasks = state.taskList.filter(
-            (task) => task._id !== action.payload?._id
-          );
+          const updatedTasks = state.taskList.filter((task) => task._id !== action.payload?._id);
           state.taskList = updatedTasks;
         }
       })
       .addCase(tasksDelete.pending, (state) => {
-        state.status = "loading";
+        state.status = 'loading';
       })
       .addCase(tasksDelete.rejected, (state) => {
-        state.status = "failed";
+        state.status = 'failed';
       })
       .addCase(tasksUpdate.fulfilled, (state, action) => {
-        state.status = "succeeded";
+        state.status = 'succeeded';
         if (action.payload) {
-          let updatedTasks = state.taskList
+          const updatedTasks = state.taskList
             .filter((task) => task._id === action.payload?._id)
             .map((task) => (task = action.payload ?? task));
           state.taskList = updatedTasks;
         }
       })
       .addCase(tasksUpdate.pending, (state) => {
-        state.status = "loading";
+        state.status = 'loading';
       })
       .addCase(tasksUpdate.rejected, (state) => {
-        state.status = "failed";
+        state.status = 'failed';
       })
       .addCase(tasksGetAll.fulfilled, (state, action) => {
-        state.status = "succeeded";
+        state.status = 'succeeded';
         if (action.payload) {
+          console.log(state.taskList, action.payload, 1111);
           state.taskList = [...state.taskList, ...action.payload];
         }
       })
       .addCase(tasksGetAll.pending, (state) => {
-        state.status = "loading";
+        state.status = 'loading';
       })
       .addCase(tasksGetAll.rejected, (state) => {
-        state.status = "failed";
+        state.status = 'failed';
       });
   },
 });

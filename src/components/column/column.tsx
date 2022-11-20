@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Button, List, Popconfirm } from 'antd';
+import { Button, Popconfirm } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { useAppDispatch } from '../../app/hooks';
 import { columnsDelete } from '../../features/columns/columns-slice';

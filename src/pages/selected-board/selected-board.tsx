@@ -4,7 +4,12 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Button, Modal, Input, Form, List } from 'antd';
 import { useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { columnsGetAll, selectColumns, columnsCreate } from '../../features/columns/columns-slice';
+import {
+  columnsGetAll,
+  selectColumns,
+  columnsCreate,
+  selectIsColumnsLoaded,
+} from '../../features/columns/columns-slice';
 import Column from '../../components/column/column';
 import styles from './selected-board.module.scss';
 
@@ -12,14 +17,19 @@ export const SelectedBoardPage: React.FC = () => {
   const { boardId } = useParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useAppDispatch();
+  const isColumnsLoaded = useAppSelector(selectIsColumnsLoaded);
   const [form] = Form.useForm<{ title: string }>();
   const columnTitle = Form.useWatch('title', form);
 
   useEffect(() => {
-    dispatch({ type: 'tasks/resetTasks' });
     if (boardId) {
       dispatch(columnsGetAll(boardId ?? ''));
     }
+    // clear all columns and tasks when exiting Board page
+    return () => {
+      dispatch({ type: 'tasks/resetTasks' });
+      dispatch({ type: 'columns/resetColumns' });
+    };
   }, []);
 
   const columns = useAppSelector(selectColumns);
@@ -50,15 +60,17 @@ export const SelectedBoardPage: React.FC = () => {
       <Button icon={<PlusOutlined />} onClick={showModal}>
         Add Column
       </Button>
-      <List
-        className={styles.boardList}
-        dataSource={columns}
-        renderItem={(column) => (
-          <List.Item>
-            <Column title={column.title} id={column._id}></Column>
-          </List.Item>
-        )}
-      ></List>
+      {isColumnsLoaded && (
+        <List
+          className={styles.boardList}
+          dataSource={columns}
+          renderItem={(column) => (
+            <List.Item>
+              <Column title={column.title} id={column._id}></Column>
+            </List.Item>
+          )}
+        ></List>
+      )}
       <Modal title="Add Column" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
         <Form form={form} layout="vertical" autoComplete="off">
           <Form.Item name="title" label="Title">

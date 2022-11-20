@@ -23,6 +23,7 @@ const TasksList: FC<TaskListProps> = ({ columnId }) => {
 
   useEffect(() => {
     if (boardId) {
+      console.log(2222);
       dispatch(tasksGetAll({ boardId: boardId, columnId: columnId }));
     }
   }, []);
@@ -65,20 +66,6 @@ const TasksList: FC<TaskListProps> = ({ columnId }) => {
           </List.Item>
         )}
       ></List>
-      {/* {tasks &&
-          tasks
-            .filter((task) => task.columnId === columnId)
-            .map((task) => {
-              return (
-                <Task
-                  key={task._id}
-                  title={task.title}
-                  desc={task.description}
-                  columnId={columnId}
-                  id={task._id}
-                />
-              );
-            })} */}
       <Button icon={<PlusOutlined />} onClick={showModal}>
         Add Task
       </Button>
