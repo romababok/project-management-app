@@ -1,0 +1,10 @@
+.boardList {
+  overflow: auto;
+  overflow-y: hidden;
+  height: 70vh;
+    :global .ant-list-items {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+  }
+}

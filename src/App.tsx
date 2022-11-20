@@ -3,8 +3,9 @@ import { Routes, Route } from 'react-router-dom';
 import './App.scss';
 import { WelcomePage } from './pages/welcome/welcome-page';
 import { PageLayout } from './components';
-import { BoardsListPage, ErrorPage, LoginPage, SelectedBoardPage, UserPage } from './pages';
+import { BoardsListPage, ErrorPage, LoginPage, UserPage } from './pages';
 import ErrorBoundary from 'antd/lib/alert/ErrorBoundary';
+import { SelectedBoardPage } from './pages/selected-board/selected-board';
 
 function App() {
   return (

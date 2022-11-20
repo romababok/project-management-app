@@ -1,11 +1,12 @@
-import React, { FC } from "react";
-import { Button, Popconfirm } from "antd";
-import { DeleteOutlined } from "@ant-design/icons";
-import TasksList from "../task-list/tasks-list";
-import { useAppDispatch } from "../../app/hooks";
-import { columnsDelete } from "../../features/columns/columns-slice";
-import "./column.styles.scss";
-import { useParams } from "react-router-dom";
+import React, { FC } from 'react';
+import { Button, List, Popconfirm } from 'antd';
+import { DeleteOutlined } from '@ant-design/icons';
+import { useAppDispatch } from '../../app/hooks';
+import { columnsDelete } from '../../features/columns/columns-slice';
+import './column.styles.scss';
+import { useParams } from 'react-router-dom';
+import { Content } from 'antd/lib/layout/layout';
+import TasksList from '../task-list/tasks-list';
 
 type ColumnProps = {
   id: string;
@@ -23,7 +24,7 @@ const Column: FC<ColumnProps> = ({ id, title }) => {
   };
 
   return (
-    <div className="column">
+    <Content className="column">
       {title}
       <Popconfirm
         placement="bottomRight"
@@ -32,15 +33,10 @@ const Column: FC<ColumnProps> = ({ id, title }) => {
         okText="Yes"
         cancelText="No"
       >
-        <Button
-        type="text"
-        danger
-        icon={<DeleteOutlined />}
-      />
+        <Button type="text" danger icon={<DeleteOutlined />} />
       </Popconfirm>
       <TasksList columnId={id} />
-
-    </div>
+    </Content>
   );
 };
 
