@@ -1,6 +1,7 @@
 import React from 'react';
 import { Content } from 'antd/lib/layout/layout';
 import { Col, Row, Typography, Divider, Button, Avatar } from 'antd';
+import { useTranslation } from 'react-i18next';
 import styles from './welcome-page.module.scss';
 import {
   BankOutlined,
@@ -13,6 +14,7 @@ import {
 const { Paragraph, Title, Text } = Typography;
 
 export const WelcomePage: React.FC = () => {
+  const { t } = useTranslation();
   return (
     <div className={styles.main__wrapper}>
       <Content className={styles.main__content}>
@@ -26,15 +28,10 @@ export const WelcomePage: React.FC = () => {
               xs={{ span: 24, offset: 0 }}
               className={styles.welcome__col}
             >
-              <Title>Welcome to Teamber</Title>
-              <Paragraph className={styles.welcome__text}>
-                Teamber is a new unique application that will help you manage your workflow more
-                effective. Create tasks, work with your team and reach your goals.&quot;Coming
-                together together is the beginning. Keeping together is progress. Working together
-                is success.&quot; - Henry Ford
-              </Paragraph>
+              <Title>{t('Welcome title')}</Title>
+              <Paragraph className={styles.welcome__text}> {t('Welcome text')}</Paragraph>
               <Button size="large" className={styles.welcome__button} type="primary">
-                Let&apos;s start
+                {t('Welcome button')}
               </Button>
             </Col>
           </Row>
@@ -42,51 +39,55 @@ export const WelcomePage: React.FC = () => {
         <Divider className={styles.devider} />
         <section className={styles.advantages__section}>
           <Title level={2} className={styles.section__title}>
-            Our advantages
+            {t('Advantages title')}
           </Title>
           <Row gutter={{ xs: 8, sm: 16, md: 24, xl: 32 }} justify="center">
             <Col className={styles.gutter__row}>
               <div className={styles.advantage__card}>
                 <CommentOutlined className={styles.advantage__icon} />
-                <Paragraph className={styles.advantage__text}>
-                  easy communication with the team
-                </Paragraph>
+                <Paragraph className={styles.advantage__text}>{t('The first advantage')}</Paragraph>
               </div>
             </Col>
             <Col className={styles.gutter__row}>
               <div className={styles.advantage__card}>
                 <CoffeeOutlined className={styles.advantage__icon} />
-                <Paragraph className={styles.advantage__text}>very comfortable interface</Paragraph>
+                <Paragraph className={styles.advantage__text}>
+                  {t('The second advantage')}
+                </Paragraph>
               </div>
             </Col>
             <Col className={styles.gutter__row}>
               <div className={styles.advantage__card}>
                 <DollarCircleOutlined className={styles.advantage__icon} />
-                <Paragraph className={styles.advantage__text}>this application is free</Paragraph>
+                <Paragraph className={styles.advantage__text}>{t('The third advantage')}</Paragraph>
               </div>
             </Col>
             <Col className={styles.gutter__row}>
               <div className={styles.advantage__card}>
                 <BankOutlined className={styles.advantage__icon} />
-                <Paragraph className={styles.advantage__text}>very comfortable interface</Paragraph>
+                <Paragraph className={styles.advantage__text}>
+                  {t('The fourth advantage')}
+                </Paragraph>
               </div>
             </Col>
             <Col className={styles.gutter__row}>
               <div className={styles.advantage__card}>
                 <BookOutlined className={styles.advantage__icon} />
-                <Paragraph className={styles.advantage__text}>this application is free</Paragraph>
+                <Paragraph className={styles.advantage__text}>{t('The fifth advantage')}</Paragraph>
               </div>
             </Col>
             <Col className={styles.gutter__row}>
               <div className={styles.advantage__card}>
                 <BankOutlined className={styles.advantage__icon} />
-                <Paragraph className={styles.advantage__text}>very comfortable interface</Paragraph>
+                <Paragraph className={styles.advantage__text}>{t('The sixth advantage')}</Paragraph>
               </div>
             </Col>
             <Col className={styles.gutter__row}>
               <div className={styles.advantage__card}>
                 <BookOutlined className={styles.advantage__icon} />
-                <Paragraph className={styles.advantage__text}>this application is free</Paragraph>
+                <Paragraph className={styles.advantage__text}>
+                  {t('The seventh advantage')}
+                </Paragraph>
               </div>
             </Col>
           </Row>
@@ -94,7 +95,7 @@ export const WelcomePage: React.FC = () => {
         <Divider className={styles.devider} />
         <section className={styles.team__section}>
           <Title level={2} className={styles.section__title}>
-            Our Team
+            {t('Team title')}
           </Title>
           <div className={styles.team__container}>
             <div className={styles.left__cards}>
@@ -105,11 +106,10 @@ export const WelcomePage: React.FC = () => {
                 />
                 <div className={styles.member__content}>
                   <Title level={3} className={styles.member__name}>
-                    Vladimir
+                    {t('The first member name')}
                   </Title>
                   <Text strong className={styles.member__position}>
-                    {' '}
-                    Mentor
+                    {t('The first member position')}
                   </Text>
                   <Paragraph className={styles.member__description}>
                     Lorem ipsum dolor sit, amet consectetur adipisicing elit. Rerum doloremque,
@@ -126,11 +126,10 @@ export const WelcomePage: React.FC = () => {
                 />
                 <div className={styles.member__content}>
                   <Title level={3} className={styles.member__name}>
-                    Roman
+                    {t('The second member name')}
                   </Title>
                   <Text strong className={styles.member__position}>
-                    {' '}
-                    Team leader
+                    {t('The second member position')}
                   </Text>
                   <Paragraph className={styles.member__description}>
                     Lorem ipsum dolor sit, amet consectetur adipisicing elit. Rerum doloremque,
@@ -149,11 +148,10 @@ export const WelcomePage: React.FC = () => {
                 />
                 <div className={styles.member__content}>
                   <Title level={3} className={styles.member__name}>
-                    Olga
+                    {t('The third member name')}
                   </Title>
                   <Text strong className={styles.member__position}>
-                    {' '}
-                    Hurt of team
+                    {t('The third member position')}
                   </Text>
                   <Paragraph className={styles.member__description}>
                     Lorem ipsum dolor sit, amet consectetur adipisicing elit. Rerum doloremque,
@@ -170,11 +168,10 @@ export const WelcomePage: React.FC = () => {
                 />
                 <div className={styles.member__content}>
                   <Title level={3} className={styles.member__name}>
-                    Sasha
+                    {t('The fourth member name')}
                   </Title>
                   <Text strong className={styles.member__position}>
-                    {' '}
-                    Member
+                    {t('The fourth member position')}
                   </Text>
                   <Paragraph className={styles.member__description}>
                     Lorem ipsum dolor sit, amet consectetur adipisicing elit. Rerum doloremque,
@@ -190,7 +187,7 @@ export const WelcomePage: React.FC = () => {
         <Divider className={styles.devider} />
         <section className={styles.video__section}>
           <Title level={2} className={styles.section__title}>
-            Video instruction
+            {t('Video title')}
           </Title>
           <div className={styles.video__container}>
             <div className={styles.player}></div>

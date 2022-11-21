@@ -32,7 +32,7 @@ $switcher-color: #1890ff;
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .header{
     .menu__btn{
       display: block;
@@ -89,12 +89,7 @@ $switcher-color: #1890ff;
   top: 0;
   right: 300px;
 }
-@media (max-width: 700px) {
-  .language__block{
-    right: 250px;
-  }
-}
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .language__block{
     right: 100px;
   }
