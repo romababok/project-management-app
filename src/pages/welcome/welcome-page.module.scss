@@ -68,6 +68,7 @@ $border-color: #40a9ff;
     }
 }
 .welcome__col{
+    margin-bottom: 10px;
     .welcome__text{
         font-size: 24px;
         margin-top: 1rem;
@@ -87,13 +88,18 @@ $border-color: #40a9ff;
 .advantages__section,
 .team__section,
 .video__section {
-    padding: 4rem 0;
+    padding: 2rem 0;
     .section__title {
         font-size: 2.8rem;
         margin-bottom: 4rem;
     }
 }
 
+.gutter {
+    .gutter__row {
+        margin-bottom: 2rem;
+    }
+}
 .advantage__card {
     padding: 1rem;
     border: 1px dashed $border-color;
@@ -184,25 +190,5 @@ $border-color: #40a9ff;
     }
     .member__position{
         margin-bottom: 1rem;
-    }
-}
-
-.video__container {
-    padding: 5rem 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-.player{
-    width: 500px;
-    height: 200px;
-    background-color: rgba(0, 0, 0, 0.216);
-}
-
-@media (max-width: 600px) {
-    .player{
-        width: 300px;
-        height: 100px;
     }
 }
