@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { selectTasks, tasksCreate, tasksGetAll } from '../../features/task-list/task-list-slice';
 import { useParams } from 'react-router-dom';
 import styles from './task-list.module.scss';
+import { Draggable, Droppable } from 'react-beautiful-dnd';
 
 interface TaskListProps {
   columnId: string;
@@ -54,22 +55,45 @@ const TasksList: FC<TaskListProps> = ({ columnId }) => {
     setIsModalOpen(false);
   };
 
+  // const getItems = (count: number) =>
+  //   Array.from({ length: count }, (v, k) => k).map((k) => ({
+  //     id: `item-${k}`,
+  //     content: `item ${k}`,
+  //   }));
+
+  // const items = getItems(10);
+
   return (
     <Content className={styles.taskContent}>
-      <List
-        className={styles.taskList}
-        dataSource={tasks.filter((task) => task.columnId === columnId)}
-        renderItem={(task) => (
-          <List.Item>
-            <Task
-              title={task.title}
-              desc={task.description}
-              columnId={columnId}
-              taskId={task._id}
-            />
-          </List.Item>
+      <Droppable droppableId={columnId}>
+        {(provided) => (
+          <div ref={provided.innerRef} {...provided.droppableProps}>
+            <List
+              className={styles.taskList}
+              dataSource={tasks.filter((task) => task.columnId === columnId)}
+              renderItem={(task, index) => (
+                <Draggable draggableId={task._id} index={index}>
+                  {(provided1) => (
+                    <List.Item
+                      {...provided1.draggableProps}
+                      {...provided1.dragHandleProps}
+                      ref={provided1.innerRef}
+                    >
+                      <Task
+                        title={task.title}
+                        desc={task.description}
+                        columnId={columnId}
+                        taskId={task._id}
+                      />
+                    </List.Item>
+                  )}
+                </Draggable>
+              )}
+            ></List>
+            {provided.placeholder}
+          </div>
         )}
-      ></List>
+      </Droppable>
       <Button icon={<PlusOutlined />} onClick={showModal}>
         Add Task
       </Button>

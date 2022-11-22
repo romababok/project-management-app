@@ -1,13 +1,8 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import {
-  createBoardAPI,
-  CreateBoardRequest,
-  getBoardByIdAPI,
-  getAllBoardsAPI,
-} from "../../api";
-import axios from "axios";
-import { notification } from "antd";
-import { RootState } from "../../app/store";
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createBoardAPI, CreateBoardRequest, getBoardByIdAPI, getAllBoardsAPI } from '../../api';
+import axios from 'axios';
+import { notification } from 'antd';
+import { RootState } from '../../app/store';
 
 export interface Board {
   _id: string;

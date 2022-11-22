@@ -11,17 +11,8 @@ interface BoardComponentProps {
 export const BoardComponent: React.FC<BoardComponentProps> = (props: BoardComponentProps) => {
   return (
     <Col span={6}>
-      <Card
-        title={
-          <Link to={props.id} >
-            {props.title}
-          </Link>
-        }
-      >
-        <List
-          dataSource={props.tasks}
-          renderItem={(item) => <List.Item>{item}</List.Item>}
-        />
+      <Card title={<Link to={props.id}>{props.title}</Link>}>
+        <List dataSource={props.tasks} renderItem={(item) => <List.Item>{item}</List.Item>} />
       </Card>
     </Col>
   );

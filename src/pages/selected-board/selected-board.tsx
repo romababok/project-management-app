@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { columnsGetAll, selectColumns, columnsCreate } from '../../features/columns/columns-slice';
 import Column from '../../components/column/column';
+import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import styles from './selected-board.module.scss';
 
 export const SelectedBoardPage: React.FC = () => {
@@ -48,21 +49,30 @@ export const SelectedBoardPage: React.FC = () => {
     setIsModalOpen(false);
   };
 
+  const onDragEnd = (result: DropResult) => {
+    const { destination, source, draggableId } = result;
+    if (!destination) {
+      return;
+    }
+  };
+
   return (
     <Content style={{ padding: '0 50px', minHeight: '70vh' }}>
       <h1>Board Title</h1>
       <Button icon={<PlusOutlined />} onClick={showModal}>
         Add Column
       </Button>
-      <List
-        className={styles.boardList}
-        dataSource={columns}
-        renderItem={(column) => (
-          <List.Item>
-            <Column title={column.title} columnId={column._id}></Column>
-          </List.Item>
-        )}
-      ></List>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <List
+          className={styles.boardList}
+          dataSource={columns}
+          renderItem={(column) => (
+            <List.Item>
+              <Column title={column.title} columnId={column._id}></Column>
+            </List.Item>
+          )}
+        ></List>
+      </DragDropContext>
       <Modal title="Add Column" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
         <Form form={form} layout="vertical" autoComplete="off">
           <Form.Item name="title" label="Title">
