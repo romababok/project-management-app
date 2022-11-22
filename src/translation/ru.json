@@ -46,5 +46,5 @@
     "Edit profile update user failed message": "Запрос не удалось выполнить",
     "Edit profile update user failed description 409": "Такой логин уже существует",
     "Edit profile successful message after delete user": "Ваш аккаунт был удален",
-    "Edit profile successful description after delete user": "Нам очень жаль что вы покинули наше приложение. Мы будем рады вас видеть снова!"
+    "Edit profile successful description after delete user": "Нам очень жаль что вы покинули наше приложение. Мы будем рады вас видеть снова!",
 }

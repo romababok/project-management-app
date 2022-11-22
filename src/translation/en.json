@@ -47,5 +47,8 @@
   "Edit profile update user failed description 409": "This login already exist",
   "Edit profile update user failed description": "Something went wrong",
   "Edit profile successful message after delete user": "Your account has been deleted",
-  "Edit profile successful description after delete user": "We are very sorry that you left our application...We will be glad see you again!"
+  "Edit profile successful description after delete user": "We are very sorry that you left our application...We will be glad see you again!",
+  "Error page title": "Ooops... This link is not valid.",
+  "Error page text": "Check this link please and go back to out application ;)",
+  "Error page button": "Go to main page"
 }

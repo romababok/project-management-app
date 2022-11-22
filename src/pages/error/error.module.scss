@@ -1,0 +1,57 @@
+$error-button-color: rgb(102, 198, 243);
+.error__page {
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    .error__text {
+        font-size: 18px;
+    }
+}
+.error__image {
+    display: flex;
+    justify-content: center;
+    width: 600px;
+    height: 600px;
+    background-image: url(../../assets/images/space-error.jpg);
+    background-position: 0 0;
+    background-size: cover;
+    background-repeat: no-repeat;
+    .back__button {
+        width: 15rem;
+        height: 3rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: $error-button-color;
+        border: 1px solid $error-button-color;
+        cursor: pointer;
+        &:hover{
+            background-color: rgb(102, 178, 243);
+            color: $error-button-color; 
+            transition: all 0.4s;
+            box-shadow: 0px 0px 5px $error-button-color;
+            transform: translateY(2px);
+        }
+        .back__link {
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+        }
+    }
+}
+@media (max-width: 500px) {
+    .error__image {
+        width: 400px;
+        height: 400px;
+    }
+}
+
+@media (max-width: 400px) {
+    .error__image {
+        width: 300px;
+        height: 370px;
+        background-position: bottom center;
+    }
+}
