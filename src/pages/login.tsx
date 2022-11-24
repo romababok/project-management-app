@@ -1,27 +1,54 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Content } from 'antd/lib/layout/layout';
 import { Button, Form, Input } from 'antd';
 import { useNavigate } from 'react-router';
 import { useForm } from 'antd/es/form/Form';
 import { authSignIn, authSignUp } from '../features/auth/auth-slice';
-import { useAppDispatch } from '../app/hooks';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { useLocation } from 'react-router-dom';
+import { PageLoadingIndicator } from '../components';
 
 export const LoginPage: React.FC = () => {
   const [form] = useForm();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const location = useLocation();
+<<<<<<< Updated upstream
+  const status = useAppSelector((state) => state.auth.status);
+  const userId = useAppSelector((state) => state.auth.userData.id);
+
+  useEffect(() => {
+    if (userId) {
+      navigate('/boards');
+    }
+  }, [navigate, userId]);
+=======
+  const isLoading = useAppSelector((state) => state.auth.status !== 'idle');
+>>>>>>> Stashed changes
 
   const handleFinish = async (values: { name: string; login: string; password: string }) => {
     if (location.pathname === '/login') {
-      dispatch(authSignIn(values));
+      await dispatch(authSignIn(values));
+<<<<<<< Updated upstream
+    } else {
+      await dispatch(authSignUp(values));
+      navigate('/login');
+    }
+  };
+
+  if (status === 'loading') {
+=======
       navigate('/');
     } else {
-      dispatch(authSignUp(values));
+      await dispatch(authSignUp(values));
       navigate('/');
     }
   };
+
+  if (isLoading) {
+>>>>>>> Stashed changes
+    return <PageLoadingIndicator />;
+  }
 
   return (
     <Content style={{ padding: '50px 50px', minHeight: '100vh' }}>
