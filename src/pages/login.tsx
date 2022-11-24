@@ -13,7 +13,6 @@ export const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const location = useLocation();
-<<<<<<< Updated upstream
   const status = useAppSelector((state) => state.auth.status);
   const userId = useAppSelector((state) => state.auth.userData.id);
 
@@ -22,14 +21,10 @@ export const LoginPage: React.FC = () => {
       navigate('/boards');
     }
   }, [navigate, userId]);
-=======
-  const isLoading = useAppSelector((state) => state.auth.status !== 'idle');
->>>>>>> Stashed changes
 
   const handleFinish = async (values: { name: string; login: string; password: string }) => {
     if (location.pathname === '/login') {
       await dispatch(authSignIn(values));
-<<<<<<< Updated upstream
     } else {
       await dispatch(authSignUp(values));
       navigate('/login');
@@ -37,16 +32,6 @@ export const LoginPage: React.FC = () => {
   };
 
   if (status === 'loading') {
-=======
-      navigate('/');
-    } else {
-      await dispatch(authSignUp(values));
-      navigate('/');
-    }
-  };
-
-  if (isLoading) {
->>>>>>> Stashed changes
     return <PageLoadingIndicator />;
   }
 

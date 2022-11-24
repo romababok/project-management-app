@@ -1,14 +1,8 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import './App.scss';
-<<<<<<< Updated upstream
 import { PageLayout, ProtectedRoute } from './components';
 import { BoardsListPage, ErrorPage, LoginPage, UserPage, WelcomePage } from './pages';
-=======
-import { WelcomePage } from './pages/welcome';
-import { PageLayout, ProtectedRoute } from './components';
-import { BoardsListPage, ErrorPage, LoginPage, SelectedBoardPage, UserPage } from './pages';
->>>>>>> Stashed changes
 import ErrorBoundary from 'antd/lib/alert/ErrorBoundary';
 import { SelectedBoardPage } from './pages/selected-board/selected-board';
 

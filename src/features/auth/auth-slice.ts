@@ -1,21 +1,14 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 import { signIn, signUp, SignUpRequest } from '../../api';
-<<<<<<< Updated upstream
-import { getUserByIdAPI } from '../../api/users';
-import { notification } from 'antd';
-import jwt_decode from 'jwt-decode';
-import axios from 'axios';
-=======
 import jwt_decode from 'jwt-decode';
 import axios from 'axios';
 import { getUserByIdAPI } from '../../api/users';
 import { notification } from 'antd';
->>>>>>> Stashed changes
 
 export interface AuthState {
   userData: {
-    _id: string;
+    id: string;
     name: string;
     login: string;
     token: string | null;
@@ -25,39 +18,13 @@ export interface AuthState {
 
 const initialState: AuthState = {
   userData: {
-<<<<<<< Updated upstream
     id: '',
-=======
-    _id: '',
->>>>>>> Stashed changes
     name: '',
     login: '',
     token: '',
   },
   status: 'idle',
 };
-export type JwtData = {
-  id: string;
-  login: string;
-  iat: number;
-  exp: number;
-};
-
-export const getUserData = createAsyncThunk('auth/getUser', async (jwt: string) => {
-  const { id } = jwt_decode<JwtData>(jwt);
-  try {
-    const response = await getUserByIdAPI(id);
-    return response.data;
-  } catch (err) {
-    if (axios.isAxiosError(err)) {
-      notification.error({
-        message: 'Request failed with code ' + err.response?.status,
-        description: err.response?.data.message,
-      });
-    }
-  }
-});
-
 interface JwtData {
   id: string;
   login: string;
@@ -108,14 +75,9 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     logOut: (state) => {
-<<<<<<< Updated upstream
       localStorage.removeItem('token');
       state.userData = {
         id: '',
-=======
-      state.userData = {
-        _id: '',
->>>>>>> Stashed changes
         name: '',
         login: '',
         token: '',
@@ -138,42 +100,21 @@ export const authSlice = createSlice({
       })
       .addCase(authSignIn.fulfilled, (state, action) => {
         state.status = 'idle';
-<<<<<<< Updated upstream
         const data = action.payload;
         if (data) {
           localStorage.setItem('token', action.payload.token);
           const decoded: JwtData = jwt_decode(action.payload.token);
-          state.userData.id = decoded.id;
           state.userData.login = decoded.login;
+          state.userData.id = decoded.id;
         }
-      })
-      .addCase(authSignIn.rejected, (state) => {
-        state.status = 'failed';
       })
       .addCase(getUserData.fulfilled, (state, action) => {
         state.status = 'idle';
         state.userData.id = action.payload._id;
-        state.userData.name = action.payload.name;
         state.userData.login = action.payload.login;
+        state.userData.name = action.payload.name;
       })
-      .addCase(getUserData.rejected, (state) => {
-        state.status = 'failed';
-        localStorage.removeItem('token');
-        state.userData.id = '';
-      });
-=======
-        localStorage.setItem('token', action.payload.token);
-        const decoded: JwtData = jwt_decode(action.payload.token);
-        state.userData.login = decoded.login;
-        state.userData._id = decoded.id;
-      })
-      .addCase(getUserData.fulfilled, (state, action) => {
-        state.status = 'idle';
-        state.userData = action.payload;
-      })
-      .addCase(authSignIn.rejected, setError)
-      .addCase(authSignUp.rejected, setError);
->>>>>>> Stashed changes
+      .addCase(authSignIn.rejected, setError);
   },
 });
 
