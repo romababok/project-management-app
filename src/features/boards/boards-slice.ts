@@ -101,7 +101,7 @@ export const boardsSlice = createSlice({
       })
       .addCase(getAllBoards.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.boards = [...action.payload, initialState.boards];
+        state.boards = [...action.payload];
       })
       .addCase(getAllBoards.rejected, (state) => {
         state.status = 'failed';
