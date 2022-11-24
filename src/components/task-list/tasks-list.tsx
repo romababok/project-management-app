@@ -73,7 +73,6 @@ const TasksList: FC<TaskListProps> = ({ columnId }) => {
               className={styles.taskList}
               dataSource={sortedTasks}
               renderItem={(task, index) => {
-                console.log(snapshot);
                 return (
                   <Draggable draggableId={task._id} index={index} key={task._id}>
                     {(provided) => (

@@ -54,7 +54,7 @@ export const SelectedBoardPage: React.FC = () => {
 
   const onDragEnd = (result: DropResult) => {
     const { destination, source, draggableId } = result;
-    console.log(source.index, destination?.index);
+
     if (!destination) {
       return;
     }
@@ -67,83 +67,99 @@ export const SelectedBoardPage: React.FC = () => {
     if (!draggableTask) {
       return;
     }
-    const unDraggedTasks = tasks
+    const unDraggedTasksInSource = tasks
       .filter((task) => task.columnId === source.droppableId && task._id !== draggableId)
       .sort((a, b) => a.order - b.order);
 
-    const tasksToUpdate: Task[] = [{ ...draggableTask, order: destination.index }];
+    const tasksInDestination = tasks
+      .filter((task) => task.columnId === destination.droppableId)
+      .sort((a, b) => a.order - b.order);
 
-    if (source.index < destination.index) {
-      unDraggedTasks.forEach((task) => {
+    if (source.droppableId === destination.droppableId) {
+      const tasksToUpdate: Task[] = [{ ...draggableTask, order: destination.index }];
+
+      if (source.index < destination.index) {
+        unDraggedTasksInSource.forEach((task) => {
+          if (task.order < source.index) {
+            return;
+          }
+          if (task.order <= destination.index) {
+            tasksToUpdate.push({
+              ...task,
+              order: task.order - 1,
+            });
+          }
+        });
+      } else {
+        unDraggedTasksInSource.forEach((task) => {
+          if (task.order > source.index) {
+            return;
+          }
+          if (task.order >= destination.index) {
+            tasksToUpdate.push({
+              ...task,
+              order: task.order + 1,
+            });
+          }
+        });
+      }
+
+      const tasksToUpdateRequest: TaskSetRequest[] = tasksToUpdate.map((task) => {
+        const { _id, order, columnId } = task;
+        return {
+          _id: _id,
+          order: order,
+          columnId: columnId,
+        };
+      });
+
+      dispatch(taskSetUpdate(tasksToUpdateRequest));
+    }
+
+    if (source.droppableId !== destination.droppableId) {
+      const destinationTasksToUpdate: Task[] = [
+        { ...draggableTask, order: destination.index, columnId: destination.droppableId },
+      ];
+
+      const sourceTasksToUpdate: Task[] = [];
+
+      unDraggedTasksInSource.forEach((task) => {
         if (task.order < source.index) {
           return;
         }
-        if (task.order <= destination.index) {
-          tasksToUpdate.push({
+        if (task.order > source.index) {
+          sourceTasksToUpdate.push({
             ...task,
             order: task.order - 1,
           });
         }
       });
-    } else {
-      unDraggedTasks.forEach((task) => {
-        if (task.order > source.index) {
+
+      tasksInDestination.forEach((task) => {
+        if (task.order < destination.index) {
           return;
         }
         if (task.order >= destination.index) {
-          tasksToUpdate.push({
+          destinationTasksToUpdate.push({
             ...task,
             order: task.order + 1,
           });
         }
       });
+
+      const tasksToUpdate = [...destinationTasksToUpdate, ...sourceTasksToUpdate];
+
+      const tasksToUpdateRequest: TaskSetRequest[] = tasksToUpdate.map((task) => {
+        const { _id, order, columnId } = task;
+        return {
+          _id: _id,
+          order: order,
+          columnId: columnId,
+        };
+      });
+
+      dispatch(taskSetUpdate(tasksToUpdateRequest));
     }
-
-    const tasksToUpdateRequest: TaskSetRequest[] = tasksToUpdate.map((task) => {
-      const { _id, order, columnId } = task;
-      return {
-        _id: _id,
-        order: order,
-        columnId: columnId,
-      };
-    });
-
-    dispatch(taskSetUpdate(tasksToUpdateRequest));
-
-    // if (boardId && draggableTask && source.droppableId && destination.droppableId) {
-    //   if (destination.droppableId === source.droppableId) {
-    //     const draggedTask = {
-    //       boardId: boardId,
-    //       columnId: source.droppableId,
-    //       taskId: draggableId,
-    //       request: {
-    //         title: draggableTask.title,
-    //         order: destination.index,
-    //         description: draggableTask.description,
-    //         columnId: source.droppableId,
-    //         userId: 0,
-    //         users: [],
-    //       },
-    //     };
-    //     dispatch(tasksUpdate(draggedTask));
-    // }
-    // if (destination.droppableId !== source.droppableId) {
-    //   const draggedTask = {
-    //     boardId: boardId,
-    //     columnId: source.droppableId,
-    //     taskId: draggableId,
-    //     request: {
-    //       title: draggableTask.title,
-    //       order: destination.index,
-    //       description: draggableTask.description,
-    //       columnId: destination.droppableId,
-    //       userId: 0,
-    //       users: [],
-    //     },
-    //   };
-    //   dispatch(tasksUpdate(draggedTask));
-    // }
-    // }
   };
 
   return (
