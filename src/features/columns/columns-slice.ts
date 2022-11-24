@@ -1,10 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import {
   ColumnsRequest,
+  ColumnsSetRequest,
   createColumn,
   deleteColumn,
   getAllColumns,
   updateColumn,
+  updateColumnsSet,
 } from '../../api/сolumns';
 import { RootState } from '../../app/store';
 import { InitialStateColumns } from '../../Interfaces';
@@ -75,6 +77,20 @@ export const columnsGetAll = createAsyncThunk('columns/getAll', async (boardId: 
   }
 });
 
+export const columnsSetUpdate = createAsyncThunk(
+  'columns/updateSet',
+  async (request: ColumnsSetRequest[]) => {
+    try {
+      const response = await updateColumnsSet(request);
+      return response.data;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      }
+    }
+  }
+);
+
 const initialState: InitialStateColumns = {
   columns: [],
   status: 'idle',
@@ -122,10 +138,10 @@ const columnsSlice = createSlice({
       .addCase(columnsUpdate.fulfilled, (state, action) => {
         state.status = 'succeeded';
         if (action.payload) {
-          const updatedColumns = state.columns
-            .filter((column) => column._id === action.payload?._id)
-            .map((column) => (column = action.payload ?? column));
-          state.columns = updatedColumns;
+          const nonUpdatedColumns = state.columns.filter(
+            (column) => column._id !== action.payload?._id
+          );
+          state.columns = [...nonUpdatedColumns, action.payload];
         }
       })
       .addCase(columnsUpdate.pending, (state) => {
@@ -144,6 +160,21 @@ const columnsSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(columnsGetAll.rejected, (state) => {
+        state.status = 'failed';
+      })
+      .addCase(columnsSetUpdate.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        if (action.payload) {
+          const nonUpdatedColumns = state.columns.filter((column) => {
+            action.payload?.forEach((updatedColumn) => column._id !== updatedColumn._id);
+          });
+          state.columns = [...nonUpdatedColumns, ...action.payload];
+        }
+      })
+      .addCase(columnsSetUpdate.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(columnsSetUpdate.rejected, (state) => {
         state.status = 'failed';
       });
   },

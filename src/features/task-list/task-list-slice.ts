@@ -1,5 +1,14 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { createTask, deleteTask, getAllTasks, TaskRequest, updateTask } from '../../api/tasks';
+import {
+  createTask,
+  deleteTask,
+  getAllTasks,
+  Task,
+  TaskRequest,
+  TaskSetRequest,
+  updateTask,
+  updateTaskSet,
+} from '../../api/tasks';
 import { RootState } from '../../app/store';
 import { InitialStateTasks } from '../../Interfaces';
 
@@ -83,6 +92,20 @@ export const tasksGetAll = createAsyncThunk(
   }
 );
 
+export const taskSetUpdate = createAsyncThunk(
+  'tasks/updateSet',
+  async (request: TaskSetRequest[]) => {
+    try {
+      const response = await updateTaskSet(request);
+      return response.data;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      }
+    }
+  }
+);
+
 const tasksSlice = createSlice({
   name: 'tasks',
   initialState,
@@ -122,10 +145,8 @@ const tasksSlice = createSlice({
       .addCase(tasksUpdate.fulfilled, (state, action) => {
         state.status = 'succeeded';
         if (action.payload) {
-          const updatedTasks = state.taskList
-            .filter((task) => task._id === action.payload?._id)
-            .map((task) => (task = action.payload ?? task));
-          state.taskList = updatedTasks;
+          const nonUpdatedTasks = state.taskList.filter((task) => task._id !== action.payload?._id);
+          state.taskList = [...nonUpdatedTasks, action.payload];
         }
       })
       .addCase(tasksUpdate.pending, (state) => {
@@ -144,6 +165,26 @@ const tasksSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(tasksGetAll.rejected, (state) => {
+        state.status = 'failed';
+      })
+      .addCase(taskSetUpdate.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        if (action.payload) {
+          const nonUpdatedTasks: Task[] = [];
+          state.taskList.forEach((task) => {
+            const newTask = action.payload?.find((updatedTask) => task._id === updatedTask._id);
+            if (!newTask) {
+              nonUpdatedTasks.push(task);
+            }
+          });
+          console.log(nonUpdatedTasks, action.payload, 123);
+          state.taskList = [...nonUpdatedTasks, ...action.payload];
+        }
+      })
+      .addCase(taskSetUpdate.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(taskSetUpdate.rejected, (state) => {
         state.status = 'failed';
       });
   },

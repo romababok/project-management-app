@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState, useMemo } from 'react';
 import { Content } from 'antd/lib/layout/layout';
 import { Button, Form, Input, List, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
@@ -18,6 +18,15 @@ const TasksList: FC<TaskListProps> = ({ columnId }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useAppDispatch();
   const tasks = useAppSelector(selectTasks);
+
+  const tasksPerColumn = useMemo(() => {
+    return tasks.filter((task) => task.columnId === columnId);
+  }, [tasks, columnId]);
+
+  const sortedTasks = useMemo(() => {
+    return tasksPerColumn.sort((a, b) => a.order - b.order);
+  }, [tasksPerColumn]);
+
   const [form] = Form.useForm<{ title: string }>();
   const taskTitle = Form.useWatch('title', form);
   const taskDesc = Form.useWatch('description', form);
@@ -41,7 +50,7 @@ const TasksList: FC<TaskListProps> = ({ columnId }) => {
           columnId: columnId,
           request: {
             title: taskTitle || 'New Task',
-            order: 1,
+            order: tasksPerColumn.length,
             description: taskDesc || 'Description',
             userId: 0,
             users: [],
@@ -55,40 +64,36 @@ const TasksList: FC<TaskListProps> = ({ columnId }) => {
     setIsModalOpen(false);
   };
 
-  // const getItems = (count: number) =>
-  //   Array.from({ length: count }, (v, k) => k).map((k) => ({
-  //     id: `item-${k}`,
-  //     content: `item ${k}`,
-  //   }));
-
-  // const items = getItems(10);
-
   return (
     <Content className={styles.taskContent}>
       <Droppable droppableId={columnId}>
-        {(provided) => (
+        {(provided, snapshot) => (
           <div ref={provided.innerRef} {...provided.droppableProps}>
             <List
               className={styles.taskList}
-              dataSource={tasks.filter((task) => task.columnId === columnId)}
-              renderItem={(task, index) => (
-                <Draggable draggableId={task._id} index={index}>
-                  {(provided1) => (
-                    <List.Item
-                      {...provided1.draggableProps}
-                      {...provided1.dragHandleProps}
-                      ref={provided1.innerRef}
-                    >
-                      <Task
-                        title={task.title}
-                        desc={task.description}
-                        columnId={columnId}
-                        taskId={task._id}
-                      />
-                    </List.Item>
-                  )}
-                </Draggable>
-              )}
+              dataSource={sortedTasks}
+              renderItem={(task, index) => {
+                console.log(snapshot);
+                return (
+                  <Draggable draggableId={task._id} index={index} key={task._id}>
+                    {(provided) => (
+                      <List.Item
+                        //TODO: add snapshot.isDragginOver
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        ref={provided.innerRef}
+                      >
+                        <Task
+                          title={task.title}
+                          desc={task.description}
+                          columnId={columnId}
+                          taskId={task._id}
+                        />
+                      </List.Item>
+                    )}
+                  </Draggable>
+                );
+              }}
             ></List>
             {provided.placeholder}
           </div>
