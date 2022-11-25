@@ -28,7 +28,7 @@ export const BoardsListPage: React.FC = () => {
     dispatch(getAllBoards());
   }, [dispatch]);
 
-  const onFinish = async (values: FormFields) => {
+  const onFinish = (values: FormFields) => {
     dispatch(createBoard({ ...values }));
     setIsModalOpen(false);
     form.resetFields();
@@ -39,8 +39,8 @@ export const BoardsListPage: React.FC = () => {
   }
   const handleDeleteOk = async (boardId: string) => {
     if (boardId) {
-      dispatch(deleteBoard(boardId));
-      await dispatch(getAllBoards());
+      await dispatch(deleteBoard(boardId));
+      dispatch(getAllBoards());
     }
   };
 
