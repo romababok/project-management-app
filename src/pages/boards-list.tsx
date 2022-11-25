@@ -8,7 +8,7 @@ import { Card, Form, Input, List, Modal } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
-import { PageLoadingIndicator } from '../components';
+import { PageLoadingIndicator } from '../components/page-loading';
 
 interface FormFields {
   title: string;

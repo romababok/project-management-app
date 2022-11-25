@@ -3,7 +3,7 @@ import { RootState } from '../../app/store';
 import { signIn, signUp, SignUpRequest } from '../../api';
 import jwt_decode from 'jwt-decode';
 import axios from 'axios';
-import { getUserByIdAPI } from '../../api/users';
+import { deleteUserById, getUserByIdAPI, updateUserDataAPI, User } from '../../api/users';
 import { notification } from 'antd';
 
 export interface AuthState {
@@ -66,6 +66,40 @@ export const authSignIn = createAsyncThunk('auth/signIn', async (request: SignUp
   }
 });
 
+export const updateUser = createAsyncThunk(
+  'user/updateUser',
+  async ({ userId, request }: { userId: string; request: User }) => {
+    try {
+      const response = await updateUserDataAPI(userId, request);
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        notification.error({
+          message: 'Request failed with code ' + error.response?.status,
+          description:
+            error.response?.status === 409 ? 'This login already exist' : 'Something went wrong',
+        });
+        throw new Error(error.message);
+      }
+    }
+  }
+);
+
+export const deleteUser = createAsyncThunk('user/deleteUser', async (userId: string) => {
+  try {
+    const response = await deleteUserById(userId);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      notification.error({
+        message: 'Request failed with code ' + error.response?.status,
+        description: error.response?.data.message,
+      });
+      throw new Error(error.message);
+    }
+  }
+});
+
 const setError = (state: AuthState) => {
   state.status = 'failed';
 };
@@ -114,7 +148,44 @@ export const authSlice = createSlice({
         state.userData.login = action.payload.login;
         state.userData.name = action.payload.name;
       })
-      .addCase(authSignIn.rejected, setError);
+      .addCase(authSignIn.rejected, setError)
+      .addCase(updateUser.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        state.status = 'idle';
+        state.userData.id = action.payload._id;
+        state.userData.login = action.payload.login;
+        state.userData.name = action.payload.name;
+        notification.success({
+          message: 'All changes successfully saved!',
+        });
+      })
+      .addCase(updateUser.rejected, (state) => {
+        state.status = 'failed';
+        notification.error({
+          message: 'Bad request!',
+        });
+      })
+      .addCase(deleteUser.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(deleteUser.fulfilled, (state) => {
+        state.userData.id = '';
+        state.userData.login = '';
+        state.userData.name = '';
+        state.userData.token = null;
+        localStorage.removeItem('token');
+        state.status = 'idle';
+        notification.success({
+          message: 'Your account has been deleted',
+          description:
+            'We are very sorry that you left our application...We will be glad see you again!',
+        });
+      })
+      .addCase(deleteUser.rejected, (state) => {
+        state.status = 'failed';
+      });
   },
 });
 

@@ -91,7 +91,7 @@ export const HeaderOfApp: React.FC = () => {
               <Link to="/boards" onClick={onClose} className={styles.drawer__link}>
                 <PushpinOutlined className={styles.link__icon} /> {t('Header board link')}
               </Link>
-              <Link to="/boards" onClick={onClose} className={styles.drawer__link}>
+              <Link to="/profile" onClick={onClose} className={styles.drawer__link}>
                 <ToolOutlined className={styles.link__icon} /> {t('Header edit profile link')}
               </Link>
               <Link to="/welcome" onClick={onClose} className={styles.drawer__link}>
