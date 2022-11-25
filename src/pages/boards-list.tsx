@@ -30,9 +30,8 @@ export const BoardsListPage: React.FC = () => {
 
   const onFinish = async (values: FormFields) => {
     dispatch(createBoard({ ...values }));
-    console.log(boards);
-
     setIsModalOpen(false);
+    form.resetFields();
   };
 
   if (isLoading) {
@@ -40,10 +39,11 @@ export const BoardsListPage: React.FC = () => {
   }
   const handleDeleteOk = async (boardId: string) => {
     if (boardId) {
-      await dispatch(deleteBoard(boardId));
+      dispatch(deleteBoard(boardId));
       await dispatch(getAllBoards());
     }
   };
+
   return (
     <Content style={{ padding: '0 50px', minHeight: '70vh', marginTop: '2rem' }}>
       <PageHeader
