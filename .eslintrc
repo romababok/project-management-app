@@ -1,5 +1,6 @@
 {
   "parser": "@typescript-eslint/parser",
+
   "extends": [
     "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
@@ -38,7 +39,8 @@
     "@typescript-eslint/no-explicit-any": "error",
     "@typescript-eslint/no-var-reqiures": "off",
     "react/jsx-uses-react": "off",
-    "react/react-in-jsx-scope": "off"
+    "react/react-in-jsx-scope": "off",
+    "no-console": "warn"
   },
   "settings": {
     "react": {

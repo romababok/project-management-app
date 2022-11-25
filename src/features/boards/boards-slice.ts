@@ -1,13 +1,13 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import {
   createBoardAPI,
   CreateBoardRequest,
   getBoardByIdAPI,
   getAllBoardsAPI,
-} from "../../api";
-import axios from "axios";
-import { notification } from "antd";
-import { RootState } from "../../app/store";
+  deleteBoardAPI,
+} from '../../api';
+import axios from 'axios';
+import { notification } from 'antd';
 
 export interface Board {
   _id: string;
@@ -23,7 +23,7 @@ export interface BoardsState {
 }
 
 const initialState: BoardsState = {
-  boards: [{ title: '', users: [], owner: '', _id: '' }],
+  boards: [],
   currentBoard: null,
   status: 'idle',
 };
@@ -73,18 +73,35 @@ export const getBoardById = createAsyncThunk('boards/getBoardById', async (board
   }
 });
 
+export const deleteBoard = createAsyncThunk('boards/deleteBoard', async (boardId: string) => {
+  try {
+    const response = await deleteBoardAPI(boardId);
+    return response.data;
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      notification.error({
+        message: 'Request failed with code ' + err.response?.status,
+        description: err.response?.data.message,
+      });
+    }
+  }
+});
+
 export const boardsSlice = createSlice({
   name: 'boards',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(deleteBoard.fulfilled, (state) => {
+        state.status = 'idle';
+      })
       .addCase(getAllBoards.pending, (state) => {
         state.status = 'loading';
       })
       .addCase(getAllBoards.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.boards = [...action.payload, initialState.boards];
+        state.boards = action.payload;
       })
       .addCase(getAllBoards.rejected, (state) => {
         state.status = 'failed';

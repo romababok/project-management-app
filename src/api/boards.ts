@@ -15,3 +15,6 @@ export const createBoardAPI = async (request: CreateBoardRequest) => {
 export const getBoardByIdAPI = async (boardId: string) => {
   return await axios.get(baseApiUrl + `/boards/${boardId}`);
 };
+export const deleteBoardAPI = async (boardId: string) => {
+  return await axios.delete(baseApiUrl + `/boards/${boardId}`);
+};

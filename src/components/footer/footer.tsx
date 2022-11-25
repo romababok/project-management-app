@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 
 const { Text, Link } = Typography;
 
-const FooterOfApp = () => {
+const FooterOfApp: React.FC = () => {
   const { t } = useTranslation();
   return (
     <div className={styles.footer__block}>

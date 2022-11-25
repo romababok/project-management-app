@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { Content } from 'antd/lib/layout/layout';
 import './task.styles.scss';
 import { Button, Popconfirm } from 'antd';
@@ -14,7 +14,7 @@ interface TaskProps {
   taskId: string;
 }
 
-const Task: FC<TaskProps> = ({ title, desc, columnId, taskId }) => {
+const Task: React.FC<TaskProps> = ({ title, desc, columnId, taskId }) => {
   const dispatch = useAppDispatch();
   const { boardId } = useParams();
 
