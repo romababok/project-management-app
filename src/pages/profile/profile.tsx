@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Content } from 'antd/lib/layout/layout';
 import styles from './profile.module.scss';
-import { Avatar, Button, Divider, Popconfirm, Skeleton, Space, Typography } from 'antd';
+import { Avatar, Button, Divider, Popconfirm, Skeleton, Typography } from 'antd';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { useForm } from 'antd/lib/form/Form';
 import { DeleteOutlined, EditOutlined, UserOutlined } from '@ant-design/icons';
@@ -47,12 +47,7 @@ export const ProfilePage: React.FC = () => {
         <Skeleton className={styles.skeleton} avatar paragraph={{ rows: 6 }} active />
       ) : (
         <div className={styles.profile__container}>
-          <Avatar
-            className={styles.profile__avatar}
-            style={{ backgroundColor: '#4096ff' }}
-            size={64}
-            icon={<UserOutlined />}
-          >
+          <Avatar className={styles.profile__avatar} size={64} icon={<UserOutlined />}>
             {userData?.name.slice(0, 1).toUpperCase()}
           </Avatar>
           <Divider />
@@ -78,34 +73,32 @@ export const ProfilePage: React.FC = () => {
               <Text className={styles.userid__text}>{userData.id && userData.id}</Text>
             </div>
           </div>
-          <div className="profile__button">
-            <Space size={15}>
+          <div className={styles.profile__buttons}>
+            <Button
+              icon={<EditOutlined />}
+              type="primary"
+              className={styles.edit__button}
+              onClick={showModal}
+            >
+              {t('Edit profile edit button')}
+            </Button>
+            <Popconfirm
+              placement="bottom"
+              title="Are you shure to delete acount?"
+              onConfirm={confirm}
+              okText="Yes"
+              cancelText="No"
+            >
               <Button
-                icon={<EditOutlined />}
+                icon={<DeleteOutlined />}
                 type="primary"
-                className={styles.edit__button}
-                onClick={showModal}
+                danger
+                ghost
+                className={styles.delete__button}
               >
-                {t('Edit profile edit button')}
+                {t('Edit profile delete account button')}
               </Button>
-              <Popconfirm
-                placement="bottom"
-                title="Are you shure to delete acount?"
-                onConfirm={confirm}
-                okText="Yes"
-                cancelText="No"
-              >
-                <Button
-                  icon={<DeleteOutlined />}
-                  type="primary"
-                  danger
-                  ghost
-                  className={styles.delete__button}
-                >
-                  {t('Edit profile delete account button')}
-                </Button>
-              </Popconfirm>
-            </Space>
+            </Popconfirm>
           </div>
         </div>
       )}

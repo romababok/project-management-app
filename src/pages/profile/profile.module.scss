@@ -1,4 +1,4 @@
-$profile-color: #69b2ffab;
+$profile-color: #bedaf8de;
 
 .profile__page {
     display: flex;
@@ -28,9 +28,6 @@ $profile-color: #69b2ffab;
 @media (max-width: 768px) {
     .profile__page{
         background-size: 450px 250px;
-        .skeleton {
-            width: 90%;
-        }
     }
 }
 @media (max-width: 450px) {
@@ -38,7 +35,7 @@ $profile-color: #69b2ffab;
         background-size: 300px 180px;
     }
 }
-@media (max-width: 350px) {
+@media (max-width: 400px) {
     .profile__page{
         background-image: none;
     }
@@ -51,6 +48,9 @@ $profile-color: #69b2ffab;
     width: 30rem;
     border-radius: 20px;
     box-shadow: 0px 0px 5px black;
+    .profile__avatar {
+        background-color: #4096ff;
+    }
 }
 @media (max-width: 600px) {
     .profile__container{
@@ -81,11 +81,23 @@ $profile-color: #69b2ffab;
     flex-direction: row;
     gap: 1rem;
 }
-@media (max-width: 430px) {
+@media (max-width: 500px) {
     .userid__block{
         flex-direction: column;
         align-items: start;
         justify-content: start;
+    }
+}
+.profile__buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+@media (max-width: 400px) {
+    .profile__buttons{
+        flex-direction: column;
     }
 }
 .edit__window{
