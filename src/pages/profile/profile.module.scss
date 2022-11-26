@@ -1,0 +1,111 @@
+$profile-color: #bedaf8de;
+
+.profile__page {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    min-height: 70vh;
+    background-color: #fff;
+    background-image: url(../../assets/images/solving-problem.jpg);
+    background-size: 600px 350px;
+    background-position: left bottom;
+    background-repeat: no-repeat;
+    .skeleton {
+        margin-top: 5rem;
+        width: 600px;
+    }
+}
+@media (max-width: 850px) {
+    .profile__page{
+        background-size: 550px 300px;
+        .skeleton {
+            width: 90%;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .profile__page{
+        background-size: 450px 250px;
+    }
+}
+@media (max-width: 450px) {
+    .profile__page{
+        background-size: 300px 180px;
+    }
+}
+@media (max-width: 400px) {
+    .profile__page{
+        background-image: none;
+    }
+}
+
+.profile__container {
+    margin: 3rem 0 6rem 0;
+    padding: 2rem 2rem;
+    background-color: $profile-color;
+    width: 30rem;
+    border-radius: 20px;
+    box-shadow: 0px 0px 5px black;
+    .profile__avatar {
+        background-color: #4096ff;
+    }
+}
+@media (max-width: 600px) {
+    .profile__container{
+        width: 90%;
+    }
+}
+.profile__window {
+    margin-top: 2rem;
+    margin-bottom: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.name__title,
+.login__title,
+.userid__title {
+    font-size: 18px;
+}
+.name__text,
+.login__text,
+.userid__text {
+    font-size: 18px;
+}
+.name__block,
+.login__block,
+.userid__block {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+@media (max-width: 500px) {
+    .userid__block{
+        flex-direction: column;
+        align-items: start;
+        justify-content: start;
+    }
+}
+.profile__buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+@media (max-width: 400px) {
+    .profile__buttons{
+        flex-direction: column;
+    }
+}
+.edit__window{
+    text-align: center;
+    .window__form {
+        margin: 2rem 0rem;
+        .submit__button{
+            margin-top: 1rem;
+        }
+    }
+}

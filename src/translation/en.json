@@ -32,5 +32,20 @@
   "Video title": "Video instruction",
   "Footer the first name": "Olga",
   "Footer the second name": "Roman",
-  "Footer the third name": "Aleksandra"
+  "Footer the third name": "Aleksandra",
+  "Edit profile name" : "Name:",
+  "Edit profile login": "Login:",
+  "Edit profile userId": "User id:",
+  "Edit profile password": "Password:",
+  "Edit profile edit button": "Edit",
+  "Edit profile modal window": "Change you profile",
+  "Edit profile delete account button": "Delete account",
+  "Edit profile submit button": "Submit",
+  "Edit profile popconfirm": "Are you shure to delete acount?",
+  "Edit profile successful message after user update": "All changes successfully saved!",
+  "Edit profile update user failed message": "Request failed with code",
+  "Edit profile update user failed description 409": "This login already exist",
+  "Edit profile update user failed description": "Something went wrong",
+  "Edit profile successful message after delete user": "Your account has been deleted",
+  "Edit profile successful description after delete user": "We are very sorry that you left our application...We will be glad see you again!"
 }
