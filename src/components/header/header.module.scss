@@ -2,7 +2,9 @@ $text-color: black;
 $link-hoverColor: #69c0ff;
 $switcher-color: #1890ff;
 
-.header {
+.header,
+.sticky__header,
+.sticky__white {
   .logo__link{
     float: left;
     .main__logo {
@@ -24,33 +26,60 @@ $switcher-color: #1890ff;
     height: 41px;
     display: none;
     .menu__icon {
-      font-size: 24px;
+      font-size: 18px;
     }
   }
-  .header__menu{
+  .header__menu,
+  .header__menu_light{
     font-size: 18px;
   }
 }
+  .sticky__header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+  .sticky__white{
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    animation-name: changeColor !important;
+    animation-duration: 1.5s;
+    box-shadow: 0px 0px 5px 3px #00152986;
+  }
 
-@media (max-width: 768px) {
-  .header{
+
+@media (max-width: 900px) {
+  .header,
+  .sticky__header,
+  .sticky__white{
     .menu__btn{
       display: block;
       position: absolute;
       margin-top: 10px;
       right: 20px;
     }
-    .header__menu{
+    .header__menu,
+    .header__menu_light{
       display: none;
     }
   }
 }
-.header__menu{
-  .menu__login{
+.header__menu_light {
+  animation-name: changeColor !important;
+  animation-duration: 1.5s; 
+}
+@keyframes changeColor {
+    0%   {background-color: #001529de;}
+    100% {background-color: #9fbbd6e4 !important;}
+}
+.header__menu,
+.header__menu_light{
+  .menu__login,
+  .menu__main{
     margin-left: auto;
   }
   .menu__user{
-    margin-left: auto;
     .menu__userIcon{
       font-size: 20px;
     }
@@ -70,6 +99,7 @@ $switcher-color: #1890ff;
   align-items: flex-start;
   justify-content: center;
   margin-left: 3rem;
+  gap: 1rem;
 
 }
 .drawer__link {
@@ -89,24 +119,30 @@ $switcher-color: #1890ff;
   top: 0;
   right: 300px;
 }
-@media (max-width: 768px) {
-  .language__block{
-    right: 100px;
-  }
-}
 .language__blockToken{
   position: absolute;
   top: 0;
-  right: 130px;
+  right: 420px;
+}
+@media (max-width: 900px) {
+  .language__block{
+    right: 100px;
+  }
+  .language__blockToken{
+    right: 100px;
+  }
 }
 .language__block,
 .language__blockToken{
   .language{
+    font-size: 18px;
+  }
+  .language_light{
     color: rgba(255, 255, 255, 0.7);
     font-size: 18px;
   }
   .language__switcher {
     background-color: $switcher-color;
-    border: 0.5px solid yellow;
+    border: 0.1px solid white;
   }
 }
