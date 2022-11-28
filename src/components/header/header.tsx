@@ -51,12 +51,25 @@ export const HeaderOfApp: React.FC = () => {
   const token = localStorage.getItem('token');
   const dispatch = useAppDispatch();
   const [theme, setTheme] = useState<MenuTheme>('dark');
+  const isLightThemeSelected = theme === 'light';
 
   const followScroll = () => {
     if (window.pageYOffset > 70) {
       setTheme('light');
     } else {
       setTheme('dark');
+    }
+  };
+
+  const checkHeaderStyle = () => {
+    if (userId) {
+      if (isLightThemeSelected) {
+        return styles.sticky__white;
+      } else {
+        return styles.sticky__header;
+      }
+    } else {
+      return styles.header;
     }
   };
 
@@ -131,10 +144,8 @@ export const HeaderOfApp: React.FC = () => {
 
   return (
     <Header
-      className={
-        userId ? (theme === 'light' ? styles.sticky__white : styles.sticky__header) : styles.header
-      }
-      style={{ backgroundColor: theme === 'light' ? 'white' : '#001529' }}
+      className={checkHeaderStyle()}
+      style={{ backgroundColor: isLightThemeSelected ? 'white' : '#001529' }}
     >
       <Link className={styles.logo__link} to="/">
         <div className={styles.main__logo} />
@@ -191,20 +202,20 @@ export const HeaderOfApp: React.FC = () => {
 
       <Menu
         theme={theme}
-        className={theme === 'light' ? styles.header__menu_light : styles.header__menu}
+        className={isLightThemeSelected ? styles.header__menu_light : styles.header__menu}
         mode="horizontal"
         selectedKeys={[location.pathname]}
         items={userId ? itemsWithId : itemsWithoutId}
       />
       <div className={userId ? styles.language__blockToken : styles.language__block}>
         <Space>
-          <Text className={theme === 'dark' ? styles.language_light : styles.language}>En</Text>
+          <Text className={isLightThemeSelected ? styles.language : styles.language_light}>En</Text>
           <Switch
             className={styles.language__switcher}
             defaultChecked={lang !== 'en'}
             onChange={onChange}
           />
-          <Text className={theme === 'dark' ? styles.language_light : styles.language}>Ru</Text>
+          <Text className={isLightThemeSelected ? styles.language : styles.language_light}>Ru</Text>
         </Space>
       </div>
     </Header>
