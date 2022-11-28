@@ -10,6 +10,7 @@ import {
   CommentOutlined,
   DollarCircleOutlined,
 } from '@ant-design/icons';
+import { PageLoadingIndicator } from '../../components';
 const VideoPlayer = React.lazy(() => import('../../components/video/video-player'));
 
 const { Paragraph, Title, Text } = Typography;
@@ -194,7 +195,7 @@ export const WelcomePage: React.FC = () => {
           <Title level={2} className={styles.section__title}>
             {t('Video title')}
           </Title>
-          <Suspense fallback={<Spin size="large" />}>
+          <Suspense fallback={<PageLoadingIndicator />}>
             <VideoPlayer />
           </Suspense>
         </section>
