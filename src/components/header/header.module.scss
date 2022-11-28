@@ -81,7 +81,9 @@ $switcher-color: #1890ff;
   }
   .menu__user{
     .menu__userIcon{
-      font-size: 20px;
+      color: white;
+      background-color: #5d1cba;
+      font-size: 16px;
     }
     .user__profile{
       margin-left: auto;
@@ -113,6 +115,11 @@ $switcher-color: #1890ff;
     font-size: 1rem;
     margin-right: 0.5rem;
   }
+}
+.language__block,
+.language__blockToken{
+    font-weight: 700;
+    font-size: 18px;
 }
 .language__block{
   position: absolute;

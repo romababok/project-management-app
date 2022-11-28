@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Header } from 'antd/lib/layout/layout';
-import { Menu, Button, Drawer, MenuProps, MenuTheme, Select } from 'antd';
+import { Menu, Button, Drawer, MenuProps, MenuTheme, Select, Avatar } from 'antd';
 import i18n from '../../translation/i18n';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
@@ -14,7 +14,6 @@ import {
   PlusOutlined,
   PushpinOutlined,
   ToolOutlined,
-  UserOutlined,
 } from '@ant-design/icons';
 import styles from './header.module.scss';
 import { getUserData, logOut } from '../../features/auth/auth-slice';
@@ -42,6 +41,7 @@ function getItem(
 export const HeaderOfApp: React.FC = () => {
   const location = useLocation();
   const userId = useAppSelector((state) => state.auth.userData?.id);
+  const name = useAppSelector((state) => state.auth.userData?.name);
   const langFromStorage = localStorage.getItem('lang');
 
   const [open, setOpen] = useState<boolean>(false);
@@ -59,7 +59,10 @@ export const HeaderOfApp: React.FC = () => {
       setTheme('dark');
     }
   };
-
+  const getLogout = () => {
+    dispatch(logOut());
+    onClose();
+  };
   const checkHeaderStyle = () => {
     if (userId) {
       if (isLightThemeSelected) {
@@ -122,22 +125,28 @@ export const HeaderOfApp: React.FC = () => {
     getItem(<Link to="/">{t('Header welcome link')}</Link>, '/'),
     getItem(<Link to="">{t('Header create new board')}</Link>, '', styles.menu__main),
     getItem(<Link to="/boards">{t('Header go to main page')}</Link>, '/boards'),
-    getItem('', 'user', styles.menu__user, <UserOutlined className={styles.menu__userIcon} />, [
-      getItem(
-        <Link to="/profile" className={styles.user__profile}>
-          {t('Header edit profile link')}
-        </Link>,
-        '/profile',
-        styles.user__profile
-      ),
-      getItem(
-        <Link onClick={() => dispatch(logOut())} className={styles.user__profile} to="/">
-          {t('Header logout link')}
-        </Link>,
-        '/logout',
-        styles.user__profile
-      ),
-    ]),
+    getItem(
+      <Avatar className={styles.menu__userIcon}>{name.slice(0, 1).toUpperCase()}</Avatar>,
+      'user',
+      styles.menu__user,
+      '',
+      [
+        getItem(
+          <Link to="/profile" className={styles.user__profile}>
+            {t('Header edit profile link')}
+          </Link>,
+          '/profile',
+          styles.user__profile
+        ),
+        getItem(
+          <Link onClick={() => dispatch(logOut())} className={styles.user__profile} to="/">
+            {t('Header logout link')}
+          </Link>,
+          '/logout',
+          styles.user__profile
+        ),
+      ]
+    ),
   ];
 
   return (
@@ -182,14 +191,7 @@ export const HeaderOfApp: React.FC = () => {
               <Link to="/profile" onClick={onClose} className={styles.drawer__link}>
                 <ToolOutlined className={styles.link__icon} /> {t('Header edit profile link')}
               </Link>
-              <Link
-                to="/"
-                onClick={() => {
-                  dispatch(logOut());
-                  onClose();
-                }}
-                className={styles.drawer__link}
-              >
+              <Link to="/" onClick={() => getLogout()} className={styles.drawer__link}>
                 <LogoutOutlined className={styles.link__icon} />
                 {t('Header logout link')}
               </Link>
@@ -214,14 +216,18 @@ export const HeaderOfApp: React.FC = () => {
           {
             value: 'en',
             label: 'EN',
+            className: styles.select__option,
+            style: { fontWeight: '700', fontSize: '16px' },
           },
           {
             value: 'ru',
             label: 'RU',
+            style: { fontWeight: '700', fontSize: '16px' },
           },
           {
             value: 'by',
             label: 'BY',
+            style: { fontWeight: '700', fontSize: '16px' },
           },
         ]}
       />
