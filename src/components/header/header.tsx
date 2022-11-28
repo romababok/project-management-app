@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Header } from 'antd/lib/layout/layout';
-import { Menu, Button, Drawer, Switch, Typography, Space, MenuProps, MenuTheme } from 'antd';
+import { Menu, Button, Drawer, MenuProps, MenuTheme, Select } from 'antd';
 import i18n from '../../translation/i18n';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
@@ -19,7 +19,6 @@ import {
 import styles from './header.module.scss';
 import { getUserData, logOut } from '../../features/auth/auth-slice';
 
-const { Text } = Typography;
 type MenuItem = Required<MenuProps>['items'][number];
 
 function getItem(
@@ -46,7 +45,7 @@ export const HeaderOfApp: React.FC = () => {
   const langFromStorage = localStorage.getItem('lang');
 
   const [open, setOpen] = useState<boolean>(false);
-  const [lang, setLang] = useState<string>(langFromStorage ?? 'en');
+  const [lang, setLang] = useState<string>(langFromStorage ?? 'English');
 
   const token = localStorage.getItem('token');
   const dispatch = useAppDispatch();
@@ -97,6 +96,9 @@ export const HeaderOfApp: React.FC = () => {
       });
     };
   }, [userId]);
+  useEffect(() => {
+    document.addEventListener('touchstart', () => {}, { passive: true });
+  }, []);
 
   const showDrawer = () => {
     setOpen(true);
@@ -105,12 +107,8 @@ export const HeaderOfApp: React.FC = () => {
   const onClose = () => {
     setOpen(false);
   };
-  const onChange = (checked: boolean) => {
-    if (!checked) {
-      setLang('en');
-    } else {
-      setLang('ru');
-    }
+  const handleChange = (value: string) => {
+    setLang(value);
   };
   const { t } = useTranslation();
 
@@ -207,17 +205,26 @@ export const HeaderOfApp: React.FC = () => {
         selectedKeys={[location.pathname]}
         items={userId ? itemsWithId : itemsWithoutId}
       />
-      <div className={userId ? styles.language__blockToken : styles.language__block}>
-        <Space>
-          <Text className={isLightThemeSelected ? styles.language : styles.language_light}>En</Text>
-          <Switch
-            className={styles.language__switcher}
-            defaultChecked={lang !== 'en'}
-            onChange={onChange}
-          />
-          <Text className={isLightThemeSelected ? styles.language : styles.language_light}>Ru</Text>
-        </Space>
-      </div>
+      <Select
+        defaultValue={lang}
+        style={{ width: 70 }}
+        className={userId ? styles.language__blockToken : styles.language__block}
+        onChange={handleChange}
+        options={[
+          {
+            value: 'en',
+            label: 'EN',
+          },
+          {
+            value: 'ru',
+            label: 'RU',
+          },
+          {
+            value: 'by',
+            label: 'BY',
+          },
+        ]}
+      />
     </Header>
   );
 };

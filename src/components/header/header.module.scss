@@ -116,13 +116,13 @@ $switcher-color: #1890ff;
 }
 .language__block{
   position: absolute;
-  top: 0;
-  right: 300px;
+  top: 17px;
+  right: 350px;
 }
 .language__blockToken{
   position: absolute;
-  top: 0;
-  right: 420px;
+  top: 17px;
+  right: 500px;
 }
 @media (max-width: 900px) {
   .language__block{
@@ -130,19 +130,5 @@ $switcher-color: #1890ff;
   }
   .language__blockToken{
     right: 100px;
-  }
-}
-.language__block,
-.language__blockToken{
-  .language{
-    font-size: 18px;
-  }
-  .language_light{
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 18px;
-  }
-  .language__switcher {
-    background-color: $switcher-color;
-    border: 0.1px solid white;
   }
 }
