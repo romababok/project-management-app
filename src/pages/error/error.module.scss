@@ -19,26 +19,10 @@ $error-button-color: rgb(102, 198, 243);
     background-size: cover;
     background-repeat: no-repeat;
     .back__button {
-        width: 15rem;
+        padding: 0 1rem ;
         height: 3rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: $error-button-color;
-        border: 1px solid $error-button-color;
-        cursor: pointer;
-        &:hover{
-            background-color: rgb(102, 178, 243);
-            color: $error-button-color; 
-            transition: all 0.4s;
-            box-shadow: 0px 0px 5px $error-button-color;
-            transform: translateY(2px);
-        }
-        .back__link {
-            color: white;
-            font-weight: 700;
-            font-size: 18px;
-        }
+        font-size: 18px;
+        font-weight: 700;
     }
 }
 @media (max-width: 500px) {

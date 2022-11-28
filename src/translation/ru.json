@@ -47,4 +47,7 @@
     "Edit profile update user failed description 409": "Такой логин уже существует",
     "Edit profile successful message after delete user": "Ваш аккаунт был удален",
     "Edit profile successful description after delete user": "Нам очень жаль что вы покинули наше приложение. Мы будем рады вас видеть снова!",
+    "Error page title": "Упс.... Такой ссылки не существует",
+    "Error page text": "Проверьте пожалуйста данную ссылку и возвращайтесь в наше приложение ;)",
+    "Error page button": "Hа страницу приветствия"
 }

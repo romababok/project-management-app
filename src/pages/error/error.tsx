@@ -1,6 +1,6 @@
 import React from 'react';
 import { Content } from 'antd/lib/layout/layout';
-import { Typography } from 'antd';
+import { Button, Typography } from 'antd';
 import styles from './error.module.scss';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -15,11 +15,11 @@ export const ErrorPage: React.FC = () => {
         <Title>{t('Error page title')}</Title>
         <Paragraph className={styles.error__text}>{t('Error page text')}</Paragraph>
         <div className={styles.error__image}>
-          <div className={styles.back__button}>
-            <Link to="/" className={styles.back__link}>
+          <Link to="/" className={styles.back__link}>
+            <Button type="primary" className={styles.back__button}>
               {t('Error page button')}
-            </Link>
-          </div>
+            </Button>
+          </Link>
         </div>
       </div>
     </Content>
