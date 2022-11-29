@@ -27,8 +27,8 @@ export const WelcomePage: React.FC = () => {
           <Row justify="start" className={styles.welcome__row}>
             <Col
               xxl={{ span: 28, offset: 4 }}
-              xl={{ span: 10, offset: 1 }}
-              lg={{ span: 12, offset: 0 }}
+              xl={{ span: 12, offset: 1 }}
+              lg={{ span: 16, offset: 0 }}
               md={{ span: 24, offset: 0 }}
               xs={{ span: 24, offset: 0 }}
               className={styles.welcome__col}
