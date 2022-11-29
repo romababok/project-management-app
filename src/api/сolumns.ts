@@ -13,6 +13,11 @@ export type Column = {
   boardId: string;
 };
 
+export interface ColumnsSetRequest {
+  _id: string;
+  order: number;
+}
+
 export const getAllColumns = async (boardId: string) =>
   await axios.get<Column[]>(baseApiUrl + `/boards/${boardId}/columns`);
 
@@ -24,3 +29,6 @@ export const updateColumn = async (boardId: string, columnId: string, request: C
 
 export const deleteColumn = async (boardId: string, columnId: string) =>
   await axios.delete<Column>(baseApiUrl + `/boards/${boardId}/columns/${columnId}`);
+
+export const updateColumnsSet = async (request: ColumnsSetRequest[]) =>
+  await axios.patch<Column[]>(baseApiUrl + '/columnsSet', request);

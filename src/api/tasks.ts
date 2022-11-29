@@ -1,15 +1,16 @@
 import axios from 'axios';
 import { baseApiUrl } from '.';
 
-export type TaskRequest = {
+export interface TaskRequest {
   title: string;
   order: number;
   description: string;
+  columnId?: string;
   userId: number;
   users: string[];
-};
+}
 
-export type Task = {
+export interface Task {
   _id: string;
   title: string;
   order: number;
@@ -18,7 +19,13 @@ export type Task = {
   description: string;
   userId: number;
   users: string[];
-};
+}
+
+export interface TaskSetRequest {
+  _id: string;
+  order: number;
+  columnId: string;
+}
 
 export const getAllTasks = async (boardId: string, columnId: string) =>
   await axios.get<Task[]>(baseApiUrl + `/boards/${boardId}/columns/${columnId}/tasks`);
@@ -42,3 +49,6 @@ export const deleteTask = async (boardId: string, columnId: string, taskId: stri
 
 export const getTask = async (boardId: string, columnId: string, taskId: string) =>
   await axios.get<Task>(baseApiUrl + `/boards/${boardId}/columns/${columnId}/tasks/${taskId}`);
+
+export const updateTaskSet = async (request: TaskSetRequest[]) =>
+  await axios.patch<Task[]>(baseApiUrl + '/tasksSet', request);

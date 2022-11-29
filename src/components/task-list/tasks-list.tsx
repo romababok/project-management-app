@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { Content } from 'antd/lib/layout/layout';
 import { Button, Form, Input, List, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { selectTasks, tasksCreate, tasksGetAll } from '../../features/task-list/task-list-slice';
 import { useParams } from 'react-router-dom';
 import styles from './task-list.module.scss';
+import { Draggable, Droppable } from 'react-beautiful-dnd';
 
 interface TaskListProps {
   columnId: string;
@@ -17,6 +18,15 @@ const TasksList: React.FC<TaskListProps> = ({ columnId }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useAppDispatch();
   const tasks = useAppSelector(selectTasks);
+
+  const tasksPerColumn = useMemo(() => {
+    return tasks.filter((task) => task.columnId === columnId);
+  }, [tasks, columnId]);
+
+  const sortedTasks = useMemo(() => {
+    return tasksPerColumn.sort((a, b) => a.order - b.order);
+  }, [tasksPerColumn]);
+
   const [form] = Form.useForm<{ title: string }>();
   const taskTitle = Form.useWatch('title', form);
   const taskDesc = Form.useWatch('description', form);
@@ -40,7 +50,7 @@ const TasksList: React.FC<TaskListProps> = ({ columnId }) => {
           columnId: columnId,
           request: {
             title: taskTitle || 'New Task',
-            order: 1,
+            order: tasksPerColumn.length,
             description: taskDesc || 'Description',
             userId: 0,
             users: [],
@@ -56,20 +66,38 @@ const TasksList: React.FC<TaskListProps> = ({ columnId }) => {
 
   return (
     <Content className={styles.taskContent}>
-      <List
-        className={styles.taskList}
-        dataSource={tasks.filter((task) => task.columnId === columnId)}
-        renderItem={(task) => (
-          <List.Item>
-            <Task
-              title={task.title}
-              desc={task.description}
-              columnId={columnId}
-              taskId={task._id}
-            />
-          </List.Item>
+      <Droppable droppableId={columnId}>
+        {(provided, snapshot) => (
+          <div ref={provided.innerRef} {...provided.droppableProps}>
+            <List
+              className={styles.taskList}
+              dataSource={sortedTasks}
+              renderItem={(task, index) => {
+                return (
+                  <Draggable draggableId={task._id} index={index} key={task._id}>
+                    {(provided) => (
+                      <List.Item
+                        //TODO: add snapshot.isDragginOver
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        ref={provided.innerRef}
+                      >
+                        <Task
+                          title={task.title}
+                          desc={task.description}
+                          columnId={columnId}
+                          taskId={task._id}
+                        />
+                      </List.Item>
+                    )}
+                  </Draggable>
+                );
+              }}
+            ></List>
+            {provided.placeholder}
+          </div>
         )}
-      ></List>
+      </Droppable>
       <Button icon={<PlusOutlined />} onClick={showModal}>
         Add Task
       </Button>
