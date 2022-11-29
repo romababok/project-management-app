@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Header } from 'antd/lib/layout/layout';
-import { Menu, Button, Drawer, Switch, Typography, Space } from 'antd';
+import { Menu, Button, Drawer, MenuTheme, Select, Avatar } from 'antd';
 import i18n from '../../translation/i18n';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
@@ -11,25 +11,66 @@ import {
   LogoutOutlined,
   MenuOutlined,
   PlusCircleOutlined,
+  PlusOutlined,
   PushpinOutlined,
   ToolOutlined,
-  UserOutlined,
 } from '@ant-design/icons';
 import styles from './header.module.scss';
 import { getUserData, logOut } from '../../features/auth/auth-slice';
 
-const { Text } = Typography;
+const languages = [
+  {
+    value: 'en',
+    label: 'EN',
+    className: styles.select__option,
+    style: { fontWeight: '700' },
+  },
+  {
+    value: 'ru',
+    label: 'RU',
+    style: { fontWeight: '700' },
+  },
+  {
+    value: 'by',
+    label: 'BY',
+    style: { fontWeight: '700' },
+  },
+];
 
 export const HeaderOfApp: React.FC = () => {
   const location = useLocation();
   const userId = useAppSelector((state) => state.auth.userData?.id);
+  const name = useAppSelector((state) => state.auth.userData?.name);
   const langFromStorage = localStorage.getItem('lang');
 
   const [open, setOpen] = useState<boolean>(false);
-  const [lang, setLang] = useState<string>(langFromStorage ?? 'en');
+  const [lang, setLang] = useState<string>(langFromStorage ?? 'English');
 
   const token = localStorage.getItem('token');
   const dispatch = useAppDispatch();
+  const [theme, setTheme] = useState<MenuTheme>('dark');
+  const isLightThemeSelected = theme === 'light';
+
+  const followScroll = () => {
+    if (window.pageYOffset > 70) {
+      setTheme('light');
+    } else {
+      setTheme('dark');
+    }
+  };
+  const getLogout = () => {
+    dispatch(logOut());
+    onClose();
+  };
+  const checkHeaderStyle = () => {
+    if (userId) {
+      if (isLightThemeSelected) {
+        return styles.sticky__white;
+      }
+      return styles.sticky__header;
+    }
+    return styles.header;
+  };
 
   useEffect(() => {
     if (token) {
@@ -42,6 +83,20 @@ export const HeaderOfApp: React.FC = () => {
     i18n.changeLanguage(lang);
   }, [lang]);
 
+  useEffect(() => {
+    if (userId) {
+      window.addEventListener('scroll', () => {
+        followScroll();
+      });
+    }
+
+    return () => {
+      window.removeEventListener('scroll', () => {
+        followScroll();
+      });
+    };
+  }, [userId]);
+
   const showDrawer = () => {
     setOpen(true);
   };
@@ -49,17 +104,61 @@ export const HeaderOfApp: React.FC = () => {
   const onClose = () => {
     setOpen(false);
   };
-  const onChange = (checked: boolean) => {
-    if (!checked) {
-      setLang('en');
-    } else {
-      setLang('ru');
-    }
+  const handleChange = (value: string) => {
+    setLang(value);
   };
   const { t } = useTranslation();
 
+  const itemsWithoutId = [
+    { label: <Link to="/">{t('Header welcome link')}</Link>, key: '/' },
+    {
+      label: <Link to="/login">{t('Header login link')}</Link>,
+      key: '/login',
+      className: styles.menu__login,
+    },
+    { label: <Link to="/registration">{t('Header sign up link')}</Link>, key: '/registration' },
+  ];
+
+  const itemsWithId = [
+    { label: <Link to="/">{t('Header welcome link')}</Link>, key: '/' },
+    {
+      label: <Link to="">{t('Header create new board')}</Link>,
+      key: '',
+      className: styles.menu__main,
+    },
+    { label: <Link to="/boards">{t('Header go to main page')}</Link>, key: '/boards' },
+    {
+      label: <Avatar className={styles.menu__userIcon}>{name.slice(0, 1).toUpperCase()}</Avatar>,
+      key: 'user',
+      className: styles.menu__user,
+      children: [
+        {
+          label: (
+            <Link to="/profile" className={styles.user__profile}>
+              {t('Header edit profile link')}
+            </Link>
+          ),
+          key: '/profile',
+          className: styles.user__profile,
+        },
+        {
+          label: (
+            <Link onClick={() => dispatch(logOut())} className={styles.user__profile} to="/">
+              {t('Header logout link')}
+            </Link>
+          ),
+          key: '/logout',
+          className: styles.user__profile,
+        },
+      ],
+    },
+  ];
+
   return (
-    <Header className={styles.header}>
+    <Header
+      className={checkHeaderStyle()}
+      style={{ backgroundColor: isLightThemeSelected ? 'white' : '#001529' }}
+    >
       <Link className={styles.logo__link} to="/">
         <div className={styles.main__logo} />
       </Link>
@@ -67,7 +166,7 @@ export const HeaderOfApp: React.FC = () => {
         className={styles.menu__btn}
         type="primary"
         shape="circle"
-        icon={<MenuOutlined className={styles.menu__icon} style={{ fontSize: '18px' }} />}
+        icon={<MenuOutlined className={styles.menu__icon} />}
         onClick={showDrawer}
       ></Button>
       <Drawer width={'320px'} placement="right" onClose={onClose} open={open}>
@@ -88,13 +187,16 @@ export const HeaderOfApp: React.FC = () => {
             </>
           ) : (
             <>
+              <Link to="" onClick={onClose} className={styles.drawer__link}>
+                <PlusOutlined className={styles.link__icon} /> {t('Header create new board')}
+              </Link>
               <Link to="/boards" onClick={onClose} className={styles.drawer__link}>
-                <PushpinOutlined className={styles.link__icon} /> {t('Header board link')}
+                <PushpinOutlined className={styles.link__icon} /> {t('Header go to main page')}
               </Link>
               <Link to="/profile" onClick={onClose} className={styles.drawer__link}>
                 <ToolOutlined className={styles.link__icon} /> {t('Header edit profile link')}
               </Link>
-              <Link to="/welcome" onClick={onClose} className={styles.drawer__link}>
+              <Link to="/" onClick={() => getLogout()} className={styles.drawer__link}>
                 <LogoutOutlined className={styles.link__icon} />
                 {t('Header logout link')}
               </Link>
@@ -104,58 +206,18 @@ export const HeaderOfApp: React.FC = () => {
       </Drawer>
 
       <Menu
-        theme="dark"
-        className={styles.header__menu}
+        theme={theme}
+        className={isLightThemeSelected ? styles.header__menu_light : styles.header__menu}
         mode="horizontal"
         selectedKeys={[location.pathname]}
-      >
-        <Menu.Item key="/">
-          <Link to="/">{t('Header welcome link')}</Link>
-        </Menu.Item>
-        {userId && (
-          <Menu.Item key="/boards">
-            <Link to="/boards">{t('Header board link')}</Link>
-          </Menu.Item>
-        )}
-        {!userId ? (
-          <>
-            <Menu.Item className={styles.menu__login} key="/login">
-              <Link to="/login">{t('Header login link')}</Link>
-            </Menu.Item>
-            <Menu.Item key="/registration">
-              <Link to="/registration">{t('Header sign up link')}</Link>
-            </Menu.Item>
-          </>
-        ) : (
-          <Menu.SubMenu
-            key="/user"
-            title={<UserOutlined className={styles.menu__userIcon} />}
-            className={styles.menu__user}
-          >
-            <Menu.Item className={styles.user__profile} key="/profile">
-              <Link to="/profile">{t('Header edit profile link')}</Link>
-            </Menu.Item>
-            <Menu.Item
-              onClick={() => dispatch(logOut())}
-              key="/logout"
-              className={styles.user__profile}
-            >
-              {t('Header logout link')}
-            </Menu.Item>
-          </Menu.SubMenu>
-        )}
-      </Menu>
-      <div className={userId ? styles.language__blockToken : styles.language__block}>
-        <Space>
-          <Text className={styles.language}>En</Text>
-          <Switch
-            className={styles.language__switcher}
-            defaultChecked={lang !== 'en'}
-            onChange={onChange}
-          />
-          <Text className={styles.language}>Ru</Text>
-        </Space>
-      </div>
+        items={userId ? itemsWithId : itemsWithoutId}
+      />
+      <Select
+        defaultValue={lang}
+        className={userId ? styles.language__blockToken : styles.language__block}
+        onChange={handleChange}
+        options={languages}
+      />
     </Header>
   );
 };
