@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Content } from 'antd/lib/layout/layout';
-import { Col, Row, Typography, Divider, Button, Avatar } from 'antd';
+import { Col, Row, Typography, Divider, Button, Avatar, Spin } from 'antd';
 import { useTranslation } from 'react-i18next';
 import styles from './welcome-page.module.scss';
 import {
@@ -10,6 +10,8 @@ import {
   CommentOutlined,
   DollarCircleOutlined,
 } from '@ant-design/icons';
+import { PageLoadingIndicator } from '../../components';
+const VideoPlayer = React.lazy(() => import('../../components/video/video-player'));
 
 const { Paragraph, Title, Text } = Typography;
 
@@ -41,7 +43,11 @@ export const WelcomePage: React.FC = () => {
           <Title level={2} className={styles.section__title}>
             {t('Advantages title')}
           </Title>
-          <Row gutter={{ xs: 8, sm: 16, md: 24, xl: 32 }} justify="center">
+          <Row
+            gutter={{ xs: 8, sm: 16, md: 24, xl: 32 }}
+            className={styles.gutter}
+            justify="center"
+          >
             <Col className={styles.gutter__row}>
               <div className={styles.advantage__card}>
                 <CommentOutlined className={styles.advantage__icon} />
@@ -189,9 +195,9 @@ export const WelcomePage: React.FC = () => {
           <Title level={2} className={styles.section__title}>
             {t('Video title')}
           </Title>
-          <div className={styles.video__container}>
-            <div className={styles.player}></div>
-          </div>
+          <Suspense fallback={<PageLoadingIndicator />}>
+            <VideoPlayer />
+          </Suspense>
         </section>
       </Content>
     </div>

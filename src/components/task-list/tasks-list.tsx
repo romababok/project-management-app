@@ -1,4 +1,4 @@
-import { FC, useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { Content } from 'antd/lib/layout/layout';
 import { Button, Form, Input, List, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
@@ -13,7 +13,7 @@ interface TaskListProps {
   columnId: string;
 }
 
-const TasksList: FC<TaskListProps> = ({ columnId }) => {
+const TasksList: React.FC<TaskListProps> = ({ columnId }) => {
   const { boardId } = useParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useAppDispatch();

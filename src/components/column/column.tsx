@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { Button, Popconfirm } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { useAppDispatch } from '../../app/hooks';
@@ -13,7 +13,7 @@ interface ColumnProps {
   title: string;
 }
 
-const Column: FC<ColumnProps> = ({ columnId, title }) => {
+const Column: React.FC<ColumnProps> = ({ columnId, title }) => {
   const dispatch = useAppDispatch();
   const { boardId } = useParams();
 
