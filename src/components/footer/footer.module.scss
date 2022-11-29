@@ -16,6 +16,7 @@ $footer-color: #021636de;
         gap: 2rem;
         .text {
             color: rgba(255, 255, 255, 0.7);
+            font-size: 18px;
         }
     
     }
@@ -57,13 +58,14 @@ $footer-color: #021636de;
     .footer__container {
         .footer__right {
             justify-content: center;
+            gap: 2rem;
         }
     }
 }
 @media (max-width: 400px) {
     .footer__container {
         .footer__right {
-           gap: 2rem;
+           gap: 1rem;
         }
     }
 }
@@ -77,6 +79,13 @@ $footer-color: #021636de;
         opacity: 0.8;
         transform: translateY(1px);
         transition: all 0.3s;
+    }
+}
+@media (max-width: 400px) {
+    .footer__right {
+        .footer__link {
+            font-size: 14px;
+        }
     }
 }
 

@@ -13,14 +13,15 @@ const FooterOfApp: React.FC = () => {
       <Footer className={styles.footer}>
         <Row
           className={styles.footer__container}
-          justify={{ xs: 'center', sm: 'center', md: 'center', lg: 'space-between' }}
+          justify={{ xs: 'center', sm: 'center', md: 'space-between', lg: 'space-between' }}
         >
           <Col
             xxl={{ span: 10 }}
             xl={{ span: 10 }}
-            lg={{ span: 12 }}
+            lg={{ span: 10 }}
             md={{ span: 10 }}
             sm={{ span: 24 }}
+            xs={{ span: 24 }}
             className={styles.footer__left}
           >
             <a href="https://rs.school/" className={styles.logo__link}>
@@ -34,8 +35,9 @@ const FooterOfApp: React.FC = () => {
             xxl={{ span: 10 }}
             xl={{ span: 10 }}
             lg={{ span: 12 }}
-            md={{ span: 10 }}
+            md={{ span: 12 }}
             sm={{ span: 24 }}
+            xs={{ span: 24 }}
             className={styles.footer__right}
           >
             <Link href="https://github.com/olgad21" target="_blank" className={styles.footer__link}>
