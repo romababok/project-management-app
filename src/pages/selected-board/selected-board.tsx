@@ -31,9 +31,7 @@ export const SelectedBoardPage: React.FC = () => {
     if (boardId) {
       dispatch(columnsGetAll(boardId ?? ''));
     }
-    // clear all columns and tasks when exiting Board page
     return () => {
-      dispatch({ type: 'tasks/resetTasks' });
       dispatch({ type: 'columns/resetColumns' });
     };
   }, []);
@@ -116,7 +114,6 @@ export const SelectedBoardPage: React.FC = () => {
       });
 
       dispatch(columnsSetUpdate(columnsToUpdateRequest));
-      // dispatch({ type: 'tasks/resetTasks' });
     }
 
     if (type === 'task') {

@@ -8,6 +8,7 @@ import { selectTasks, tasksCreate, tasksGetAll } from '../../features/task-list/
 import { useParams } from 'react-router-dom';
 import styles from './task-list.module.scss';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
+import { selectColumns } from '../../features/columns/columns-slice';
 
 interface TaskListProps {
   columnId: string;
@@ -18,6 +19,7 @@ const TasksList: React.FC<TaskListProps> = ({ columnId }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useAppDispatch();
   const tasks = useAppSelector(selectTasks);
+  const columns = useAppSelector(selectColumns);
 
   const tasksPerColumn = useMemo(() => {
     return tasks.filter((task) => task.columnId === columnId);
@@ -35,7 +37,10 @@ const TasksList: React.FC<TaskListProps> = ({ columnId }) => {
     if (boardId) {
       dispatch(tasksGetAll({ boardId: boardId, columnId: columnId }));
     }
-  }, []);
+    return () => {
+      dispatch({ type: 'tasks/resetTasks' });
+    };
+  }, [columns]);
 
   const showModal = () => {
     setIsModalOpen(true);
