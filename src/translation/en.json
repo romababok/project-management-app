@@ -43,7 +43,7 @@
   "Edit profile modal window": "Change you profile",
   "Edit profile delete account button": "Delete account",
   "Edit profile submit button": "Submit",
-  "Edit profile popconfirm": "Are you shure to delete acount?",
+  "Edit profile popconfirm": "Are you sure to delete account?",
   "Edit profile successful message after user update": "All changes successfully saved!",
   "Edit profile update user failed message": "Request failed with code",
   "Edit profile update user failed description 409": "This login already exist",

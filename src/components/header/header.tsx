@@ -20,14 +20,14 @@ import { getUserData, logOut } from '../../features/auth/auth-slice';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
-function getItem(
+const getItem = (
   label: React.ReactNode,
   key?: React.Key | null,
   className?: string,
   icon?: React.ReactNode,
   children?: MenuItem[],
   type?: 'group'
-): MenuItem {
+): MenuItem => {
   return {
     key,
     icon,
@@ -36,7 +36,7 @@ function getItem(
     type,
     className,
   } as MenuItem;
-}
+};
 
 export const HeaderOfApp: React.FC = () => {
   const location = useLocation();
@@ -217,17 +217,17 @@ export const HeaderOfApp: React.FC = () => {
             value: 'en',
             label: 'EN',
             className: styles.select__option,
-            style: { fontWeight: '700', fontSize: '16px' },
+            style: { fontWeight: '700' },
           },
           {
             value: 'ru',
             label: 'RU',
-            style: { fontWeight: '700', fontSize: '16px' },
+            style: { fontWeight: '700' },
           },
           {
             value: 'by',
             label: 'BY',
-            style: { fontWeight: '700', fontSize: '16px' },
+            style: { fontWeight: '700' },
           },
         ]}
       />
