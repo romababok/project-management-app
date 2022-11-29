@@ -177,7 +177,6 @@ const tasksSlice = createSlice({
               nonUpdatedTasks.push(task);
             }
           });
-          console.log(nonUpdatedTasks, action.payload, 123);
           state.taskList = [...nonUpdatedTasks, ...action.payload];
         }
       })

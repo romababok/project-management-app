@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import {
+  Column,
   ColumnsRequest,
   ColumnsSetRequest,
   createColumn,
@@ -165,8 +166,14 @@ const columnsSlice = createSlice({
       .addCase(columnsSetUpdate.fulfilled, (state, action) => {
         state.status = 'succeeded';
         if (action.payload) {
-          const nonUpdatedColumns = state.columns.filter((column) => {
-            action.payload?.forEach((updatedColumn) => column._id !== updatedColumn._id);
+          const nonUpdatedColumns: Column[] = [];
+          state.columns.forEach((column) => {
+            const newColumn = action.payload?.find(
+              (updatedColumn) => column._id === updatedColumn._id
+            );
+            if (!newColumn) {
+              nonUpdatedColumns.push(column);
+            }
           });
           state.columns = [...nonUpdatedColumns, ...action.payload];
         }

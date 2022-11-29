@@ -66,7 +66,7 @@ const TasksList: React.FC<TaskListProps> = ({ columnId }) => {
 
   return (
     <Content className={styles.taskContent}>
-      <Droppable droppableId={columnId}>
+      <Droppable droppableId={columnId} type="task">
         {(provided, snapshot) => (
           <div ref={provided.innerRef} {...provided.droppableProps}>
             <List
