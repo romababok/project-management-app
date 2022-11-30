@@ -54,7 +54,7 @@ export const ProfilePage: React.FC = () => {
           <div className={styles.profile__window}>
             <div className={styles.name__block}>
               <Text strong className={styles.name__title}>
-                {t('Edit profile name')}
+                {t('Name')}
               </Text>
               <Text className={styles.name__text}>
                 {userData._id && userData.name.slice(0, 1).toUpperCase() + userData.name.slice(1)}
@@ -62,13 +62,13 @@ export const ProfilePage: React.FC = () => {
             </div>
             <div className={styles.login__block}>
               <Text strong className={styles.login__title}>
-                {t('Edit profile login')}
+                {t('Login')}
               </Text>
               <Text className={styles.name__text}>{userData._id && userData.login}</Text>
             </div>
             <div className={styles.userid__block}>
               <Text strong className={styles.userid__title}>
-                {t('Edit profile userId')}
+                {t('UserId')}
               </Text>
               <Text className={styles.userid__text}>{userData._id && userData._id}</Text>
             </div>
@@ -80,14 +80,14 @@ export const ProfilePage: React.FC = () => {
               className={styles.edit__button}
               onClick={showModal}
             >
-              {t('Edit profile edit button')}
+              {t('Edit button')}
             </Button>
             <Popconfirm
               placement="bottom"
-              title="Are you shure to delete acount?"
+              title={t('Popconfirm account')}
               onConfirm={confirm}
-              okText="Yes"
-              cancelText="No"
+              okText={t('Popconfirm okText')}
+              cancelText={t('Popconfirm cancelText')}
             >
               <Button
                 icon={<DeleteOutlined />}
@@ -96,7 +96,7 @@ export const ProfilePage: React.FC = () => {
                 ghost
                 className={styles.delete__button}
               >
-                {t('Edit profile delete account button')}
+                {t('Delete account button')}
               </Button>
             </Popconfirm>
           </div>

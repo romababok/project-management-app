@@ -30,46 +30,46 @@ export const EditModal: FC<EditModalProps> = ({
       <Form
         form={form}
         name="update-user-form"
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 10 }}
+        labelCol={{ xs: 8, sm: 6, md: 6, lg: 6 }}
+        wrapperCol={{ xs: 24, sm: 12, md: 12, lg: 12 }}
         onFinish={handleSubmit}
         className={styles.window__form}
       >
         <Form.Item
           name="name"
-          label={t('Edit profile name')}
+          label={t('Name')}
           rules={[
-            { required: true, message: 'Please input your new name!' },
-            { min: 3, message: 'Name length should be more than 3' },
+            { required: true, message: `${t('Validation of name')}` },
+            { min: 3, message: `${t('Validation of name length')}` },
           ]}
         >
           <Input />
         </Form.Item>
         <Form.Item
           name="login"
-          label={t('Edit profile login')}
+          label={t('Login')}
           rules={[
-            { required: true, message: 'Please input your new login!' },
-            { min: 3, message: 'Login length should be more than 3' },
+            { required: true, message: `${t('Validation of login')}` },
+            { min: 3, message: `${t('Validation of login length')}` },
           ]}
         >
           <Input />
         </Form.Item>
         <Form.Item
           name="password"
-          label={t('Edit profile password')}
+          label={t('Password')}
           rules={[
-            { required: true, message: 'Please input your password!' },
+            { required: true, message: `${t('Validation of password')}` },
             {
               min: 3,
-              message: 'Password length should be more than 3',
+              message: `${t('Validation of password length')}`,
             },
           ]}
         >
           <Input.Password />
         </Form.Item>
         <Button className={styles.submit__button} htmlType="submit" type="primary">
-          {t('Edit profile submit button')}
+          {t('Submit button')}
         </Button>
       </Form>
     </Modal>
