@@ -16,6 +16,7 @@ import { selectTasks, taskSetUpdate } from '../../features/task-list/task-list-s
 import { Task, TaskSetRequest } from '../../api/tasks';
 import Column from '../../components/column/column';
 import { Column as ColumnInterface, ColumnsSetRequest } from '../../api/сolumns';
+import { getBoardById, selectBoard } from '../../features/boards/boards-slice';
 
 export const SelectedBoardPage: React.FC = () => {
   const { boardId } = useParams();
@@ -29,12 +30,15 @@ export const SelectedBoardPage: React.FC = () => {
 
   useEffect(() => {
     if (boardId) {
+      dispatch(getBoardById(boardId));
       dispatch(columnsGetAll(boardId ?? ''));
     }
     return () => {
       dispatch({ type: 'columns/resetColumns' });
     };
   }, []);
+
+  const board = useAppSelector(selectBoard);
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -218,7 +222,7 @@ export const SelectedBoardPage: React.FC = () => {
 
   return (
     <Content style={{ padding: '0 50px', minHeight: '70px' }}>
-      <h1>Board Title</h1>
+      <h1>{board?.title}</h1>
       <Button icon={<PlusOutlined />} onClick={showModal}>
         Add Column
       </Button>
