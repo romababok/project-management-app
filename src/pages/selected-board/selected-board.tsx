@@ -237,7 +237,11 @@ export const SelectedBoardPage: React.FC = () => {
                         {...provided.dragHandleProps}
                         ref={provided.innerRef}
                       >
-                        <Column title={column.title} columnId={column._id}></Column>
+                        <Column
+                          title={column.title}
+                          columnId={column._id}
+                          order={column.order}
+                        ></Column>
                       </List.Item>
                     )}
                   </Draggable>

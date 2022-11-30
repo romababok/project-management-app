@@ -74,7 +74,9 @@ const Task: React.FC<TaskProps> = ({ title, desc, columnId, taskId, order }) => 
         </Popconfirm>
       </div>
       <Modal title="View Task" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+        <h2>Title</h2>
         <Paragraph editable={{ onChange: setTaskTitle }}>{taskTitle}</Paragraph>
+        <h2>Description</h2>
         <Paragraph editable={{ onChange: seTaskDesc }}>{taskDesc}</Paragraph>
       </Modal>
     </Content>

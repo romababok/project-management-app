@@ -136,14 +136,8 @@ const columnsSlice = createSlice({
       .addCase(columnsDelete.rejected, (state) => {
         state.status = 'failed';
       })
-      .addCase(columnsUpdate.fulfilled, (state, action) => {
+      .addCase(columnsUpdate.fulfilled, (state) => {
         state.status = 'succeeded';
-        if (action.payload) {
-          const nonUpdatedColumns = state.columns.filter(
-            (column) => column._id !== action.payload?._id
-          );
-          state.columns = [...nonUpdatedColumns, action.payload];
-        }
       })
       .addCase(columnsUpdate.pending, (state) => {
         state.status = 'loading';
