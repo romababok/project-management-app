@@ -90,6 +90,7 @@ const TasksList: React.FC<TaskListProps> = ({ columnId }) => {
                         <Task
                           title={task.title}
                           desc={task.description}
+                          order={task.order}
                           columnId={columnId}
                           taskId={task._id}
                         />
