@@ -159,18 +159,18 @@ const columnsSlice = createSlice({
       })
       .addCase(columnsSetUpdate.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        if (action.payload) {
-          const nonUpdatedColumns: Column[] = [];
-          state.columns.forEach((column) => {
-            const newColumn = action.payload?.find(
-              (updatedColumn) => column._id === updatedColumn._id
-            );
-            if (!newColumn) {
-              nonUpdatedColumns.push(column);
-            }
-          });
-          state.columns = [...nonUpdatedColumns, ...action.payload];
-        }
+        // if (action.payload) {
+        //   const nonUpdatedColumns: Column[] = [];
+        //   state.columns.forEach((column) => {
+        //     const newColumn = action.payload?.find(
+        //       (updatedColumn) => column._id === updatedColumn._id
+        //     );
+        //     if (!newColumn) {
+        //       nonUpdatedColumns.push(column);
+        //     }
+        //   });
+        //   state.columns = [...nonUpdatedColumns, ...action.payload];
+        // }
       })
       .addCase(columnsSetUpdate.pending, (state) => {
         state.status = 'loading';

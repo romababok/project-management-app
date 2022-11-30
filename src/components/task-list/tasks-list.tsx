@@ -33,14 +33,14 @@ const TasksList: React.FC<TaskListProps> = ({ columnId }) => {
   const taskTitle = Form.useWatch('title', form);
   const taskDesc = Form.useWatch('description', form);
 
-  useEffect(() => {
-    if (boardId) {
-      dispatch(tasksGetAll({ boardId: boardId, columnId: columnId }));
-    }
-    return () => {
-      dispatch({ type: 'tasks/resetTasks' });
-    };
-  }, [columns]);
+  // useEffect(() => {
+  //   if (boardId) {
+  //     dispatch(tasksGetAll({ boardId: boardId, columnId: columnId }));
+  //   }
+  //   return () => {
+  //     dispatch({ type: 'tasks/resetTasks' });
+  //   };
+  // }, [columns]);
 
   const showModal = () => {
     setIsModalOpen(true);

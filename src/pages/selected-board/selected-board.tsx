@@ -12,7 +12,7 @@ import {
 } from '../../features/columns/columns-slice';
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
 import styles from './selected-board.module.scss';
-import { selectTasks, taskSetUpdate } from '../../features/task-list/task-list-slice';
+import { selectTasks, taskSetUpdate, tasksGetAll } from '../../features/task-list/task-list-slice';
 import { Task, TaskSetRequest } from '../../api/tasks';
 import Column from '../../components/column/column';
 import { Column as ColumnInterface, ColumnsSetRequest } from '../../api/сolumns';
@@ -23,20 +23,29 @@ export const SelectedBoardPage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useAppDispatch();
   const columns = useAppSelector(selectColumns);
-  const columnsToSort = [...columns];
   const [form] = Form.useForm<{ title: string }>();
   const columnTitle = Form.useWatch('title', form);
   const tasks = useAppSelector(selectTasks);
+  const [columnsState, setColumnsState] = useState<ColumnInterface[]>(columns);
+  const columnsToSort = [...columnsState];
 
   useEffect(() => {
     if (boardId) {
       dispatch(getBoardById(boardId));
       dispatch(columnsGetAll(boardId ?? ''));
+      columns.forEach((column) => {
+        dispatch(tasksGetAll({ boardId: boardId, columnId: column._id }));
+      });
     }
     return () => {
       dispatch({ type: 'columns/resetColumns' });
+      // dispatch({ type: 'tasks/resetTasks' });
     };
   }, []);
+
+  useEffect(() => {
+    setColumnsState([...columns].sort((a, b) => a.order - b.order));
+  }, [columns]);
 
   const board = useAppSelector(selectBoard);
 
@@ -71,13 +80,14 @@ export const SelectedBoardPage: React.FC = () => {
     }
 
     const draggableTask = tasks.find((task) => task._id === draggableId);
-    const draggableColumn = columns.find((column) => column._id === draggableId);
+    const draggableColumn = columnsState.find((column) => column._id === draggableId);
 
     if (type === 'column') {
       if (!draggableColumn) {
         return;
       }
-      const unDraggedColumns = columns
+
+      const unDraggedColumns = columnsState
         .filter((column) => column._id !== draggableId)
         .sort((a, b) => a.order - b.order);
 
@@ -108,6 +118,16 @@ export const SelectedBoardPage: React.FC = () => {
           }
         });
       }
+
+      const nonUpdatedColumns: ColumnInterface[] = [];
+      columnsState.forEach((column) => {
+        const newColumn = columnsToUpdate.find((updatedColumn) => column._id === updatedColumn._id);
+        if (!newColumn) {
+          nonUpdatedColumns.push(column);
+        }
+      });
+
+      setColumnsState([...nonUpdatedColumns, ...columnsToUpdate]);
 
       const columnsToUpdateRequest: ColumnsSetRequest[] = columnsToUpdate.map((column) => {
         const { _id, order } = column;
