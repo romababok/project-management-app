@@ -7,6 +7,7 @@ import { useAppDispatch } from '../../app/hooks';
 import { tasksDelete, tasksUpdate } from '../../features/task-list/task-list-slice';
 import { useParams } from 'react-router-dom';
 import Paragraph from 'antd/es/typography/Paragraph';
+import Title from 'antd/es/typography/Title';
 
 interface TaskProps {
   title: string;
@@ -33,15 +34,15 @@ const Task: React.FC<TaskProps> = ({ title, desc, columnId, taskId, order }) => 
     if (boardId) {
       dispatch(
         tasksUpdate({
-          boardId: boardId,
-          columnId: columnId,
-          taskId: taskId,
+          boardId,
+          columnId,
+          taskId,
           request: {
             title: taskTitle,
-            order: order,
+            order,
             description: taskDesc,
             userId: 0,
-            columnId: columnId,
+            columnId,
             users: [],
           },
         })
@@ -55,14 +56,14 @@ const Task: React.FC<TaskProps> = ({ title, desc, columnId, taskId, order }) => 
 
   const handleDeleteOk = () => {
     if (boardId) {
-      dispatch(tasksDelete({ boardId: boardId, columnId: columnId, taskId: taskId }));
+      dispatch(tasksDelete({ boardId, columnId, taskId }));
     }
   };
 
   return (
     <Content>
       <div className="task" onClick={showModal}>
-        {title}
+        <h4>{title}</h4>
         <Popconfirm
           placement="bottomRight"
           title="Are you sure you want to delete this task?"
@@ -73,11 +74,20 @@ const Task: React.FC<TaskProps> = ({ title, desc, columnId, taskId, order }) => 
           <Button type="text" danger icon={<DeleteOutlined />} />
         </Popconfirm>
       </div>
-      <Modal title="View Task" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-        <h2>Title</h2>
-        <Paragraph editable={{ onChange: setTaskTitle }}>{taskTitle}</Paragraph>
-        <h2>Description</h2>
-        <Paragraph editable={{ onChange: seTaskDesc }}>{taskDesc}</Paragraph>
+      <Modal
+        title={
+          <Title level={3} ellipsis={true} editable={{ onChange: setTaskTitle, maxLength: 30 }}>
+            {taskTitle}
+          </Title>
+        }
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <h4>Description:</h4>
+        <Paragraph ellipsis={{ rows: 2 }} editable={{ onChange: seTaskDesc, maxLength: 150 }}>
+          {taskDesc}
+        </Paragraph>
       </Modal>
     </Content>
   );

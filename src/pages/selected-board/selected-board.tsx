@@ -32,14 +32,16 @@ export const SelectedBoardPage: React.FC = () => {
   useEffect(() => {
     if (boardId) {
       dispatch(getBoardById(boardId));
-      dispatch(columnsGetAll(boardId ?? ''));
-      columns.forEach((column) => {
-        dispatch(tasksGetAll({ boardId: boardId, columnId: column._id }));
+      dispatch(columnsGetAll(boardId)).then((data) => {
+        const cols = data.payload as ColumnInterface[];
+        cols.forEach((column) => {
+          dispatch(tasksGetAll({ boardId, columnId: column._id }));
+        });
       });
     }
     return () => {
       dispatch({ type: 'columns/resetColumns' });
-      // dispatch({ type: 'tasks/resetTasks' });
+      dispatch({ type: 'tasks/resetTasks' });
     };
   }, []);
 
@@ -58,15 +60,17 @@ export const SelectedBoardPage: React.FC = () => {
     if (boardId) {
       dispatch(
         columnsCreate({
-          boardId: boardId,
+          boardId,
           request: { title: columnTitle || 'New Column', order: columns.length },
         })
       );
     }
+    form.resetFields();
   };
 
   const handleCancel = () => {
     setIsModalOpen(false);
+    form.resetFields();
   };
 
   const onDragEnd = (result: DropResult) => {
@@ -181,6 +185,8 @@ export const SelectedBoardPage: React.FC = () => {
           });
         }
 
+        dispatch({ type: 'tasks/updateTasks', payload: tasksToUpdate });
+
         const tasksToUpdateRequest: TaskSetRequest[] = tasksToUpdate.map((task) => {
           const { _id, order, columnId } = task;
           return {
@@ -235,6 +241,7 @@ export const SelectedBoardPage: React.FC = () => {
           };
         });
 
+        dispatch({ type: 'tasks/updateTasks', payload: tasksToUpdate });
         dispatch(taskSetUpdate(tasksToUpdateRequest));
       }
     }
@@ -279,7 +286,7 @@ export const SelectedBoardPage: React.FC = () => {
       <Modal title="Add Column" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
         <Form form={form} layout="vertical" autoComplete="off">
           <Form.Item name="title" label="Title">
-            <Input />
+            <Input maxLength={30} />
           </Form.Item>
         </Form>
       </Modal>

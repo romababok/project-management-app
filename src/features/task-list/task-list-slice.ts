@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
   createTask,
   deleteTask,
@@ -114,6 +114,19 @@ const tasksSlice = createSlice({
       state.status = 'idle';
       state.taskList = [];
     },
+    updateTasks: (state, action: PayloadAction<Task[]>) => {
+      state.status = 'idle';
+      if (action.payload) {
+        const nonUpdatedTasks: Task[] = [];
+        state.taskList.forEach((task) => {
+          const newTask = action.payload?.find((updatedTask) => task._id === updatedTask._id);
+          if (!newTask) {
+            nonUpdatedTasks.push(task);
+          }
+        });
+        state.taskList = [...nonUpdatedTasks, ...action.payload];
+      }
+    },
   },
   extraReducers(builder) {
     builder
@@ -169,16 +182,16 @@ const tasksSlice = createSlice({
       })
       .addCase(taskSetUpdate.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        if (action.payload) {
-          const nonUpdatedTasks: Task[] = [];
-          state.taskList.forEach((task) => {
-            const newTask = action.payload?.find((updatedTask) => task._id === updatedTask._id);
-            if (!newTask) {
-              nonUpdatedTasks.push(task);
-            }
-          });
-          state.taskList = [...nonUpdatedTasks, ...action.payload];
-        }
+        // if (action.payload) {
+        //   const nonUpdatedTasks: Task[] = [];
+        //   state.taskList.forEach((task) => {
+        //     const newTask = action.payload?.find((updatedTask) => task._id === updatedTask._id);
+        //     if (!newTask) {
+        //       nonUpdatedTasks.push(task);
+        //     }
+        //   });
+        //   state.taskList = [...nonUpdatedTasks, ...action.payload];
+        // }
       })
       .addCase(taskSetUpdate.pending, (state) => {
         state.status = 'loading';

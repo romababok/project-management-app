@@ -1,6 +1,6 @@
 .column {
   padding: 1rem; 
-  background-color: rgba(134, 130, 130, 0.305); 
+  background-color: rgba(2, 22, 54, 0.8705882353); 
   border-radius: 3px;
   width: 20rem;
   margin-right: 1rem;
@@ -8,10 +8,14 @@
   max-height: 60vh;
 }
 
-.column-info {
+.columninfo {
   display: flex;
   align-items: center;
   justify-content: space-between;
   height: 40px;
   padding: 0 24px;
+}
+
+h3 {
+  color: white;
 }
