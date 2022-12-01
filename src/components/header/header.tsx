@@ -11,12 +11,12 @@ import {
   LogoutOutlined,
   MenuOutlined,
   PlusCircleOutlined,
-  PlusOutlined,
   PushpinOutlined,
   ToolOutlined,
 } from '@ant-design/icons';
 import styles from './header.module.scss';
 import { getAllUsers, getUserData, logOut } from '../../features/auth/auth-slice';
+import { ModalCreateBoard } from '../modal/modal';
 
 const languages = [
   {
@@ -45,7 +45,7 @@ export const HeaderOfApp: React.FC = () => {
 
   const [open, setOpen] = useState<boolean>(false);
   const [lang, setLang] = useState<string>(langFromStorage ?? 'English');
-
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const token = localStorage.getItem('token');
   const dispatch = useAppDispatch();
   const [theme, setTheme] = useState<MenuTheme>('dark');
@@ -123,7 +123,7 @@ export const HeaderOfApp: React.FC = () => {
   const itemsWithId = [
     { label: <Link to="/">{t('Header welcome link')}</Link>, key: '/' },
     {
-      label: <Link to="">{t('Header create new board')}</Link>,
+      label: <Button onClick={() => setIsModalOpen(true)}>{t('Header create new board')}</Button>,
       key: '',
       className: styles.menu__main,
     },
@@ -188,9 +188,7 @@ export const HeaderOfApp: React.FC = () => {
             </>
           ) : (
             <>
-              <Link to="" onClick={onClose} className={styles.drawer__link}>
-                <PlusOutlined className={styles.link__icon} /> {t('Header create new board')}
-              </Link>
+              <Button onClick={() => setIsModalOpen(true)}>{t('Header create new board')}</Button>
               <Link to="/boards" onClick={onClose} className={styles.drawer__link}>
                 <PushpinOutlined className={styles.link__icon} /> {t('Header go to main page')}
               </Link>
@@ -219,6 +217,7 @@ export const HeaderOfApp: React.FC = () => {
         onChange={handleChange}
         options={languages}
       />
+      <ModalCreateBoard isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
     </Header>
   );
 };
