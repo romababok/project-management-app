@@ -3,14 +3,15 @@ import { baseApiUrl } from '.';
 
 export interface CreateBoardRequest {
   title: string;
-  owner: string;
   users: string[];
 }
 
-export const getAllBoardsAPI = async () => await axios.get(baseApiUrl + '/boards');
+export const getAllBoardsAPI = async (userId: string) =>
+  await axios.get(baseApiUrl + `/boardsSet/${userId}`);
 
 export const createBoardAPI = async (request: CreateBoardRequest) => {
-  return await axios.post(baseApiUrl + '/boards', request);
+  const owner = localStorage.getItem('userId') as string;
+  return await axios.post(baseApiUrl + '/boards', { ...request, owner });
 };
 export const getBoardByIdAPI = async (boardId: string) => {
   return await axios.get(baseApiUrl + `/boards/${boardId}`);

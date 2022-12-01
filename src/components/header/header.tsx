@@ -16,7 +16,7 @@ import {
   ToolOutlined,
 } from '@ant-design/icons';
 import styles from './header.module.scss';
-import { getUserData, logOut } from '../../features/auth/auth-slice';
+import { getAllUsers, getUserData, logOut } from '../../features/auth/auth-slice';
 
 const languages = [
   {
@@ -39,7 +39,7 @@ const languages = [
 
 export const HeaderOfApp: React.FC = () => {
   const location = useLocation();
-  const userId = useAppSelector((state) => state.auth.userData?.id);
+  const userId = useAppSelector((state) => state.auth.userData?._id);
   const name = useAppSelector((state) => state.auth.userData?.name);
   const langFromStorage = localStorage.getItem('lang');
 
@@ -50,6 +50,13 @@ export const HeaderOfApp: React.FC = () => {
   const dispatch = useAppDispatch();
   const [theme, setTheme] = useState<MenuTheme>('dark');
   const isLightThemeSelected = theme === 'light';
+
+  useEffect(() => {
+    if (token) {
+      dispatch(getUserData(token as string));
+      dispatch(getAllUsers());
+    }
+  }, [dispatch, token]);
 
   const followScroll = () => {
     if (window.pageYOffset > 70) {
@@ -71,12 +78,6 @@ export const HeaderOfApp: React.FC = () => {
     }
     return styles.header;
   };
-
-  useEffect(() => {
-    if (token) {
-      dispatch(getUserData(token as string));
-    }
-  }, [dispatch, token]);
 
   useEffect(() => {
     localStorage.setItem('lang', lang);

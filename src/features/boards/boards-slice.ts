@@ -28,9 +28,9 @@ const initialState: BoardsState = {
   status: 'idle',
 };
 
-export const getAllBoards = createAsyncThunk('boards/getBoards', async () => {
+export const getAllBoards = createAsyncThunk('boards/getBoards', async (userId: string) => {
   try {
-    const response = await getAllBoardsAPI();
+    const response = await getAllBoardsAPI(userId);
     return response.data;
   } catch (err) {
     if (axios.isAxiosError(err)) {
@@ -38,6 +38,7 @@ export const getAllBoards = createAsyncThunk('boards/getBoards', async () => {
         message: 'Request failed with code ' + err.response?.status,
         description: err.response?.data.message,
       });
+      throw new Error(err.message);
     }
   }
 });
@@ -46,7 +47,9 @@ export const createBoard = createAsyncThunk(
   'boards/createBoard',
   async (request: CreateBoardRequest) => {
     try {
-      const response = await createBoardAPI(request);
+      const users = request.users ? request.users : [''];
+      const { title } = request;
+      const response = await createBoardAPI({ title, users });
       return response.data;
     } catch (err) {
       if (axios.isAxiosError(err)) {
@@ -54,6 +57,7 @@ export const createBoard = createAsyncThunk(
           message: 'Request failed with code ' + err.response?.status,
           description: err.response?.data.message,
         });
+        throw new Error(err.message);
       }
     }
   }
@@ -69,6 +73,7 @@ export const getBoardById = createAsyncThunk('boards/getBoardById', async (board
         message: 'Request failed with code ' + err.response?.status,
         description: err.response?.data.message,
       });
+      throw new Error(err.message);
     }
   }
 });
@@ -83,6 +88,7 @@ export const deleteBoard = createAsyncThunk('boards/deleteBoard', async (boardId
         message: 'Request failed with code ' + err.response?.status,
         description: err.response?.data.message,
       });
+      throw new Error(err.message);
     }
   }
 });

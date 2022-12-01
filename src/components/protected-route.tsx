@@ -6,9 +6,10 @@ interface ProtectedRouteProps {
 }
 
 export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
-  const { userData } = useAppSelector((state) => state.auth);
+  const userId = localStorage.getItem('userId');
+  const Id = useAppSelector((state) => state.auth.userData._id);
 
-  if (!userData?.id) {
+  if (!userId) {
     return <Navigate to="/" />;
   }
   return children;
