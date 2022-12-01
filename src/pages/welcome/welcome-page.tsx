@@ -4,6 +4,7 @@ import { Col, Row, Typography, Divider, Button, Avatar } from 'antd';
 import { useTranslation } from 'react-i18next';
 import styles from './welcome-page.module.scss';
 import {
+  ArrowLeftOutlined,
   BookOutlined,
   CoffeeOutlined,
   CommentOutlined,
@@ -14,12 +15,14 @@ import {
 } from '@ant-design/icons';
 import { PageLoadingIndicator } from '../../components/page-loading';
 import { Link } from 'react-router-dom';
+import { useAppSelector } from '../../app/hooks';
 const VideoPlayer = React.lazy(() => import('../../components/video/video-player'));
 
 const { Paragraph, Title, Text } = Typography;
 
 export const WelcomePage: React.FC = () => {
   const { t } = useTranslation();
+  const userId = useAppSelector((store) => store.auth.userData?.id);
   return (
     <div className={styles.main__wrapper}>
       <Content className={styles.main__content}>
@@ -36,16 +39,31 @@ export const WelcomePage: React.FC = () => {
               <Title>{t('Welcome title')}</Title>
               <Paragraph className={styles.welcome__text}> {t('Welcome text')}</Paragraph>
               <div className={styles.welcome__buttons}>
-                <Link to="/registration">
-                  <Button size="large" className={styles.welcome__button} type="primary" ghost>
-                    {t('Header sign up link')}
-                  </Button>
-                </Link>
-                <Link to="/login">
-                  <Button size="large" className={styles.welcome__button} type="primary">
-                    {t('Header login link')}
-                  </Button>
-                </Link>
+                {userId ? (
+                  <Link to="/boards">
+                    <Button
+                      icon={<ArrowLeftOutlined />}
+                      size="large"
+                      className={styles.welcome__button}
+                      type="primary"
+                    >
+                      {t('Header go to main page')}
+                    </Button>
+                  </Link>
+                ) : (
+                  <>
+                    <Link to="/registration">
+                      <Button size="large" className={styles.welcome__button} type="primary" ghost>
+                        {t('Header sign up link')}
+                      </Button>
+                    </Link>
+                    <Link to="/login">
+                      <Button size="large" className={styles.welcome__button} type="primary">
+                        {t('Header login link')}
+                      </Button>
+                    </Link>
+                  </>
+                )}
               </div>
             </Col>
           </Row>
