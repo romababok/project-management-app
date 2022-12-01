@@ -1,22 +1,28 @@
 import React, { Suspense } from 'react';
 import { Content } from 'antd/lib/layout/layout';
-import { Col, Row, Typography, Divider, Button, Avatar, Spin } from 'antd';
+import { Col, Row, Typography, Divider, Button, Avatar } from 'antd';
 import { useTranslation } from 'react-i18next';
 import styles from './welcome-page.module.scss';
 import {
-  BankOutlined,
+  ArrowLeftOutlined,
   BookOutlined,
   CoffeeOutlined,
   CommentOutlined,
   DollarCircleOutlined,
+  HeartOutlined,
+  RocketOutlined,
+  SearchOutlined,
 } from '@ant-design/icons';
-import { PageLoadingIndicator } from '../../components';
+import { PageLoadingIndicator } from '../../components/page-loading';
+import { Link } from 'react-router-dom';
+import { useAppSelector } from '../../app/hooks';
 const VideoPlayer = React.lazy(() => import('../../components/video/video-player'));
 
 const { Paragraph, Title, Text } = Typography;
 
 export const WelcomePage: React.FC = () => {
   const { t } = useTranslation();
+  const userId = useAppSelector((store) => store.auth.userData?.id);
   return (
     <div className={styles.main__wrapper}>
       <Content className={styles.main__content}>
@@ -24,17 +30,41 @@ export const WelcomePage: React.FC = () => {
           <Row justify="start" className={styles.welcome__row}>
             <Col
               xxl={{ span: 28, offset: 4 }}
-              xl={{ span: 10, offset: 1 }}
-              lg={{ span: 12, offset: 0 }}
-              md={{ span: 16, offset: 0 }}
+              xl={{ span: 12, offset: 1 }}
+              lg={{ span: 16, offset: 0 }}
+              md={{ span: 24, offset: 0 }}
               xs={{ span: 24, offset: 0 }}
               className={styles.welcome__col}
             >
               <Title>{t('Welcome title')}</Title>
               <Paragraph className={styles.welcome__text}> {t('Welcome text')}</Paragraph>
-              <Button size="large" className={styles.welcome__button} type="primary">
-                {t('Welcome button')}
-              </Button>
+              <div className={styles.welcome__buttons}>
+                {userId ? (
+                  <Link to="/boards">
+                    <Button
+                      icon={<ArrowLeftOutlined />}
+                      size="large"
+                      className={styles.welcome__button}
+                      type="primary"
+                    >
+                      {t('Header go to main page')}
+                    </Button>
+                  </Link>
+                ) : (
+                  <>
+                    <Link to="/registration">
+                      <Button size="large" className={styles.welcome__button} type="primary" ghost>
+                        {t('Header sign up link')}
+                      </Button>
+                    </Link>
+                    <Link to="/login">
+                      <Button size="large" className={styles.welcome__button} type="primary">
+                        {t('Header login link')}
+                      </Button>
+                    </Link>
+                  </>
+                )}
+              </div>
             </Col>
           </Row>
         </section>
@@ -70,7 +100,7 @@ export const WelcomePage: React.FC = () => {
             </Col>
             <Col className={styles.gutter__row}>
               <div className={styles.advantage__card}>
-                <BankOutlined className={styles.advantage__icon} />
+                <SearchOutlined className={styles.advantage__icon} />
                 <Paragraph className={styles.advantage__text}>
                   {t('The fourth advantage')}
                 </Paragraph>
@@ -84,13 +114,13 @@ export const WelcomePage: React.FC = () => {
             </Col>
             <Col className={styles.gutter__row}>
               <div className={styles.advantage__card}>
-                <BankOutlined className={styles.advantage__icon} />
+                <RocketOutlined className={styles.advantage__icon} />
                 <Paragraph className={styles.advantage__text}>{t('The sixth advantage')}</Paragraph>
               </div>
             </Col>
             <Col className={styles.gutter__row}>
               <div className={styles.advantage__card}>
-                <BookOutlined className={styles.advantage__icon} />
+                <HeartOutlined className={styles.advantage__icon} />
                 <Paragraph className={styles.advantage__text}>
                   {t('The seventh advantage')}
                 </Paragraph>
@@ -118,10 +148,7 @@ export const WelcomePage: React.FC = () => {
                     {t('The first member position')}
                   </Text>
                   <Paragraph className={styles.member__description}>
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Rerum doloremque,
-                    repellendus tempore illum perspiciatis dolores explicabo ipsa, eligendi aliquid
-                    commodi atque nihil labore praesentium veniam aperiam dolorem debitis
-                    voluptatibus molestiae.
+                    {t('The first member description')}
                   </Paragraph>
                 </div>
               </div>
@@ -138,10 +165,7 @@ export const WelcomePage: React.FC = () => {
                     {t('The second member position')}
                   </Text>
                   <Paragraph className={styles.member__description}>
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Rerum doloremque,
-                    repellendus tempore illum perspiciatis dolores explicabo ipsa, eligendi aliquid
-                    commodi atque nihil labore praesentium veniam aperiam dolorem debitis
-                    voluptatibus molestiae.
+                    {t('The second member description')}
                   </Paragraph>
                 </div>
               </div>
@@ -160,10 +184,7 @@ export const WelcomePage: React.FC = () => {
                     {t('The third member position')}
                   </Text>
                   <Paragraph className={styles.member__description}>
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Rerum doloremque,
-                    repellendus tempore illum perspiciatis dolores explicabo ipsa, eligendi aliquid
-                    commodi atque nihil labore praesentium veniam aperiam dolorem debitis
-                    voluptatibus molestiae.
+                    {t('The third member description')}
                   </Paragraph>
                 </div>
               </div>
@@ -180,10 +201,7 @@ export const WelcomePage: React.FC = () => {
                     {t('The fourth member position')}
                   </Text>
                   <Paragraph className={styles.member__description}>
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Rerum doloremque,
-                    repellendus tempore illum perspiciatis dolores explicabo ipsa, eligendi aliquid
-                    commodi atque nihil labore praesentium veniam aperiam dolorem debitis
-                    voluptatibus molestiae.
+                    {t('The fourth member description')}
                   </Paragraph>
                 </div>
               </div>
