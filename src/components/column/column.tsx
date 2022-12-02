@@ -7,6 +7,7 @@ import styles from './column.module.scss';
 import { useParams } from 'react-router-dom';
 import { Content } from 'antd/lib/layout/layout';
 import TasksList from '../task-list/tasks-list';
+import { useTranslation } from 'react-i18next';
 
 interface ColumnProps {
   columnId: string;
@@ -20,6 +21,8 @@ const Column: React.FC<ColumnProps> = ({ columnId, title, order }) => {
 
   const [columnTitle, setColumnTitle] = useState(title);
   const [editMode, setEditMode] = useState(false);
+
+  const { t } = useTranslation();
 
   const handleDeleteOk = () => {
     if (boardId) {
@@ -70,10 +73,10 @@ const Column: React.FC<ColumnProps> = ({ columnId, title, order }) => {
             <h3 onClick={() => setEditMode(true)}>{columnTitle}</h3>
             <Popconfirm
               placement="bottomRight"
-              title="Are you sure you want to delete this column?"
+              title={t('Popconfirm column')}
               onConfirm={handleDeleteOk}
-              okText="Yes"
-              cancelText="No"
+              okText={t('Popconfirm okText')}
+              cancelText={t('Popconfirm cancelText')}
             >
               <Button type="text" danger icon={<DeleteOutlined />} />
             </Popconfirm>

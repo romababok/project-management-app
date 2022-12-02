@@ -75,10 +75,10 @@ export const BoardsListPage: React.FC = () => {
                     <>
                       <Popconfirm
                         placement="bottomRight"
-                        title="Are you sure you want to delete this board?"
+                        title={t('Popconfirm board')}
                         onConfirm={() => handleDeleteOk(board._id)}
-                        okText="Yes"
-                        cancelText="No"
+                        okText={t('Popconfirm okText')}
+                        cancelText={t('Popconfirm cancelText')}
                       >
                         <Button type="text" danger icon={<DeleteOutlined />} />
                       </Popconfirm>

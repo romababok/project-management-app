@@ -22,7 +22,7 @@ const { Paragraph, Title, Text } = Typography;
 
 export const WelcomePage: React.FC = () => {
   const { t } = useTranslation();
-  const userId = useAppSelector((store) => store.auth.userData?.id);
+  const userId = useAppSelector((store) => store.auth.userData?._id);
   return (
     <div className={styles.main__wrapper}>
       <Content className={styles.main__content}>

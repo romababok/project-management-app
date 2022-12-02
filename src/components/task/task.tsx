@@ -8,6 +8,7 @@ import { tasksDelete, tasksUpdate } from '../../features/task-list/task-list-sli
 import { useParams } from 'react-router-dom';
 import Paragraph from 'antd/es/typography/Paragraph';
 import Title from 'antd/es/typography/Title';
+import { useTranslation } from 'react-i18next';
 
 interface TaskProps {
   title: string;
@@ -24,6 +25,8 @@ const Task: React.FC<TaskProps> = ({ title, desc, columnId, taskId, order }) => 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [taskTitle, setTaskTitle] = useState(title);
   const [taskDesc, seTaskDesc] = useState(desc);
+
+  const { t } = useTranslation();
 
   const showModal: MouseEventHandler = (e) => {
     if (e.target instanceof HTMLDivElement) {
@@ -68,10 +71,10 @@ const Task: React.FC<TaskProps> = ({ title, desc, columnId, taskId, order }) => 
         <span>{title}</span>
         <Popconfirm
           placement="bottomRight"
-          title="Are you sure you want to delete this task?"
+          title={t('Popconfirm task')}
           onConfirm={handleDeleteOk}
-          okText="Yes"
-          cancelText="No"
+          okText={t('Popconfirm okText')}
+          cancelText={t('Popconfirm cancelText')}
         >
           <Button type="text" danger icon={<DeleteOutlined />} />
         </Popconfirm>
@@ -85,8 +88,16 @@ const Task: React.FC<TaskProps> = ({ title, desc, columnId, taskId, order }) => 
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
+        footer={[
+          <Button key="back" onClick={handleCancel}>
+            {t('Cancel button')}
+          </Button>,
+          <Button key="submit" type="primary" onClick={handleOk}>
+            OK
+          </Button>,
+        ]}
       >
-        <h4>Description:</h4>
+        <h4>{t('Description')}:</h4>
         <Paragraph ellipsis={{ rows: 2 }} editable={{ onChange: seTaskDesc, maxLength: 150 }}>
           {taskDesc}
         </Paragraph>

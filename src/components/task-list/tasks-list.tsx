@@ -8,6 +8,7 @@ import { selectTasks, tasksCreate } from '../../features/task-list/task-list-sli
 import { useParams } from 'react-router-dom';
 import styles from './task-list.module.scss';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
+import { useTranslation } from 'react-i18next';
 
 interface TaskListProps {
   columnId: string;
@@ -18,6 +19,7 @@ const TasksList: React.FC<TaskListProps> = ({ columnId }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useAppDispatch();
   const tasks = useAppSelector(selectTasks);
+  const { t } = useTranslation();
 
   const tasksPerColumn = useMemo(() => {
     return tasks.filter((task) => task.columnId === columnId);
@@ -96,14 +98,27 @@ const TasksList: React.FC<TaskListProps> = ({ columnId }) => {
         )}
       </Droppable>
       <Button icon={<PlusOutlined />} onClick={showModal}>
-        Add Task
+        {t('Add task')}
       </Button>
-      <Modal title="Create Task" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+      <Modal
+        title={t('Create task')}
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        footer={[
+          <Button key="back" onClick={handleCancel}>
+            {t('Cancel button')}
+          </Button>,
+          <Button key="submit" type="primary" onClick={handleOk}>
+            OK
+          </Button>,
+        ]}
+      >
         <Form form={form} layout="vertical" autoComplete="off">
-          <Form.Item name="title" label="Title">
+          <Form.Item name="title" label={t('Title')}>
             <Input maxLength={30} />
           </Form.Item>
-          <Form.Item name="description" label="Description">
+          <Form.Item name="description" label={t('Description')}>
             <Input.TextArea maxLength={150} />
           </Form.Item>
         </Form>

@@ -54,7 +54,7 @@ export const authSignIn = createAsyncThunk('auth/signIn', async (request: SignUp
   } catch (error) {
     if (axios.isAxiosError(error)) {
       notification.error({
-        message: 'User was not founded! Check your input.' + error.response?.status,
+        message: i18next.t('User was not founded') + error.response?.status,
         description: error.response?.data.message,
       });
       throw new Error(error.message);
@@ -70,7 +70,7 @@ export const getUserData = createAsyncThunk('auth/getUser', async (jwt: string) 
   } catch (error) {
     if (axios.isAxiosError(error)) {
       notification.error({
-        message: 'Data on the page is out of date.',
+        message: i18next.t('Data on the page is out of date.'),
         description: error.response?.data.message,
       });
       throw new Error(error.message);
@@ -84,7 +84,7 @@ export const getAllUsers = createAsyncThunk('auth/getAllUsers', async () => {
   } catch (error) {
     if (axios.isAxiosError(error)) {
       notification.error({
-        message: 'Data on the page is out of date.',
+        message: i18next.t('User was not founded') + error.response?.status,
         description: error.response?.data.message,
       });
       throw new Error(error.message);
@@ -101,9 +101,11 @@ export const updateUser = createAsyncThunk(
     } catch (error) {
       if (axios.isAxiosError(error)) {
         notification.error({
-          message: 'Request failed with code ' + error.response?.status,
+          message: i18next.t('Request failed message') + error.response?.status,
           description:
-            error.response?.status === 409 ? 'This login already exist' : 'Something went wrong',
+            error.response?.status === 409
+              ? i18next.t('This login already exist')
+              : i18next.t('Something went wrong'),
         });
         throw new Error(error.message);
       }
@@ -118,7 +120,7 @@ export const deleteUser = createAsyncThunk('user/deleteUser', async (userId: str
   } catch (error) {
     if (axios.isAxiosError(error)) {
       notification.error({
-        message: 'Request failed with code ' + error.response?.status,
+        message: i18next.t('Request failed message') + error.response?.status,
         description: error.response?.data.message,
       });
       throw new Error(error.message);
@@ -204,15 +206,9 @@ export const authSlice = createSlice({
         state.userData._id = action.payload._id;
         state.userData.login = action.payload.login;
         state.userData.name = action.payload.name;
-        notification.success({
-          message: 'All changes successfully saved!',
-        });
       })
       .addCase(updateUser.rejected, (state) => {
         state.status = 'failed';
-        notification.error({
-          message: 'Bad request!',
-        });
       })
       .addCase(deleteUser.pending, (state) => {
         state.status = 'loading';
@@ -224,9 +220,8 @@ export const authSlice = createSlice({
         localStorage.removeItem('token');
         state.status = 'idle';
         notification.success({
-          message: 'Your account has been deleted',
-          description:
-            'We are very sorry that you left our application...We will be glad see you again!',
+          message: i18next.t('Your account has been deleted'),
+          description: i18next.t('Sorry message'),
         });
       })
       .addCase(deleteUser.rejected, (state) => {

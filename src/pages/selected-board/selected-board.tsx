@@ -17,6 +17,7 @@ import { Task, TaskSetRequest } from '../../api/tasks';
 import Column from '../../components/column/column';
 import { Column as ColumnInterface, ColumnsSetRequest } from '../../api/сolumns';
 import { getBoardById, selectBoard } from '../../features/boards/boards-slice';
+import { useTranslation } from 'react-i18next';
 
 export const SelectedBoardPage: React.FC = () => {
   const { boardId } = useParams();
@@ -27,6 +28,7 @@ export const SelectedBoardPage: React.FC = () => {
   const columnTitle = Form.useWatch('title', form);
   const tasks = useAppSelector(selectTasks);
   const columnsToSort = [...columns];
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (boardId) {
@@ -239,7 +241,7 @@ export const SelectedBoardPage: React.FC = () => {
     <Content style={{ padding: '0 50px', minHeight: '70px' }}>
       <h1>{board?.title}</h1>
       <Button icon={<PlusOutlined />} onClick={showModal}>
-        Add Column
+        {t('Add column')}
       </Button>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId={boardId ?? ''} direction="horizontal" type="column">
@@ -271,9 +273,22 @@ export const SelectedBoardPage: React.FC = () => {
           )}
         </Droppable>
       </DragDropContext>
-      <Modal title="Add Column" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+      <Modal
+        title={t('Add column')}
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        footer={[
+          <Button key="back" onClick={handleCancel}>
+            {t('Cancel button')}
+          </Button>,
+          <Button key="submit" type="primary" onClick={handleOk}>
+            OK
+          </Button>,
+        ]}
+      >
         <Form form={form} layout="vertical" autoComplete="off">
-          <Form.Item name="title" label="Title">
+          <Form.Item name="title" label={t('Title')}>
             <Input maxLength={30} />
           </Form.Item>
         </Form>

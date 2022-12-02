@@ -7,6 +7,7 @@ import { authSignIn, authSignUp } from '../features/auth/auth-slice';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { useLocation } from 'react-router-dom';
 import { PageLoadingIndicator } from '../components';
+import { useTranslation } from 'react-i18next';
 
 export const LoginPage: React.FC = () => {
   const [form] = useForm();
@@ -16,6 +17,7 @@ export const LoginPage: React.FC = () => {
   const status = useAppSelector((state) => state.auth.status);
 
   const userId = useAppSelector((state) => state.auth.userData._id);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (userId) {
@@ -52,10 +54,10 @@ export const LoginPage: React.FC = () => {
           {location.pathname === '/registration' && (
             <Form.Item
               name="name"
-              label="Name"
+              label={t('Name')}
               rules={[
-                { required: true, message: 'Please input your name!' },
-                { min: 3, message: 'Name length should be more than 3' },
+                { required: true, message: `${t('Validation of name')}` },
+                { min: 3, message: `${t('Validation of name length')}` },
               ]}
             >
               <Input />
@@ -63,30 +65,30 @@ export const LoginPage: React.FC = () => {
           )}
           <Form.Item
             name="login"
-            label="Login"
+            label={t('Login')}
             rules={[
-              { required: true, message: 'Please input your login!' },
-              { min: 3, message: 'Login length should be more than 3' },
+              { required: true, message: `${t('Validation of login')}` },
+              { min: 3, message: `${t('Validation of login length')}` },
             ]}
           >
             <Input />
           </Form.Item>
           <Form.Item
             name="password"
-            label="Password"
+            label={t('Password')}
             rules={[
-              { required: true, message: 'Please input your password!' },
+              { required: true, message: `${t('Validation of password')}` },
               {
                 min: 3,
-                message: 'Password length should be more than 3',
+                message: `${t('Validation of password length')}`,
               },
             ]}
           >
             <Input.Password />
           </Form.Item>
-          <Button htmlType="submit">Submit</Button>
+          <Button htmlType="submit">{t('Submit button')}</Button>
           <Button onClick={() => navigate('../')} style={{ marginLeft: '2rem' }}>
-            Cancel
+            {t('Cancel button')}
           </Button>
         </Form>
       </div>
