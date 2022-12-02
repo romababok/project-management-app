@@ -180,18 +180,8 @@ const tasksSlice = createSlice({
       .addCase(tasksGetAll.rejected, (state) => {
         state.status = 'failed';
       })
-      .addCase(taskSetUpdate.fulfilled, (state, action) => {
+      .addCase(taskSetUpdate.fulfilled, (state) => {
         state.status = 'succeeded';
-        // if (action.payload) {
-        //   const nonUpdatedTasks: Task[] = [];
-        //   state.taskList.forEach((task) => {
-        //     const newTask = action.payload?.find((updatedTask) => task._id === updatedTask._id);
-        //     if (!newTask) {
-        //       nonUpdatedTasks.push(task);
-        //     }
-        //   });
-        //   state.taskList = [...nonUpdatedTasks, ...action.payload];
-        // }
       })
       .addCase(taskSetUpdate.pending, (state) => {
         state.status = 'loading';

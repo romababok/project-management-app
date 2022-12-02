@@ -26,8 +26,7 @@ export const SelectedBoardPage: React.FC = () => {
   const [form] = Form.useForm<{ title: string }>();
   const columnTitle = Form.useWatch('title', form);
   const tasks = useAppSelector(selectTasks);
-  const [columnsState, setColumnsState] = useState<ColumnInterface[]>(columns);
-  const columnsToSort = [...columnsState];
+  const columnsToSort = [...columns];
 
   useEffect(() => {
     if (boardId) {
@@ -44,10 +43,6 @@ export const SelectedBoardPage: React.FC = () => {
       dispatch({ type: 'tasks/resetTasks' });
     };
   }, []);
-
-  useEffect(() => {
-    setColumnsState([...columns].sort((a, b) => a.order - b.order));
-  }, [columns]);
 
   const board = useAppSelector(selectBoard);
 
@@ -84,14 +79,14 @@ export const SelectedBoardPage: React.FC = () => {
     }
 
     const draggableTask = tasks.find((task) => task._id === draggableId);
-    const draggableColumn = columnsState.find((column) => column._id === draggableId);
+    const draggableColumn = columns.find((column) => column._id === draggableId);
 
     if (type === 'column') {
       if (!draggableColumn) {
         return;
       }
 
-      const unDraggedColumns = columnsState
+      const unDraggedColumns = columns
         .filter((column) => column._id !== draggableId)
         .sort((a, b) => a.order - b.order);
 
@@ -123,15 +118,7 @@ export const SelectedBoardPage: React.FC = () => {
         });
       }
 
-      const nonUpdatedColumns: ColumnInterface[] = [];
-      columnsState.forEach((column) => {
-        const newColumn = columnsToUpdate.find((updatedColumn) => column._id === updatedColumn._id);
-        if (!newColumn) {
-          nonUpdatedColumns.push(column);
-        }
-      });
-
-      setColumnsState([...nonUpdatedColumns, ...columnsToUpdate]);
+      dispatch({ type: 'columns/updateColumns', payload: columnsToUpdate });
 
       const columnsToUpdateRequest: ColumnsSetRequest[] = columnsToUpdate.map((column) => {
         const { _id, order } = column;

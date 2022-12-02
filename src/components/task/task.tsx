@@ -63,7 +63,7 @@ const Task: React.FC<TaskProps> = ({ title, desc, columnId, taskId, order }) => 
   return (
     <Content>
       <div className="task" onClick={showModal}>
-        <h4>{title}</h4>
+        <span>{title}</span>
         <Popconfirm
           placement="bottomRight"
           title="Are you sure you want to delete this task?"
