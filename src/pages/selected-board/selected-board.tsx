@@ -288,7 +288,7 @@ export const SelectedBoardPage: React.FC = () => {
         ]}
       >
         <Form form={form} layout="vertical" autoComplete="off">
-          <Form.Item name="title" label="Title">
+          <Form.Item name="title" label={t('Title')}>
             <Input maxLength={30} />
           </Form.Item>
         </Form>

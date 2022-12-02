@@ -88,8 +88,16 @@ const Task: React.FC<TaskProps> = ({ title, desc, columnId, taskId, order }) => 
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
+        footer={[
+          <Button key="back" onClick={handleCancel}>
+            {t('Cancel button')}
+          </Button>,
+          <Button key="submit" type="primary" onClick={handleOk}>
+            OK
+          </Button>,
+        ]}
       >
-        <h4>Description:</h4>
+        <h4>{t('Description')}:</h4>
         <Paragraph ellipsis={{ rows: 2 }} editable={{ onChange: seTaskDesc, maxLength: 150 }}>
           {taskDesc}
         </Paragraph>
