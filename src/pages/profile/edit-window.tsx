@@ -30,8 +30,8 @@ export const EditModal: FC<EditModalProps> = ({
       <Form
         form={form}
         name="update-user-form"
-        labelCol={{ xs: 8, sm: 6, md: 6, lg: 6 }}
-        wrapperCol={{ xs: 24, sm: 12, md: 12, lg: 12 }}
+        layout="vertical"
+        labelCol={{ xs: 10, sm: 6, md: 6, lg: 6 }}
         onFinish={handleSubmit}
         className={styles.window__form}
       >

@@ -83,7 +83,6 @@ $switcher-color: #1890ff;
     .menu__userIcon{
       color: white;
       background-color: #003eb3;
-      font-size: 16px;
     }
     .user__profile{
       margin-left: auto;
@@ -102,6 +101,19 @@ $switcher-color: #1890ff;
   justify-content: center;
   margin-left: 3rem;
   gap: 1rem;
+  .link__button{
+    font-size: 1.4rem;
+    color: black;
+    padding: 0;
+    :hover{
+      color: $link-hoverColor;
+      transition: all 0.3s;
+    }
+    .link__icon{
+      font-size: 1rem;
+      margin-right: 0.5rem;
+    }
+  }
 
 }
 .drawer__link {

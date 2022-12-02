@@ -11,6 +11,7 @@ import {
   LogoutOutlined,
   MenuOutlined,
   PlusCircleOutlined,
+  PlusSquareOutlined,
   PushpinOutlined,
   ToolOutlined,
 } from '@ant-design/icons';
@@ -188,7 +189,14 @@ export const HeaderOfApp: React.FC = () => {
             </>
           ) : (
             <>
-              <Button onClick={() => setIsModalOpen(true)}>{t('Header create new board')}</Button>
+              <Button
+                icon={<PlusSquareOutlined className={styles.link__icon} />}
+                className={styles.link__button}
+                type="link"
+                onClick={() => setIsModalOpen(true)}
+              >
+                {t('Header create new board')}
+              </Button>
               <Link to="/boards" onClick={onClose} className={styles.drawer__link}>
                 <PushpinOutlined className={styles.link__icon} /> {t('Header go to main page')}
               </Link>

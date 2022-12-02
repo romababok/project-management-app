@@ -1,6 +1,6 @@
 import { Button, Form, Input, Modal, Select } from 'antd';
 import { useForm } from 'antd/es/form/Form';
-import { t } from 'i18next';
+import i18next, { t } from 'i18next';
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { createBoard } from '../../features/boards/boards-slice';
@@ -35,33 +35,39 @@ export const ModalCreateBoard = ({ isModalOpen, setIsModalOpen }: ModalCreateBoa
 
   return (
     <Modal
-      title="Create a new board"
+      title={t('Create a new board')}
       open={isModalOpen}
       onCancel={() => setIsModalOpen(false)}
       footer={[
         <Button key="cancel" onClick={() => setIsModalOpen(false)}>
-          Cancel
+          {t('Cancel button')}
         </Button>,
         <Button type="primary" key="create" htmlType="submit" form="create-board">
-          Create
+          {t('Create button')}
         </Button>,
       ]}
     >
-      <Form name="create-board" form={form} labelCol={{ span: 4 }} onFinish={onFinish}>
+      <Form
+        name="create-board"
+        form={form}
+        layout="vertical"
+        labelCol={{ xs: 10, sm: 6, md: 6, lg: 6 }}
+        onFinish={onFinish}
+      >
         <Form.Item
           name="title"
           label={t('Title')}
           rules={[
-            { required: true, message: 'Please input your board name!' },
-            { min: 2, message: `${t('Form rules')}` },
+            { required: true, message: `${i18next.t('Validation of board')}` },
+            { min: 2, message: `${t('Validation of board name length')}` },
           ]}
         >
           <Input />
         </Form.Item>
-        <Form.Item name="users" label={'users'}>
+        <Form.Item name="users" label={t('Users')}>
           <Select
             mode="multiple"
-            placeholder="Select users"
+            placeholder={t('Select users')}
             value={selectedItems}
             onChange={setSelectedItems}
             style={{ width: '100%' }}

@@ -54,7 +54,7 @@ export const authSignIn = createAsyncThunk('auth/signIn', async (request: SignUp
   } catch (error) {
     if (axios.isAxiosError(error)) {
       notification.error({
-        message: 'User was not founded! Check your input.' + error.response?.status,
+        message: i18next.t('User was not founded') + error.response?.status,
         description: error.response?.data.message,
       });
       throw new Error(error.message);
