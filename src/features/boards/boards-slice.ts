@@ -91,7 +91,12 @@ export const deleteBoard = createAsyncThunk('boards/deleteBoard', async (boardId
 export const boardsSlice = createSlice({
   name: 'boards',
   initialState,
-  reducers: {},
+  reducers: {
+    resetCurrentBoard: (state) => {
+      state.status = 'idle';
+      state.currentBoard = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(deleteBoard.fulfilled, (state) => {

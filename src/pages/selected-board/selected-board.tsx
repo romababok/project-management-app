@@ -41,6 +41,7 @@ export const SelectedBoardPage: React.FC = () => {
     return () => {
       dispatch({ type: 'columns/resetColumns' });
       dispatch({ type: 'tasks/resetTasks' });
+      dispatch({ type: 'boards/resetCurrentBoard' });
     };
   }, []);
 

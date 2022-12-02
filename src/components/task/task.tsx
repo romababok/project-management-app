@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { MouseEventHandler, useState } from 'react';
 import { Content } from 'antd/lib/layout/layout';
 import './task.styles.scss';
 import { Button, Modal, Popconfirm } from 'antd';
@@ -25,8 +25,10 @@ const Task: React.FC<TaskProps> = ({ title, desc, columnId, taskId, order }) => 
   const [taskTitle, setTaskTitle] = useState(title);
   const [taskDesc, seTaskDesc] = useState(desc);
 
-  const showModal = () => {
-    setIsModalOpen(true);
+  const showModal: MouseEventHandler = (e) => {
+    if (e.target instanceof HTMLDivElement) {
+      setIsModalOpen(true);
+    }
   };
 
   const handleOk = () => {
