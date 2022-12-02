@@ -1,10 +1,10 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { Content } from 'antd/lib/layout/layout';
 import { Button, Form, Input, List, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import Task from '../task/task';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { selectTasks, tasksCreate, tasksGetAll } from '../../features/task-list/task-list-slice';
+import { selectTasks, tasksCreate } from '../../features/task-list/task-list-slice';
 import { useParams } from 'react-router-dom';
 import styles from './task-list.module.scss';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
@@ -31,12 +31,6 @@ const TasksList: React.FC<TaskListProps> = ({ columnId }) => {
   const taskTitle = Form.useWatch('title', form);
   const taskDesc = Form.useWatch('description', form);
 
-  useEffect(() => {
-    if (boardId) {
-      dispatch(tasksGetAll({ boardId: boardId, columnId: columnId }));
-    }
-  }, []);
-
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -57,16 +51,18 @@ const TasksList: React.FC<TaskListProps> = ({ columnId }) => {
           },
         })
       );
+      form.resetFields();
     }
   };
 
   const handleCancel = () => {
     setIsModalOpen(false);
+    form.resetFields();
   };
 
   return (
     <Content className={styles.taskContent}>
-      <Droppable droppableId={columnId}>
+      <Droppable droppableId={columnId} type="task">
         {(provided, snapshot) => (
           <div ref={provided.innerRef} {...provided.droppableProps}>
             <List
@@ -85,6 +81,7 @@ const TasksList: React.FC<TaskListProps> = ({ columnId }) => {
                         <Task
                           title={task.title}
                           desc={task.description}
+                          order={task.order}
                           columnId={columnId}
                           taskId={task._id}
                         />
@@ -104,10 +101,10 @@ const TasksList: React.FC<TaskListProps> = ({ columnId }) => {
       <Modal title="Create Task" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
         <Form form={form} layout="vertical" autoComplete="off">
           <Form.Item name="title" label="Title">
-            <Input />
+            <Input maxLength={30} />
           </Form.Item>
           <Form.Item name="description" label="Description">
-            <Input.TextArea />
+            <Input.TextArea maxLength={150} />
           </Form.Item>
         </Form>
       </Modal>

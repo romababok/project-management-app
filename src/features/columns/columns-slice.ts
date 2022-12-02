@@ -1,5 +1,6 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
+  Column,
   ColumnsRequest,
   ColumnsSetRequest,
   createColumn,
@@ -105,6 +106,21 @@ const columnsSlice = createSlice({
       state.status = 'idle';
       state.columns = [];
     },
+    updateColumns: (state, action: PayloadAction<Column[]>) => {
+      state.status = 'idle';
+      if (action.payload) {
+        const nonUpdatedColumns: Column[] = [];
+        state.columns.forEach((column) => {
+          const newColumn = action.payload?.find(
+            (updatedColumn) => column._id === updatedColumn._id
+          );
+          if (!newColumn) {
+            nonUpdatedColumns.push(column);
+          }
+        });
+        state.columns = [...nonUpdatedColumns, ...action.payload];
+      }
+    },
   },
   extraReducers(builder) {
     builder
@@ -162,14 +178,8 @@ const columnsSlice = createSlice({
       .addCase(columnsGetAll.rejected, (state) => {
         state.status = 'failed';
       })
-      .addCase(columnsSetUpdate.fulfilled, (state, action) => {
+      .addCase(columnsSetUpdate.fulfilled, (state) => {
         state.status = 'succeeded';
-        if (action.payload) {
-          const nonUpdatedColumns = state.columns.filter((column) => {
-            action.payload?.forEach((updatedColumn) => column._id !== updatedColumn._id);
-          });
-          state.columns = [...nonUpdatedColumns, ...action.payload];
-        }
       })
       .addCase(columnsSetUpdate.pending, (state) => {
         state.status = 'loading';

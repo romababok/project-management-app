@@ -8,6 +8,7 @@ import {
 } from '../../api';
 import axios from 'axios';
 import { notification } from 'antd';
+import { RootState } from '../../app/store';
 
 export interface Board {
   _id: string;
@@ -96,7 +97,12 @@ export const deleteBoard = createAsyncThunk('boards/deleteBoard', async (boardId
 export const boardsSlice = createSlice({
   name: 'boards',
   initialState,
-  reducers: {},
+  reducers: {
+    resetCurrentBoard: (state) => {
+      state.status = 'idle';
+      state.currentBoard = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(deleteBoard.fulfilled, (state) => {
@@ -134,5 +140,7 @@ export const boardsSlice = createSlice({
       });
   },
 });
+
+export const selectBoard = (state: RootState) => state.boards.currentBoard;
 
 export default boardsSlice.reducer;
