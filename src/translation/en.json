@@ -1,4 +1,8 @@
 {
+  "Form rules": "Name length should be more than 1",
+  "Title": "title",
+  "Add board": "Add board",
+  "Welcom": "Hello",
   "Header welcome link": "Welcome",
   "Header go to main page": "Main page",
   "Header create new board": "Create board",

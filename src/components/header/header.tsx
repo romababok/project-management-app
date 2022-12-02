@@ -11,12 +11,12 @@ import {
   LogoutOutlined,
   MenuOutlined,
   PlusCircleOutlined,
-  PlusOutlined,
   PushpinOutlined,
   ToolOutlined,
 } from '@ant-design/icons';
 import styles from './header.module.scss';
-import { getUserData, logOut } from '../../features/auth/auth-slice';
+import { getAllUsers, getUserData, logOut } from '../../features/auth/auth-slice';
+import { ModalCreateBoard } from '../modal/modal';
 
 const languages = [
   {
@@ -39,17 +39,24 @@ const languages = [
 
 export const HeaderOfApp: React.FC = () => {
   const location = useLocation();
-  const userId = useAppSelector((state) => state.auth.userData?.id);
+  const userId = useAppSelector((state) => state.auth.userData?._id);
   const name = useAppSelector((state) => state.auth.userData?.name);
   const langFromStorage = localStorage.getItem('lang');
 
   const [open, setOpen] = useState<boolean>(false);
   const [lang, setLang] = useState<string>(langFromStorage ?? 'English');
-
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const token = localStorage.getItem('token');
   const dispatch = useAppDispatch();
   const [theme, setTheme] = useState<MenuTheme>('dark');
   const isLightThemeSelected = theme === 'light';
+
+  useEffect(() => {
+    if (token) {
+      dispatch(getUserData(token as string));
+      dispatch(getAllUsers());
+    }
+  }, [dispatch, token]);
 
   const followScroll = () => {
     if (window.pageYOffset > 70) {
@@ -71,12 +78,6 @@ export const HeaderOfApp: React.FC = () => {
     }
     return styles.header;
   };
-
-  useEffect(() => {
-    if (token) {
-      dispatch(getUserData(token as string));
-    }
-  }, [dispatch, token]);
 
   useEffect(() => {
     localStorage.setItem('lang', lang);
@@ -122,7 +123,7 @@ export const HeaderOfApp: React.FC = () => {
   const itemsWithId = [
     { label: <Link to="/">{t('Header welcome link')}</Link>, key: '/' },
     {
-      label: <Link to="">{t('Header create new board')}</Link>,
+      label: <Button onClick={() => setIsModalOpen(true)}>{t('Header create new board')}</Button>,
       key: '',
       className: styles.menu__main,
     },
@@ -187,9 +188,7 @@ export const HeaderOfApp: React.FC = () => {
             </>
           ) : (
             <>
-              <Link to="" onClick={onClose} className={styles.drawer__link}>
-                <PlusOutlined className={styles.link__icon} /> {t('Header create new board')}
-              </Link>
+              <Button onClick={() => setIsModalOpen(true)}>{t('Header create new board')}</Button>
               <Link to="/boards" onClick={onClose} className={styles.drawer__link}>
                 <PushpinOutlined className={styles.link__icon} /> {t('Header go to main page')}
               </Link>
@@ -218,6 +217,7 @@ export const HeaderOfApp: React.FC = () => {
         onChange={handleChange}
         options={languages}
       />
+      <ModalCreateBoard isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
     </Header>
   );
 };

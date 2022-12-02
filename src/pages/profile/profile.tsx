@@ -30,14 +30,14 @@ export const ProfilePage: React.FC = () => {
   };
 
   const handleSubmit = (request: User) => {
-    const userId = userData.id;
+    const userId = userData._id;
     dispatch(updateUser({ userId, request }));
     setIsModalOpen(false);
     form.resetFields();
   };
 
   const confirm = () => {
-    dispatch(deleteUser(userData.id));
+    dispatch(deleteUser(userData._id));
     navigate('/');
   };
 
@@ -57,20 +57,20 @@ export const ProfilePage: React.FC = () => {
                 {t('Edit profile name')}
               </Text>
               <Text className={styles.name__text}>
-                {userData.id && userData.name.slice(0, 1).toUpperCase() + userData.name.slice(1)}
+                {userData._id && userData.name.slice(0, 1).toUpperCase() + userData.name.slice(1)}
               </Text>
             </div>
             <div className={styles.login__block}>
               <Text strong className={styles.login__title}>
                 {t('Edit profile login')}
               </Text>
-              <Text className={styles.name__text}>{userData.id && userData.login}</Text>
+              <Text className={styles.name__text}>{userData._id && userData.login}</Text>
             </div>
             <div className={styles.userid__block}>
               <Text strong className={styles.userid__title}>
                 {t('Edit profile userId')}
               </Text>
-              <Text className={styles.userid__text}>{userData.id && userData.id}</Text>
+              <Text className={styles.userid__text}>{userData._id && userData._id}</Text>
             </div>
           </div>
           <div className={styles.profile__buttons}>

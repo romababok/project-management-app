@@ -14,7 +14,8 @@ export const LoginPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const location = useLocation();
   const status = useAppSelector((state) => state.auth.status);
-  const userId = useAppSelector((state) => state.auth.userData.id);
+
+  const userId = useAppSelector((state) => state.auth.userData._id);
 
   useEffect(() => {
     if (userId) {
@@ -25,8 +26,9 @@ export const LoginPage: React.FC = () => {
   const handleFinish = async (values: { name: string; login: string; password: string }) => {
     if (location.pathname === '/login') {
       await dispatch(authSignIn(values));
+      navigate('/boards');
     } else {
-      await dispatch(authSignUp(values));
+      dispatch(authSignUp(values));
       navigate('/login');
     }
   };

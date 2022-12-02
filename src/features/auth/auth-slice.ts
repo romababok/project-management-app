@@ -1,27 +1,37 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import { signIn, signUp, SignUpRequest } from '../../api';
+import { getAllUsersAPI, getUserByIdAPI, signIn, signUp, SignUpRequest } from '../../api';
 import jwt_decode from 'jwt-decode';
 import axios from 'axios';
-import { deleteUserById, getUserByIdAPI, updateUserDataAPI, User } from '../../api/users';
+import { deleteUserById, updateUserDataAPI } from '../../api/users';
 import { notification } from 'antd';
+import i18next from 'i18next';
+import { setError } from '../../helpers/helpers';
+
+interface User {
+  _id: string;
+  name: string;
+  login: string;
+}
+
+export interface SignInUser {
+  name: string;
+  login: string;
+  password: string;
+}
 
 export interface AuthState {
-  userData: {
-    id: string;
-    name: string;
-    login: string;
-    token: string | null;
-  };
+  users: User[];
+  userData: User;
   status: 'idle' | 'loading' | 'failed';
 }
 
 const initialState: AuthState = {
+  users: [],
   userData: {
-    id: '',
+    _id: '',
     name: '',
     login: '',
-    token: '',
   },
   status: 'idle',
 };
@@ -32,21 +42,6 @@ interface JwtData {
   exp: number;
 }
 
-export const getUserData = createAsyncThunk('auth/getUser', async (jwt: string) => {
-  const { id } = jwt_decode<JwtData>(jwt);
-  try {
-    const response = await getUserByIdAPI(id);
-    return response.data;
-  } catch (err) {
-    if (axios.isAxiosError(err)) {
-      notification.error({
-        message: 'Data on the page is out of date.',
-        description: err.response?.data.message,
-      });
-    }
-  }
-});
-
 export const authSignUp = createAsyncThunk('auth/signUp', async (request: SignUpRequest) => {
   const response = await signUp(request);
   return response.data;
@@ -56,19 +51,50 @@ export const authSignIn = createAsyncThunk('auth/signIn', async (request: SignUp
   try {
     const response = await signIn(request);
     return response.data;
-  } catch (err) {
-    if (axios.isAxiosError(err)) {
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
       notification.error({
-        message: 'User was not founded! Check your input.' + err.response?.status,
-        description: err.response?.data.message,
+        message: 'User was not founded! Check your input.' + error.response?.status,
+        description: error.response?.data.message,
       });
+      throw new Error(error.message);
+    }
+  }
+});
+
+export const getUserData = createAsyncThunk('auth/getUser', async (jwt: string) => {
+  const { id } = jwt_decode<JwtData>(jwt);
+  try {
+    const response = await getUserByIdAPI(id);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      notification.error({
+        message: 'Data on the page is out of date.',
+        description: error.response?.data.message,
+      });
+      throw new Error(error.message);
+    }
+  }
+});
+export const getAllUsers = createAsyncThunk('auth/getAllUsers', async () => {
+  try {
+    const response = await getAllUsersAPI();
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      notification.error({
+        message: 'Data on the page is out of date.',
+        description: error.response?.data.message,
+      });
+      throw new Error(error.message);
     }
   }
 });
 
 export const updateUser = createAsyncThunk(
   'user/updateUser',
-  async ({ userId, request }: { userId: string; request: User }) => {
+  async ({ userId, request }: { userId: string; request: SignInUser }) => {
     try {
       const response = await updateUserDataAPI(userId, request);
       return response.data;
@@ -100,22 +126,19 @@ export const deleteUser = createAsyncThunk('user/deleteUser', async (userId: str
   }
 });
 
-const setError = (state: AuthState) => {
-  state.status = 'failed';
-};
-
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
     logOut: (state) => {
       localStorage.removeItem('token');
+      localStorage.removeItem('userId');
       state.userData = {
-        id: '',
+        _id: '',
         name: '',
         login: '',
-        token: '',
       };
+      state.users = [];
     },
   },
 
@@ -135,26 +158,50 @@ export const authSlice = createSlice({
       .addCase(authSignIn.fulfilled, (state, action) => {
         state.status = 'idle';
         const data = action.payload;
-        if (data) {
-          localStorage.setItem('token', action.payload.token);
-          const decoded: JwtData = jwt_decode(action.payload.token);
-          state.userData.login = decoded.login;
-          state.userData.id = decoded.id;
-        }
+        localStorage.setItem('token', data.token);
+        const decoded: JwtData = jwt_decode(data.token);
+        state.userData._id = decoded.id;
+        localStorage.setItem('userId', decoded.id);
+        notification.info({
+          message: i18next.t('Welcom') + ` '${decoded.login}'!`,
+        });
+      })
+      .addCase(authSignIn.rejected, setError)
+      .addCase(getAllUsers.pending, (state: { status: string }) => {
+        state.status = 'loading';
+      })
+      .addCase(getAllUsers.rejected, setError)
+
+      .addCase(getAllUsers.fulfilled, (state, action) => {
+        state.status = 'idle';
+        state.users = action.payload;
+      })
+
+      .addCase(getUserData.pending, (state) => {
+        state.status = 'loading';
       })
       .addCase(getUserData.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.userData.id = action.payload._id;
-        state.userData.login = action.payload.login;
-        state.userData.name = action.payload.name;
+        const data = action.payload;
+        state.userData._id = data._id;
+        state.userData.login = data.login;
+        state.userData.name = data.name;
+        localStorage.setItem('userId', data._id);
       })
-      .addCase(authSignIn.rejected, setError)
+      .addCase(getUserData.rejected, (state) => {
+        state.status = 'failed';
+        localStorage.removeItem('token');
+        localStorage.removeItem('userId');
+        state.userData._id = '';
+        state.userData.login = '';
+        state.userData.name = '';
+      })
       .addCase(updateUser.pending, (state) => {
         state.status = 'loading';
       })
       .addCase(updateUser.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.userData.id = action.payload._id;
+        state.userData._id = action.payload._id;
         state.userData.login = action.payload.login;
         state.userData.name = action.payload.name;
         notification.success({
@@ -171,10 +218,9 @@ export const authSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(deleteUser.fulfilled, (state) => {
-        state.userData.id = '';
+        state.userData._id = '';
         state.userData.login = '';
         state.userData.name = '';
-        state.userData.token = null;
         localStorage.removeItem('token');
         state.status = 'idle';
         notification.success({
@@ -185,14 +231,11 @@ export const authSlice = createSlice({
       })
       .addCase(deleteUser.rejected, (state) => {
         state.status = 'failed';
+        state.userData.name = '';
       });
   },
 });
 
-// The function below is called a selector and allows us to select a value from
-// the state. Selectors can also be defined inline where they're used instead of
-// in the slice file. For example: `useSelector((state: RootState) => state.counter.value)`
-export const bearerKey = (state: RootState) => state.auth.userData?.token;
 export const selectUser = (state: RootState) => state.auth.userData;
 
 export const { logOut } = authSlice.actions;

@@ -21,6 +21,9 @@ export type UserInfo = {
 export const getUserByIdAPI = async (id: string) => {
   return await axios.get(baseApiUrl + `/users/${id}`);
 };
+export const getAllUsersAPI = async () => {
+  return await axios.get(baseApiUrl + `/users`);
+};
 export const updateUserDataAPI = async (id: string, userData: User) => {
   return await axios.put(baseApiUrl + `/users/${id}`, userData);
 };
