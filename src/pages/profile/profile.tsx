@@ -38,6 +38,7 @@ export const ProfilePage: React.FC = () => {
   const [data, setData] = useState<TaskItem[]>([]);
   const [filtredTasks, setFiltredTasks] = useState<TaskItem[]>(data);
   const [value, setValue] = useState<string>();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -59,14 +60,17 @@ export const ProfilePage: React.FC = () => {
     navigate('/');
   };
   const loadData = async () => {
+    setLoading(true);
     try {
       if (userId) {
         const response = await getUserTasks(userId);
         setData(response.data);
         setFiltredTasks(response.data);
+        setLoading(false);
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
+        setLoading(true);
         notification.error({
           message: i18next.t('Request failed message') + error.response?.status,
           description: error.response?.data.message,
@@ -157,7 +161,7 @@ export const ProfilePage: React.FC = () => {
           </div>
         </div>
       )}
-      {data.length < 1 ? (
+      {loading ? (
         <Skeleton className={styles.skeleton__tasks} active paragraph={{ rows: 6 }} />
       ) : (
         <div className={styles.tasks}>
