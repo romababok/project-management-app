@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { baseApiUrl } from '.';
+import { TaskItem } from '../Interfaces';
 
 export interface TaskRequest {
   title: string;
@@ -52,3 +53,6 @@ export const getTask = async (boardId: string, columnId: string, taskId: string)
 
 export const updateTaskSet = async (request: TaskSetRequest[]) =>
   await axios.patch<Task[]>(baseApiUrl + '/tasksSet', request);
+
+export const getUserTasks = async (userId: string) =>
+  await axios.get<TaskItem[]>(baseApiUrl + `/tasksSet?userId=${userId}`);

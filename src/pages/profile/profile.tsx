@@ -1,25 +1,43 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Content } from 'antd/lib/layout/layout';
 import styles from './profile.module.scss';
-import { Avatar, Button, Divider, Popconfirm, Skeleton, Typography } from 'antd';
+import {
+  Avatar,
+  Button,
+  Divider,
+  Input,
+  List,
+  notification,
+  Popconfirm,
+  Skeleton,
+  Typography,
+} from 'antd';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { useForm } from 'antd/lib/form/Form';
-import { DeleteOutlined, EditOutlined, UserOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, PaperClipOutlined, UserOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router';
 import { EditModal } from './edit-window';
 import { deleteUser, updateUser } from '../../features/auth/auth-slice';
 import { User } from '../../api/users';
 import { useTranslation } from 'react-i18next';
+import axios from 'axios';
+import { TaskItem } from '../../Interfaces';
+import { getUserTasks } from '../../api/tasks';
+import i18next from 'i18next';
 
-const { Text } = Typography;
+const { Text, Paragraph, Title } = Typography;
 
 export const ProfilePage: React.FC = () => {
   const { userData, status } = useAppSelector((state) => state.auth);
+  const userId = localStorage.getItem('userId');
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form] = useForm();
   const { t } = useTranslation();
+  const [data, setData] = useState<TaskItem[]>([]);
+  const [filtredTasks, setFiltredTasks] = useState<TaskItem[]>(data);
+  const [value, setValue] = useState<string>();
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -39,6 +57,43 @@ export const ProfilePage: React.FC = () => {
   const confirm = () => {
     dispatch(deleteUser(userData._id));
     navigate('/');
+  };
+  const loadData = async () => {
+    try {
+      if (userId) {
+        const response = await getUserTasks(userId);
+        setData(response.data);
+        setFiltredTasks(response.data);
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        notification.error({
+          message: i18next.t('Request failed message') + error.response?.status,
+          description: error.response?.data.message,
+        });
+        throw new Error(error.message);
+      }
+    }
+  };
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const filterTasks = (value: string) => {
+    if (value.length >= 1) {
+      const newTasks = [...data].filter((item) =>
+        item.title.toLowerCase().includes(value.toLowerCase())
+      );
+      setFiltredTasks(newTasks);
+    } else {
+      setFiltredTasks(data);
+    }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
+    filterTasks(e.target.value);
   };
 
   return (
@@ -100,6 +155,35 @@ export const ProfilePage: React.FC = () => {
               </Button>
             </Popconfirm>
           </div>
+        </div>
+      )}
+      {data.length < 1 ? (
+        <Skeleton className={styles.skeleton__tasks} active paragraph={{ rows: 6 }} />
+      ) : (
+        <div className={styles.tasks}>
+          <Title level={4}>{t('My tasks')}</Title>
+          <List
+            footer={<Divider plain>It is all, nothing more 🤐</Divider>}
+            header={<Input value={value} onChange={handleInputChange} maxLength={10} />}
+            className={styles.tasks__list}
+            bordered
+            dataSource={filtredTasks}
+            renderItem={(item) => (
+              <List.Item>
+                <List.Item.Meta
+                  avatar={<PaperClipOutlined className={styles.tasks__icon} />}
+                  title={<Paragraph ellipsis={true}>{item.title}</Paragraph>}
+                  description={<Paragraph ellipsis={true}>{item.description}</Paragraph>}
+                />
+                <Button
+                  className={styles.tasks__button}
+                  onClick={() => navigate(`/boards/${item.boardId}`)}
+                >
+                  {t('Go')}
+                </Button>
+              </List.Item>
+            )}
+          />
         </div>
       )}
       <EditModal
