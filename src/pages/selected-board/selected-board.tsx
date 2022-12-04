@@ -275,7 +275,7 @@ export const SelectedBoardPage: React.FC = () => {
   };
 
   return (
-    <Content style={{ padding: '0 50px', minHeight: '70px' }}>
+    <Content style={{ padding: '0 50px', height: 'calc(100vh - 100px - 64px' }}>
       <div className={styles.boardHeader}>
         <Button type="default">
           <Link to="/boards">Back</Link>

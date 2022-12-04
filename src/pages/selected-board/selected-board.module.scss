@@ -1,7 +1,7 @@
 .boardList {
   overflow: auto;
   overflow-y: hidden;
-  height: 70vh;
+  height: 55vh;
     :global .ant-list-items {
     display: flex;
     flex-direction: row;
@@ -22,5 +22,11 @@
   flex-direction: column;
   button {
     margin-bottom: 0.2rem;
+  }
+}
+
+@media (max-width: 700px) {
+  .boardHeader{
+    flex-direction: column;
   }
 }
