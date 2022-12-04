@@ -78,24 +78,23 @@ export const SelectedBoardPage: React.FC = () => {
 
   const steps: TourProps['steps'] = [
     {
-      title: 'Change column title',
-      description: 'Click on a column title to make changes',
+      title: t('First slide title'),
+      description: t('First slide description'),
       target: () => ref1.current,
     },
     {
-      title: 'Manage tasks',
-      description: 'Click on a task to add or edit its title and description',
+      title: t('Second slide title'),
+      description: t('Second slide description'),
       target: () => ref2.current,
     },
     {
-      title: 'Swap columns',
-      description: 'Change order of your columns by drag-n-drop',
+      title: t('Third slide title'),
+      description: t('Third slide description'),
       target: () => ref3.current,
     },
     {
-      title: 'Swap tasks',
-      description:
-        'Move tasks inside a column or between columns to show actual steps of your work process',
+      title: t('Fourth slide title'),
+      description: t('Fourth slide description'),
       target: () => ref4.current,
     },
   ];
@@ -292,7 +291,7 @@ export const SelectedBoardPage: React.FC = () => {
     <Content style={{ padding: '0 50px', maxHeight: 'calc(100vh - 80px - 64px)' }}>
       <div className={styles.boardHeader}>
         <Button type="default">
-          <Link to="/boards">Back</Link>
+          <Link to="/boards">{t('Back')}</Link>
         </Button>
         <h1>{board?.title}</h1>
         <div className={styles.boardControllers}>
@@ -300,14 +299,14 @@ export const SelectedBoardPage: React.FC = () => {
             {t('Add column')}
           </Button>
           {tourInactive ? (
-            <Tooltip placement={'bottom'} title="Create your first column and task to begin tour">
+            <Tooltip placement={'bottom'} title={t('Tour message')}>
               <Button
                 type="default"
                 onClick={() => setOpen(true)}
                 disabled={tourInactive}
                 icon={<BulbTwoTone />}
               >
-                Tour
+                {t('Tour')}
               </Button>
             </Tooltip>
           ) : (
@@ -317,7 +316,7 @@ export const SelectedBoardPage: React.FC = () => {
               disabled={tourInactive}
               icon={<BulbTwoTone />}
             >
-              Tour
+              {t('Tour')}
             </Button>
           )}
         </div>

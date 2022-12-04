@@ -81,5 +81,16 @@
   "This login already exist": "This login already exist",
   "Something went wrong": "Something went wrong",
   "Your account has been deleted": "Your account has been deleted",
-  "Sorry massage": "We are very sorry that you left our application...We will be glad see you again!"
+  "Sorry massage": "We are very sorry that you left our application...We will be glad see you again!",
+  "Tour": "Tour",
+  "First slide title": "Change column title",
+  "First slide description": "Click on a column title to make changes",
+  "Second slide title": "Manage tasks",
+  "Second slide description": "Click on a task to add or edit its title and description",
+  "Third slide title": "Swap columns",
+  "Third slide description": "Change order of your columns by drag-n-drop",
+  "Fourth slide title": "Swap tasks",
+  "Fourth slide description": "Move tasks inside a column or between columns to show actual steps of your work process",
+  "Tour message": "Create your first column and task to begin tour",
+  "Back": "Back"
 }
