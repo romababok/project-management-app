@@ -12,9 +12,15 @@ import { useTranslation } from 'react-i18next';
 
 interface TaskListProps {
   columnId: string;
+  tourRefs?: {
+    ref1: React.MutableRefObject<null>;
+    ref2: React.MutableRefObject<null>;
+    ref3: React.MutableRefObject<null>;
+    ref4: React.MutableRefObject<null>;
+  };
 }
 
-const TasksList: React.FC<TaskListProps> = ({ columnId }) => {
+const TasksList: React.FC<TaskListProps> = ({ columnId, tourRefs }) => {
   const { boardId } = useParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useAppDispatch();
@@ -63,7 +69,7 @@ const TasksList: React.FC<TaskListProps> = ({ columnId }) => {
   };
 
   return (
-    <Content className={styles.taskContent}>
+    <Content className={styles.taskContent} ref={tourRefs?.ref4}>
       <Droppable droppableId={columnId} type="task">
         {(provided, snapshot) => (
           <div ref={provided.innerRef} {...provided.droppableProps}>
@@ -81,6 +87,7 @@ const TasksList: React.FC<TaskListProps> = ({ columnId }) => {
                         ref={provided.innerRef}
                       >
                         <Task
+                          tourRefs={tourRefs}
                           title={task.title}
                           desc={task.description}
                           order={task.order}
