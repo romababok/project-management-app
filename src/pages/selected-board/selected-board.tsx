@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Content } from 'antd/lib/layout/layout';
 import { PlusOutlined, BulbTwoTone } from '@ant-design/icons';
 import { Button, Modal, Input, Form, List, Tour, Tooltip } from 'antd';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
   columnsGetAll,
@@ -16,7 +16,7 @@ import { selectTasks, taskSetUpdate, tasksGetAll } from '../../features/task-lis
 import { Task, TaskSetRequest } from '../../api/tasks';
 import Column from '../../components/column/column';
 import { Column as ColumnInterface, ColumnsSetRequest } from '../../api/сolumns';
-import { getBoardById, selectBoard } from '../../features/boards/boards-slice';
+import { getBoardById, selectBoard, selectBoardStatus } from '../../features/boards/boards-slice';
 import { useTranslation } from 'react-i18next';
 import type { TourProps } from 'antd';
 
@@ -38,10 +38,21 @@ export const SelectedBoardPage: React.FC = () => {
   const { t } = useTranslation();
   const [tourInactive, setTourInactive] = useState(true);
   const tourRefs = { ref1, ref2, ref3, ref4 };
+  const navigate = useNavigate();
+  const board = useAppSelector(selectBoard);
+  const boardStatus = useAppSelector(selectBoardStatus);
 
   useEffect(() => {
     if (boardId) {
       dispatch(getBoardById(boardId));
+    }
+    return () => {
+      dispatch({ type: 'boards/resetCurrentBoard' });
+    };
+  }, []);
+
+  useEffect(() => {
+    if (board && boardId) {
       dispatch(columnsGetAll(boardId)).then((data) => {
         const cols = data.payload as ColumnInterface[];
         cols.forEach((column) => {
@@ -52,9 +63,14 @@ export const SelectedBoardPage: React.FC = () => {
     return () => {
       dispatch({ type: 'columns/resetColumns' });
       dispatch({ type: 'tasks/resetTasks' });
-      dispatch({ type: 'boards/resetCurrentBoard' });
     };
-  }, []);
+  }, [board]);
+
+  useEffect(() => {
+    if (boardStatus === 'failed') {
+      navigate('/boards');
+    }
+  }, [boardStatus]);
 
   useEffect(() => {
     tasks.length > 0 ? setTourInactive(false) : setTourInactive(true);
@@ -83,8 +99,6 @@ export const SelectedBoardPage: React.FC = () => {
       target: () => ref4.current,
     },
   ];
-
-  const board = useAppSelector(selectBoard);
 
   const showModal = () => {
     setIsModalOpen(true);
