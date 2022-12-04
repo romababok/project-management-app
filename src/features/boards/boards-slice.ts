@@ -143,5 +143,6 @@ export const boardsSlice = createSlice({
 });
 
 export const selectBoard = (state: RootState) => state.boards.currentBoard;
+export const selectBoardStatus = (state: RootState) => state.boards.status;
 
 export default boardsSlice.reducer;
