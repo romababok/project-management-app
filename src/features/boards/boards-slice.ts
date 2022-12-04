@@ -25,7 +25,7 @@ export interface BoardsState {
   currentBoard: Board | null;
   board: Board;
   status: 'idle' | 'loading' | 'failed';
-  statusFromModal: 'idle' | 'loading' | 'failed';
+  statusGetBoardById: 'idle' | 'loading' | 'failed';
 }
 
 const initialState: BoardsState = {
@@ -37,7 +37,7 @@ const initialState: BoardsState = {
     owner: '',
     users: [],
   },
-  statusFromModal: 'idle',
+  statusGetBoardById: 'idle',
   status: 'idle',
 };
 
@@ -167,15 +167,15 @@ export const boardsSlice = createSlice({
         state.status = 'failed';
       })
       .addCase(getBoardById.pending, (state) => {
-        state.statusFromModal = 'loading';
+        state.statusGetBoardById = 'loading';
       })
       .addCase(getBoardById.fulfilled, (state, action) => {
-        state.statusFromModal = 'idle';
+        state.statusGetBoardById = 'idle';
         state.currentBoard = action.payload;
         state.board = action.payload;
       })
       .addCase(getBoardById.rejected, (state) => {
-        state.statusFromModal = 'failed';
+        state.statusGetBoardById = 'failed';
       });
   },
 });

@@ -83,7 +83,7 @@ export const ModalUpdateBoard = ({ isModalOpen, setIsModalOpen }: ModalBoardProp
   const board = useAppSelector((state) => state.boards.board);
   const { t } = useTranslation();
   const userId = useAppSelector((state) => state.auth.userData._id);
-  const { statusFromModal } = useAppSelector((state) => state.boards);
+  const { statusGetBoardById } = useAppSelector((state) => state.boards);
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -103,7 +103,7 @@ export const ModalUpdateBoard = ({ isModalOpen, setIsModalOpen }: ModalBoardProp
     dispatch(getAllBoards(userId));
     closeModal();
   };
-  if (statusFromModal === 'loading') {
+  if (statusGetBoardById === 'loading') {
     return <Spin />;
   }
   return (

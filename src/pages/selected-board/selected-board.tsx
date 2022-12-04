@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Content } from 'antd/lib/layout/layout';
 import { PlusOutlined, BulbTwoTone } from '@ant-design/icons';
-import { Button, Modal, Input, Form, List, Tour, Tooltip } from 'antd';
+import { Button, Modal, Input, Form, List, Tour, Tooltip, Spin } from 'antd';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
@@ -16,7 +16,7 @@ import { selectTasks, taskSetUpdate, tasksGetAll } from '../../features/task-lis
 import { Task, TaskSetRequest } from '../../api/tasks';
 import Column from '../../components/column/column';
 import { Column as ColumnInterface, ColumnsSetRequest } from '../../api/сolumns';
-import { getBoardById, selectBoard, selectBoardStatus } from '../../features/boards/boards-slice';
+import { getBoardById, selectBoard } from '../../features/boards/boards-slice';
 import { useTranslation } from 'react-i18next';
 import type { TourProps } from 'antd';
 import { PageLoadingIndicator } from '../../components';
@@ -43,7 +43,7 @@ export const SelectedBoardPage: React.FC = () => {
   const tourRefs = { ref1, ref2, ref3, ref4 };
   const navigate = useNavigate();
   const board = useAppSelector(selectBoard);
-  const boardStatus = useAppSelector(selectBoardStatus);
+  const { statusGetBoardById } = useAppSelector((state) => state.boards);
 
   useEffect(() => {
     if (boardId) {
@@ -70,10 +70,10 @@ export const SelectedBoardPage: React.FC = () => {
   }, [board]);
 
   useEffect(() => {
-    if (boardStatus === 'failed') {
+    if (statusGetBoardById === 'failed') {
       navigate('/boards');
     }
-  }, [boardStatus]);
+  }, [statusGetBoardById]);
 
   useEffect(() => {
     tasks.length > 0 ? setTourInactive(false) : setTourInactive(true);
@@ -289,7 +289,7 @@ export const SelectedBoardPage: React.FC = () => {
       }
     }
   };
-  if (columnsStatus !== 'succeeded' || boardStatus !== 'idle') {
+  if (statusGetBoardById === 'loading') {
     return <PageLoadingIndicator />;
   }
 
@@ -330,38 +330,42 @@ export const SelectedBoardPage: React.FC = () => {
           )}
         </div>
       </div>
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId={boardId ?? ''} direction="horizontal" type="column">
-          {(provided) => (
-            <div ref={provided.innerRef} {...provided.droppableProps}>
-              <List
-                className={styles.boardList}
-                dataSource={columnsToSort.sort((a, b) => a.order - b.order)}
-                renderItem={(column, index) => (
-                  <Draggable draggableId={column._id} index={index} key={column._id}>
-                    {(provided) => (
-                      <List.Item
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        ref={provided.innerRef}
-                      >
-                        <Column
-                          tourRefs={tourRefs}
-                          title={column.title}
-                          columnId={column._id}
-                          order={column.order}
-                        ></Column>
-                      </List.Item>
-                    )}
-                  </Draggable>
-                )}
-              ></List>
+      {columnsStatus === 'loading' ? (
+        <Spin />
+      ) : (
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId={boardId ?? ''} direction="horizontal" type="column">
+            {(provided) => (
+              <div ref={provided.innerRef} {...provided.droppableProps}>
+                <List
+                  className={styles.boardList}
+                  dataSource={columnsToSort.sort((a, b) => a.order - b.order)}
+                  renderItem={(column, index) => (
+                    <Draggable draggableId={column._id} index={index} key={column._id}>
+                      {(provided) => (
+                        <List.Item
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          ref={provided.innerRef}
+                        >
+                          <Column
+                            tourRefs={tourRefs}
+                            title={column.title}
+                            columnId={column._id}
+                            order={column.order}
+                          ></Column>
+                        </List.Item>
+                      )}
+                    </Draggable>
+                  )}
+                ></List>
 
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
+      )}
       <Modal
         title={t('Add column')}
         open={isModalOpen}
