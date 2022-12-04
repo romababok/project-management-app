@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Content } from 'antd/lib/layout/layout';
-import { PlusOutlined, BulbTwoTone, StepBackwardOutlined } from '@ant-design/icons';
+import { PlusOutlined, BulbTwoTone } from '@ant-design/icons';
 import { Button, Modal, Input, Form, List, Tour, Tooltip } from 'antd';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
   columnsGetAll,
@@ -67,18 +67,19 @@ export const SelectedBoardPage: React.FC = () => {
       target: () => ref1.current,
     },
     {
-      title: 'View and change tasks',
-      description: 'Click on a task to see and change its title and description',
+      title: 'Manage tasks',
+      description: 'Click on a task to add or edit its title and description',
       target: () => ref2.current,
     },
     {
       title: 'Swap columns',
-      description: 'Drag and drop columns to change their order',
+      description: 'Change order of your columns by drag-n-drop',
       target: () => ref3.current,
     },
     {
       title: 'Swap tasks',
-      description: 'Drag and drop tasks inside a column or between columns',
+      description:
+        'Move tasks inside a column or between columns to show actual steps of your work process',
       target: () => ref4.current,
     },
   ];
@@ -276,8 +277,8 @@ export const SelectedBoardPage: React.FC = () => {
   return (
     <Content style={{ padding: '0 50px', minHeight: '70px' }}>
       <div className={styles.boardHeader}>
-        <Button type="default" icon={<StepBackwardOutlined />}>
-          Back
+        <Button type="default">
+          <Link to="/boards">Back</Link>
         </Button>
         <h1>{board?.title}</h1>
         <div className={styles.boardControllers}>
