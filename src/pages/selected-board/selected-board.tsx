@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Content } from 'antd/lib/layout/layout';
-import { PlusOutlined } from '@ant-design/icons';
-import { Button, Modal, Input, Form, List } from 'antd';
+import { PlusOutlined, BulbTwoTone, StepBackwardOutlined } from '@ant-design/icons';
+import { Button, Modal, Input, Form, List, Tour, Tooltip } from 'antd';
 import { useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
@@ -18,8 +18,15 @@ import Column from '../../components/column/column';
 import { Column as ColumnInterface, ColumnsSetRequest } from '../../api/сolumns';
 import { getBoardById, selectBoard } from '../../features/boards/boards-slice';
 import { useTranslation } from 'react-i18next';
+import type { TourProps } from 'antd';
 
 export const SelectedBoardPage: React.FC = () => {
+  const ref1 = useRef(null);
+  const ref2 = useRef(null);
+  const ref3 = useRef(null);
+  const ref4 = useRef(null);
+  const [open, setOpen] = useState<boolean>(false);
+
   const { boardId } = useParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useAppDispatch();
@@ -29,6 +36,8 @@ export const SelectedBoardPage: React.FC = () => {
   const tasks = useAppSelector(selectTasks);
   const columnsToSort = [...columns];
   const { t } = useTranslation();
+  const [tourInactive, setTourInactive] = useState(true);
+  const tourRefs = { ref1, ref2, ref3, ref4 };
 
   useEffect(() => {
     if (boardId) {
@@ -46,6 +55,33 @@ export const SelectedBoardPage: React.FC = () => {
       dispatch({ type: 'boards/resetCurrentBoard' });
     };
   }, []);
+
+  useEffect(() => {
+    tasks.length > 0 ? setTourInactive(false) : setTourInactive(true);
+  }, [tasks]);
+
+  const steps: TourProps['steps'] = [
+    {
+      title: 'Change column title',
+      description: 'Click on a column title to make changes',
+      target: () => ref1.current,
+    },
+    {
+      title: 'View and change tasks',
+      description: 'Click on a task to see and change its title and description',
+      target: () => ref2.current,
+    },
+    {
+      title: 'Swap columns',
+      description: 'Drag and drop columns to change their order',
+      target: () => ref3.current,
+    },
+    {
+      title: 'Swap tasks',
+      description: 'Drag and drop tasks inside a column or between columns',
+      target: () => ref4.current,
+    },
+  ];
 
   const board = useAppSelector(selectBoard);
 
@@ -239,10 +275,27 @@ export const SelectedBoardPage: React.FC = () => {
 
   return (
     <Content style={{ padding: '0 50px', minHeight: '70px' }}>
-      <h1>{board?.title}</h1>
-      <Button icon={<PlusOutlined />} onClick={showModal}>
-        {t('Add column')}
-      </Button>
+      <div className={styles.boardHeader}>
+        <Button type="default" icon={<StepBackwardOutlined />}>
+          Back
+        </Button>
+        <h1>{board?.title}</h1>
+        <div className={styles.boardControllers}>
+          <Button icon={<PlusOutlined />} type="primary" onClick={showModal}>
+            {t('Add column')}
+          </Button>
+          <Tooltip placement={'bottom'} title="Create your first column and task to begin tour">
+            <Button
+              type="default"
+              onClick={() => setOpen(true)}
+              disabled={tourInactive}
+              icon={<BulbTwoTone />}
+            >
+              Tour
+            </Button>
+          </Tooltip>
+        </div>
+      </div>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId={boardId ?? ''} direction="horizontal" type="column">
           {(provided) => (
@@ -259,6 +312,7 @@ export const SelectedBoardPage: React.FC = () => {
                         ref={provided.innerRef}
                       >
                         <Column
+                          tourRefs={tourRefs}
                           title={column.title}
                           columnId={column._id}
                           order={column.order}
@@ -293,6 +347,7 @@ export const SelectedBoardPage: React.FC = () => {
           </Form.Item>
         </Form>
       </Modal>
+      <Tour open={open} onClose={() => setOpen(false)} steps={steps} />
     </Content>
   );
 };

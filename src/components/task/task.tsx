@@ -16,9 +16,15 @@ interface TaskProps {
   columnId: string;
   taskId: string;
   order: number;
+  tourRefs?: {
+    ref1: React.MutableRefObject<null>;
+    ref2: React.MutableRefObject<null>;
+    ref3: React.MutableRefObject<null>;
+    ref4: React.MutableRefObject<null>;
+  };
 }
 
-const Task: React.FC<TaskProps> = ({ title, desc, columnId, taskId, order }) => {
+const Task: React.FC<TaskProps> = ({ title, desc, columnId, taskId, order, tourRefs }) => {
   const dispatch = useAppDispatch();
   const { boardId } = useParams();
 
@@ -66,7 +72,7 @@ const Task: React.FC<TaskProps> = ({ title, desc, columnId, taskId, order }) => 
   };
 
   return (
-    <Content>
+    <Content ref={tourRefs?.ref2}>
       <div className="task" onClick={showModal}>
         <span>{title}</span>
         <Popconfirm

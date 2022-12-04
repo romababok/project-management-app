@@ -8,3 +8,14 @@
     align-items: baseline;
   }
 }
+
+.boardHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.boardControllers{
+  display: flex;
+  flex-direction: column;
+}
