@@ -13,9 +13,14 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
+  margin: 2rem 0;
 }
 
-.boardControllers{
+.boardControllers {
   display: flex;
   flex-direction: column;
+  button {
+    margin-bottom: 0.2rem;
+  }
 }
