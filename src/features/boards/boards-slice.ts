@@ -5,10 +5,13 @@ import {
   getBoardByIdAPI,
   getAllBoardsAPI,
   deleteBoardAPI,
+  updateBoardByIdAPI,
+  UpdateBoardRequest,
 } from '../../api';
 import axios from 'axios';
 import { notification } from 'antd';
 import { RootState } from '../../app/store';
+import i18next from 'i18next';
 
 export interface Board {
   _id: string;
@@ -20,12 +23,21 @@ export interface Board {
 export interface BoardsState {
   boards: Board[];
   currentBoard: Board | null;
+  board: Board;
   status: 'idle' | 'loading' | 'failed';
+  statusFromModal: 'idle' | 'loading' | 'failed';
 }
 
 const initialState: BoardsState = {
   boards: [],
   currentBoard: null,
+  board: {
+    _id: '',
+    title: '',
+    owner: '',
+    users: [],
+  },
+  statusFromModal: 'idle',
   status: 'idle',
 };
 
@@ -36,7 +48,7 @@ export const getAllBoards = createAsyncThunk('boards/getBoards', async (userId: 
   } catch (err) {
     if (axios.isAxiosError(err)) {
       notification.error({
-        message: 'Request failed with code ' + err.response?.status,
+        message: i18next.t('Request failed message') + err.response?.status,
         description: err.response?.data.message,
       });
       throw new Error(err.message);
@@ -55,7 +67,7 @@ export const createBoard = createAsyncThunk(
     } catch (err) {
       if (axios.isAxiosError(err)) {
         notification.error({
-          message: 'Request failed with code ' + err.response?.status,
+          message: i18next.t('Request failed message') + err.response?.status,
           description: err.response?.data.message,
         });
         throw new Error(err.message);
@@ -71,13 +83,30 @@ export const getBoardById = createAsyncThunk('boards/getBoardById', async (board
   } catch (err) {
     if (axios.isAxiosError(err)) {
       notification.error({
-        message: 'Request failed with code ' + err.response?.status,
+        message: i18next.t('Request failed message') + err.response?.status,
         description: err.response?.data.message,
       });
       throw new Error(err.message);
     }
   }
 });
+export const updateBoardById = createAsyncThunk(
+  'boards/updateBoardById',
+  async (request: UpdateBoardRequest) => {
+    try {
+      const response = await updateBoardByIdAPI(request);
+      return response.data;
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        notification.error({
+          message: i18next.t('Request failed message') + err.response?.status,
+          description: err.response?.data.message,
+        });
+        throw new Error(err.message);
+      }
+    }
+  }
+);
 
 export const deleteBoard = createAsyncThunk('boards/deleteBoard', async (boardId: string) => {
   try {
@@ -86,7 +115,7 @@ export const deleteBoard = createAsyncThunk('boards/deleteBoard', async (boardId
   } catch (err) {
     if (axios.isAxiosError(err)) {
       notification.error({
-        message: 'Request failed with code ' + err.response?.status,
+        message: i18next.t('Request failed message') + err.response?.status,
         description: err.response?.data.message,
       });
       throw new Error(err.message);
@@ -105,6 +134,15 @@ export const boardsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(updateBoardById.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(updateBoardById.fulfilled, (state) => {
+        state.status = 'idle';
+      })
+      .addCase(updateBoardById.rejected, (state) => {
+        state.status = 'failed';
+      })
       .addCase(deleteBoard.fulfilled, (state) => {
         state.status = 'idle';
       })
@@ -129,14 +167,15 @@ export const boardsSlice = createSlice({
         state.status = 'failed';
       })
       .addCase(getBoardById.pending, (state) => {
-        state.status = 'loading';
+        state.statusFromModal = 'loading';
       })
       .addCase(getBoardById.fulfilled, (state, action) => {
-        state.status = 'idle';
+        state.statusFromModal = 'idle';
         state.currentBoard = action.payload;
+        state.board = action.payload;
       })
       .addCase(getBoardById.rejected, (state) => {
-        state.status = 'failed';
+        state.statusFromModal = 'failed';
       });
   },
 });

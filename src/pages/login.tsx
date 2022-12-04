@@ -7,6 +7,7 @@ import { authSignIn, authSignUp } from '../features/auth/auth-slice';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { useLocation } from 'react-router-dom';
 import { PageLoadingIndicator } from '../components';
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 
 export const LoginPage: React.FC = () => {
@@ -31,7 +32,6 @@ export const LoginPage: React.FC = () => {
       navigate('/boards');
     } else {
       dispatch(authSignUp(values));
-      navigate('/login');
     }
   };
 
@@ -60,7 +60,7 @@ export const LoginPage: React.FC = () => {
                 { min: 3, message: `${t('Validation of name length')}` },
               ]}
             >
-              <Input />
+              <Input placeholder={t('Input name') as string} prefix={<UserOutlined />} />
             </Form.Item>
           )}
           <Form.Item
@@ -71,7 +71,7 @@ export const LoginPage: React.FC = () => {
               { min: 3, message: `${t('Validation of login length')}` },
             ]}
           >
-            <Input />
+            <Input placeholder={t('Input login') as string} prefix={<UserOutlined />} />
           </Form.Item>
           <Form.Item
             name="password"
@@ -84,7 +84,7 @@ export const LoginPage: React.FC = () => {
               },
             ]}
           >
-            <Input.Password />
+            <Input.Password placeholder={t('Input password') as string} prefix={<LockOutlined />} />
           </Form.Item>
           <Button htmlType="submit">{t('Submit button')}</Button>
           <Button onClick={() => navigate('../')} style={{ marginLeft: '2rem' }}>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Content } from 'antd/lib/layout/layout';
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Modal, Input, Form, List } from 'antd';
+import { Button, Modal, Input, Form, List, Skeleton } from 'antd';
 import { useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
@@ -24,6 +24,7 @@ export const SelectedBoardPage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useAppDispatch();
   const columns = useAppSelector(selectColumns);
+  const columnsStatus = useAppSelector((state) => state.columns.status);
   const [form] = Form.useForm<{ title: string }>();
   const columnTitle = Form.useWatch('title', form);
   const tasks = useAppSelector(selectTasks);
@@ -253,21 +254,24 @@ export const SelectedBoardPage: React.FC = () => {
                 renderItem={(column, index) => (
                   <Draggable draggableId={column._id} index={index} key={column._id}>
                     {(provided) => (
-                      <List.Item
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        ref={provided.innerRef}
-                      >
-                        <Column
-                          title={column.title}
-                          columnId={column._id}
-                          order={column.order}
-                        ></Column>
-                      </List.Item>
+                      <Skeleton loading={columnsStatus === 'loading' ? true : false} active>
+                        <List.Item
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          ref={provided.innerRef}
+                        >
+                          <Column
+                            title={column.title}
+                            columnId={column._id}
+                            order={column.order}
+                          ></Column>
+                        </List.Item>
+                      </Skeleton>
                     )}
                   </Draggable>
                 )}
               ></List>
+
               {provided.placeholder}
             </div>
           )}

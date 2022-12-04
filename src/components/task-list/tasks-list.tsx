@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { Content } from 'antd/lib/layout/layout';
-import { Button, Form, Input, List, Modal } from 'antd';
+import { Button, Form, Input, List, Modal, Skeleton } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import Task from '../task/task';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
@@ -20,6 +20,7 @@ const TasksList: React.FC<TaskListProps> = ({ columnId }) => {
   const dispatch = useAppDispatch();
   const tasks = useAppSelector(selectTasks);
   const { t } = useTranslation();
+  const taskStatus = useAppSelector((state) => state.taskList.status);
 
   const tasksPerColumn = useMemo(() => {
     return tasks.filter((task) => task.columnId === columnId);
@@ -74,20 +75,22 @@ const TasksList: React.FC<TaskListProps> = ({ columnId }) => {
                 return (
                   <Draggable draggableId={task._id} index={index} key={task._id}>
                     {(provided) => (
-                      <List.Item
-                        //TODO: add snapshot.isDragginOver
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        ref={provided.innerRef}
-                      >
-                        <Task
-                          title={task.title}
-                          desc={task.description}
-                          order={task.order}
-                          columnId={columnId}
-                          taskId={task._id}
-                        />
-                      </List.Item>
+                      <Skeleton loading={taskStatus === 'loading' ? true : false} active>
+                        <List.Item
+                          //TODO: add snapshot.isDragginOver
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          ref={provided.innerRef}
+                        >
+                          <Task
+                            title={task.title}
+                            desc={task.description}
+                            order={task.order}
+                            columnId={columnId}
+                            taskId={task._id}
+                          />
+                        </List.Item>
+                      </Skeleton>
                     )}
                   </Draggable>
                 );

@@ -17,7 +17,7 @@ import {
 } from '@ant-design/icons';
 import styles from './header.module.scss';
 import { getAllUsers, getUserData, logOut } from '../../features/auth/auth-slice';
-import { ModalCreateBoard } from '../modal/modal';
+import { ModalCreateBoard } from '../modals/modals';
 
 const languages = [
   {
@@ -125,7 +125,7 @@ export const HeaderOfApp: React.FC = () => {
     { label: <Link to="/">{t('Header welcome link')}</Link>, key: '/' },
     {
       label: <Button onClick={() => setIsModalOpen(true)}>{t('Header create new board')}</Button>,
-      key: '',
+      key: 'create-board',
       className: styles.menu__main,
     },
     { label: <Link to="/boards">{t('Header go to main page')}</Link>, key: '/boards' },

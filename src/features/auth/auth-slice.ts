@@ -43,8 +43,21 @@ interface JwtData {
 }
 
 export const authSignUp = createAsyncThunk('auth/signUp', async (request: SignUpRequest) => {
-  const response = await signUp(request);
-  return response.data;
+  try {
+    const response = await signUp(request);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      notification.error({
+        message: i18next.t('Request failed message') + error.response?.status,
+        description:
+          error.response?.status === 409
+            ? i18next.t('This login already exist')
+            : i18next.t('Something went wrong'),
+      });
+      throw new Error(error.message);
+    }
+  }
 });
 
 export const authSignIn = createAsyncThunk('auth/signIn', async (request: SignUpRequest) => {
@@ -165,10 +178,15 @@ export const authSlice = createSlice({
         state.userData._id = decoded.id;
         localStorage.setItem('userId', decoded.id);
         notification.info({
-          message: i18next.t('Welcom') + ` '${decoded.login}'!`,
+          message: i18next.t('Welcome') + ` '${decoded.login}'!`,
         });
       })
-      .addCase(authSignIn.rejected, setError)
+      .addCase(authSignIn.rejected, (state) => {
+        state.status = 'failed';
+        state.userData = { _id: '', name: '', login: '' };
+        localStorage.removeItem('token');
+        localStorage.removeItem('userId');
+      })
       .addCase(getAllUsers.pending, (state: { status: string }) => {
         state.status = 'loading';
       })
@@ -194,18 +212,14 @@ export const authSlice = createSlice({
         state.status = 'failed';
         localStorage.removeItem('token');
         localStorage.removeItem('userId');
-        state.userData._id = '';
-        state.userData.login = '';
-        state.userData.name = '';
+        state.userData = { _id: '', name: '', login: '' };
       })
       .addCase(updateUser.pending, (state) => {
         state.status = 'loading';
       })
       .addCase(updateUser.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.userData._id = action.payload._id;
-        state.userData.login = action.payload.login;
-        state.userData.name = action.payload.name;
+        state.userData = action.payload;
       })
       .addCase(updateUser.rejected, (state) => {
         state.status = 'failed';
@@ -214,9 +228,7 @@ export const authSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(deleteUser.fulfilled, (state) => {
-        state.userData._id = '';
-        state.userData.login = '';
-        state.userData.name = '';
+        state.userData = { _id: '', name: '', login: '' };
         localStorage.removeItem('token');
         state.status = 'idle';
         notification.success({
