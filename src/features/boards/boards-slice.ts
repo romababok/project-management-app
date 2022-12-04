@@ -9,6 +9,7 @@ import {
 import axios from 'axios';
 import { notification } from 'antd';
 import { RootState } from '../../app/store';
+import i18next from 'i18next';
 
 export interface Board {
   _id: string;
@@ -36,7 +37,7 @@ export const getAllBoards = createAsyncThunk('boards/getBoards', async (userId: 
   } catch (err) {
     if (axios.isAxiosError(err)) {
       notification.error({
-        message: 'Request failed with code ' + err.response?.status,
+        message: i18next.t('Request failed message') + err.response?.status,
         description: err.response?.data.message,
       });
       throw new Error(err.message);
@@ -55,7 +56,7 @@ export const createBoard = createAsyncThunk(
     } catch (err) {
       if (axios.isAxiosError(err)) {
         notification.error({
-          message: 'Request failed with code ' + err.response?.status,
+          message: i18next.t('Request failed message') + err.response?.status,
           description: err.response?.data.message,
         });
         throw new Error(err.message);
@@ -71,7 +72,7 @@ export const getBoardById = createAsyncThunk('boards/getBoardById', async (board
   } catch (err) {
     if (axios.isAxiosError(err)) {
       notification.error({
-        message: 'Request failed with code ' + err.response?.status,
+        message: i18next.t('Request failed message') + err.response?.status,
         description: err.response?.data.message,
       });
       throw new Error(err.message);
@@ -86,7 +87,7 @@ export const deleteBoard = createAsyncThunk('boards/deleteBoard', async (boardId
   } catch (err) {
     if (axios.isAxiosError(err)) {
       notification.error({
-        message: 'Request failed with code ' + err.response?.status,
+        message: i18next.t('Request failed message') + err.response?.status,
         description: err.response?.data.message,
       });
       throw new Error(err.message);

@@ -60,9 +60,10 @@ export const ModalCreateBoard = ({ isModalOpen, setIsModalOpen }: ModalCreateBoa
           rules={[
             { required: true, message: `${i18next.t('Validation of board')}` },
             { min: 2, message: `${t('Validation of board name length')}` },
+            { max: 30, message: `${t('Validation of max length 30')}` },
           ]}
         >
-          <Input />
+          <Input maxLength={31} />
         </Form.Item>
         <Form.Item name="users" label={t('Users')}>
           <Select
