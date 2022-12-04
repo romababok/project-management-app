@@ -168,7 +168,14 @@ export const ProfilePage: React.FC = () => {
           <Title level={4}>{t('My tasks')}</Title>
           <List
             footer={<Divider plain>It is all, nothing more 🤐</Divider>}
-            header={<Input value={value} onChange={handleInputChange} maxLength={10} />}
+            header={
+              <Input
+                placeholder={t('Tasks placeholder') as string}
+                value={value}
+                onChange={handleInputChange}
+                maxLength={10}
+              />
+            }
             className={styles.tasks__list}
             bordered
             dataSource={filtredTasks}
