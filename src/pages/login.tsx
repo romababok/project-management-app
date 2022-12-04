@@ -58,6 +58,7 @@ export const LoginPage: React.FC = () => {
               rules={[
                 { required: true, message: `${t('Validation of name')}` },
                 { min: 3, message: `${t('Validation of name length')}` },
+                { max: 10, message: `${t('Validation of max length')}` },
               ]}
             >
               <Input placeholder={t('Input name') as string} prefix={<UserOutlined />} />
@@ -69,9 +70,14 @@ export const LoginPage: React.FC = () => {
             rules={[
               { required: true, message: `${t('Validation of login')}` },
               { min: 3, message: `${t('Validation of login length')}` },
+              { max: 10, message: `${t('Validation of max length')}` },
             ]}
           >
-            <Input placeholder={t('Input login') as string} prefix={<UserOutlined />} />
+            <Input
+              placeholder={t('Input login') as string}
+              prefix={<UserOutlined />}
+              maxLength={11}
+            />
           </Form.Item>
           <Form.Item
             name="password"
@@ -79,12 +85,17 @@ export const LoginPage: React.FC = () => {
             rules={[
               { required: true, message: `${t('Validation of password')}` },
               {
-                min: 3,
+                min: 4,
                 message: `${t('Validation of password length')}`,
               },
+              { max: 10, message: `${t('Validation of max length')}` },
             ]}
           >
-            <Input.Password placeholder={t('Input password') as string} prefix={<LockOutlined />} />
+            <Input.Password
+              placeholder={t('Input password') as string}
+              prefix={<LockOutlined />}
+              maxLength={11}
+            />
           </Form.Item>
           <Button htmlType="submit">{t('Submit button')}</Button>
           <Button onClick={() => navigate('../')} style={{ marginLeft: '2rem' }}>

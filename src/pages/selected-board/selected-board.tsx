@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Content } from 'antd/lib/layout/layout';
-import { PlusOutlined } from '@ant-design/icons';
-import { Button, Modal, Input, Form, List, Skeleton } from 'antd';
-import { useParams } from 'react-router-dom';
+import { PlusOutlined, BulbTwoTone } from '@ant-design/icons';
+import { Button, Modal, Input, Form, List, Tour, Tooltip } from 'antd';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
   columnsGetAll,
@@ -16,24 +16,46 @@ import { selectTasks, taskSetUpdate, tasksGetAll } from '../../features/task-lis
 import { Task, TaskSetRequest } from '../../api/tasks';
 import Column from '../../components/column/column';
 import { Column as ColumnInterface, ColumnsSetRequest } from '../../api/сolumns';
-import { getBoardById, selectBoard } from '../../features/boards/boards-slice';
+import { getBoardById, selectBoard, selectBoardStatus } from '../../features/boards/boards-slice';
 import { useTranslation } from 'react-i18next';
+import type { TourProps } from 'antd';
+import { PageLoadingIndicator } from '../../components';
 
 export const SelectedBoardPage: React.FC = () => {
+  const ref1 = useRef(null);
+  const ref2 = useRef(null);
+  const ref3 = useRef(null);
+  const ref4 = useRef(null);
+  const [open, setOpen] = useState<boolean>(false);
+
   const { boardId } = useParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useAppDispatch();
   const columns = useAppSelector(selectColumns);
   const columnsStatus = useAppSelector((state) => state.columns.status);
+
   const [form] = Form.useForm<{ title: string }>();
   const columnTitle = Form.useWatch('title', form);
   const tasks = useAppSelector(selectTasks);
   const columnsToSort = [...columns];
   const { t } = useTranslation();
+  const [tourInactive, setTourInactive] = useState(true);
+  const tourRefs = { ref1, ref2, ref3, ref4 };
+  const navigate = useNavigate();
+  const board = useAppSelector(selectBoard);
+  const boardStatus = useAppSelector(selectBoardStatus);
 
   useEffect(() => {
     if (boardId) {
       dispatch(getBoardById(boardId));
+    }
+    return () => {
+      dispatch({ type: 'boards/resetCurrentBoard' });
+    };
+  }, []);
+
+  useEffect(() => {
+    if (board && boardId) {
       dispatch(columnsGetAll(boardId)).then((data) => {
         const cols = data.payload as ColumnInterface[];
         cols.forEach((column) => {
@@ -44,11 +66,41 @@ export const SelectedBoardPage: React.FC = () => {
     return () => {
       dispatch({ type: 'columns/resetColumns' });
       dispatch({ type: 'tasks/resetTasks' });
-      dispatch({ type: 'boards/resetCurrentBoard' });
     };
-  }, []);
+  }, [board]);
 
-  const board = useAppSelector(selectBoard);
+  useEffect(() => {
+    if (boardStatus === 'failed') {
+      navigate('/boards');
+    }
+  }, [boardStatus]);
+
+  useEffect(() => {
+    tasks.length > 0 ? setTourInactive(false) : setTourInactive(true);
+  }, [tasks]);
+
+  const steps: TourProps['steps'] = [
+    {
+      title: t('First slide title'),
+      description: t('First slide description'),
+      target: () => ref1.current,
+    },
+    {
+      title: t('Second slide title'),
+      description: t('Second slide description'),
+      target: () => ref2.current,
+    },
+    {
+      title: t('Third slide title'),
+      description: t('Third slide description'),
+      target: () => ref3.current,
+    },
+    {
+      title: t('Fourth slide title'),
+      description: t('Fourth slide description'),
+      target: () => ref4.current,
+    },
+  ];
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -237,13 +289,47 @@ export const SelectedBoardPage: React.FC = () => {
       }
     }
   };
+  if (columnsStatus !== 'succeeded' || boardStatus !== 'idle') {
+    return <PageLoadingIndicator />;
+  }
 
   return (
-    <Content style={{ padding: '0 50px', minHeight: '70px' }}>
-      <h1>{board?.title}</h1>
-      <Button icon={<PlusOutlined />} onClick={showModal}>
-        {t('Add column')}
-      </Button>
+    <Content style={{ padding: '0 50px', maxHeight: 'calc(100vh - 80px - 64px)' }}>
+      <div className={styles.boardHeader}>
+        <Button type="default">
+          <Link to="/boards">{t('Back')}</Link>
+        </Button>
+        <h2>
+          <p style={{ display: 'inline' }}> {t('Board title')} </p>
+          {board?.title}
+        </h2>
+        <div className={styles.boardControllers}>
+          <Button icon={<PlusOutlined />} type="primary" onClick={showModal}>
+            {t('Add column')}
+          </Button>
+          {tourInactive ? (
+            <Tooltip placement={'bottom'} title={t('Tour message')}>
+              <Button
+                type="default"
+                onClick={() => setOpen(true)}
+                disabled={tourInactive}
+                icon={<BulbTwoTone />}
+              >
+                {t('Tour')}
+              </Button>
+            </Tooltip>
+          ) : (
+            <Button
+              type="default"
+              onClick={() => setOpen(true)}
+              disabled={tourInactive}
+              icon={<BulbTwoTone />}
+            >
+              {t('Tour')}
+            </Button>
+          )}
+        </div>
+      </div>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId={boardId ?? ''} direction="horizontal" type="column">
           {(provided) => (
@@ -254,19 +340,18 @@ export const SelectedBoardPage: React.FC = () => {
                 renderItem={(column, index) => (
                   <Draggable draggableId={column._id} index={index} key={column._id}>
                     {(provided) => (
-                      <Skeleton loading={columnsStatus === 'loading' ? true : false} active>
-                        <List.Item
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          ref={provided.innerRef}
-                        >
-                          <Column
-                            title={column.title}
-                            columnId={column._id}
-                            order={column.order}
-                          ></Column>
-                        </List.Item>
-                      </Skeleton>
+                      <List.Item
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        ref={provided.innerRef}
+                      >
+                        <Column
+                          tourRefs={tourRefs}
+                          title={column.title}
+                          columnId={column._id}
+                          order={column.order}
+                        ></Column>
+                      </List.Item>
                     )}
                   </Draggable>
                 )}
@@ -293,10 +378,11 @@ export const SelectedBoardPage: React.FC = () => {
       >
         <Form form={form} layout="vertical" autoComplete="off">
           <Form.Item name="title" label={t('Title')}>
-            <Input maxLength={30} />
+            <Input placeholder={t('Placeholder name column') as string} maxLength={30} />
           </Form.Item>
         </Form>
       </Modal>
+      <Tour open={open} onClose={() => setOpen(false)} steps={steps} />
     </Content>
   );
 };

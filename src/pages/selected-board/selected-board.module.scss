@@ -1,10 +1,38 @@
 .boardList {
   overflow: auto;
   overflow-y: hidden;
-  height: 70vh;
+  max-height: 55rem;
     :global .ant-list-items {
     display: flex;
     flex-direction: row;
     align-items: baseline;
+  }
+}
+
+.boardHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 2rem 0;
+}
+
+.boardControllers {
+  display: flex;
+  flex-direction: column;
+  button {
+    margin-bottom: 0.2rem;
+  }
+}
+
+@media (max-width: 700px) {
+  .boardHeader{
+    flex-direction: column;
+  }
+}
+
+@media (max-height: 600px) {
+  .boardList{
+    max-height: 20rem;
   }
 }

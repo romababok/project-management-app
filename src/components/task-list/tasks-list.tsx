@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { Content } from 'antd/lib/layout/layout';
-import { Button, Form, Input, List, Modal, Skeleton, Spin } from 'antd';
+import { Button, Form, Input, List, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import Task from '../task/task';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
@@ -12,9 +12,15 @@ import { useTranslation } from 'react-i18next';
 
 interface TaskListProps {
   columnId: string;
+  tourRefs?: {
+    ref1: React.MutableRefObject<null>;
+    ref2: React.MutableRefObject<null>;
+    ref3: React.MutableRefObject<null>;
+    ref4: React.MutableRefObject<null>;
+  };
 }
 
-const TasksList: React.FC<TaskListProps> = ({ columnId }) => {
+const TasksList: React.FC<TaskListProps> = ({ columnId, tourRefs }) => {
   const { boardId } = useParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useAppDispatch();
@@ -63,7 +69,7 @@ const TasksList: React.FC<TaskListProps> = ({ columnId }) => {
   };
 
   return (
-    <Content className={styles.taskContent}>
+    <Content className={styles.taskContent} ref={tourRefs?.ref4}>
       <Droppable droppableId={columnId} type="task">
         {(provided, snapshot) => (
           <div ref={provided.innerRef} {...provided.droppableProps}>
@@ -81,6 +87,7 @@ const TasksList: React.FC<TaskListProps> = ({ columnId }) => {
                         ref={provided.innerRef}
                       >
                         <Task
+                          tourRefs={tourRefs}
                           title={task.title}
                           desc={task.description}
                           order={task.order}
@@ -116,10 +123,10 @@ const TasksList: React.FC<TaskListProps> = ({ columnId }) => {
       >
         <Form form={form} layout="vertical" autoComplete="off">
           <Form.Item name="title" label={t('Title')}>
-            <Input maxLength={30} />
+            <Input placeholder={t('Placeholder name task') as string} maxLength={30} />
           </Form.Item>
           <Form.Item name="description" label={t('Description')}>
-            <Input.TextArea maxLength={150} />
+            <Input.TextArea placeholder={t('Placeholder description') as string} maxLength={150} />
           </Form.Item>
         </Form>
       </Modal>

@@ -41,9 +41,10 @@ export const EditModal: FC<EditModalProps> = ({
           rules={[
             { required: true, message: `${t('Validation of name')}` },
             { min: 3, message: `${t('Validation of name length')}` },
+            { max: 10, message: `${t('Validation of max length')}` },
           ]}
         >
-          <Input />
+          <Input maxLength={11} />
         </Form.Item>
         <Form.Item
           name="login"
@@ -51,9 +52,10 @@ export const EditModal: FC<EditModalProps> = ({
           rules={[
             { required: true, message: `${t('Validation of login')}` },
             { min: 3, message: `${t('Validation of login length')}` },
+            { max: 10, message: `${t('Validation of max length')}` },
           ]}
         >
-          <Input />
+          <Input maxLength={11} />
         </Form.Item>
         <Form.Item
           name="password"
@@ -61,12 +63,13 @@ export const EditModal: FC<EditModalProps> = ({
           rules={[
             { required: true, message: `${t('Validation of password')}` },
             {
-              min: 3,
+              min: 4,
               message: `${t('Validation of password length')}`,
             },
+            { max: 10, message: `${t('Validation of max length')}` },
           ]}
         >
-          <Input.Password />
+          <Input.Password maxLength={11} />
         </Form.Item>
         <Button className={styles.submit__button} htmlType="submit" type="primary">
           {t('Submit button')}

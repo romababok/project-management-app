@@ -13,9 +13,15 @@ interface ColumnProps {
   columnId: string;
   title: string;
   order: number;
+  tourRefs?: {
+    ref1: React.MutableRefObject<null>;
+    ref2: React.MutableRefObject<null>;
+    ref3: React.MutableRefObject<null>;
+    ref4: React.MutableRefObject<null>;
+  };
 }
 
-const Column: React.FC<ColumnProps> = ({ columnId, title, order }) => {
+const Column: React.FC<ColumnProps> = ({ columnId, title, order, tourRefs }) => {
   const dispatch = useAppDispatch();
   const { boardId } = useParams();
 
@@ -56,7 +62,7 @@ const Column: React.FC<ColumnProps> = ({ columnId, title, order }) => {
   };
 
   return (
-    <Content className={styles.column}>
+    <Content className={styles.column} ref={tourRefs?.ref3}>
       <div>
         {editMode ? (
           <div className={styles.columninfo}>
@@ -70,7 +76,9 @@ const Column: React.FC<ColumnProps> = ({ columnId, title, order }) => {
           </div>
         ) : (
           <div className={styles.columninfo}>
-            <h3 onClick={() => setEditMode(true)}>{columnTitle}</h3>
+            <h3 ref={tourRefs?.ref1} onClick={() => setEditMode(true)}>
+              {columnTitle}
+            </h3>
             <Popconfirm
               placement="bottomRight"
               title={t('Popconfirm column')}
@@ -84,7 +92,7 @@ const Column: React.FC<ColumnProps> = ({ columnId, title, order }) => {
         )}
       </div>
       <div style={{ height: '15px' }}>{taskStatus === 'loading' && <Spin />}</div>
-      <TasksList columnId={columnId} />
+      <TasksList columnId={columnId} tourRefs={tourRefs} />
     </Content>
   );
 };

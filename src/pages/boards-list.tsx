@@ -11,14 +11,11 @@ import { PageLoadingIndicator } from '../components';
 import { useTranslation } from 'react-i18next';
 import { ModalCreateBoard, ModalUpdateBoard } from '../components/modals/modals';
 import { Input } from 'antd';
-
 import { EditOutlined } from '@ant-design/icons';
 
 export const BoardsListPage: React.FC = () => {
-  const { boards } = useAppSelector((state) => state.boards);
-
+  const { boards, status } = useAppSelector((state) => state.boards);
   const dispatch = useAppDispatch();
-  const status = useAppSelector((state) => state.boards.status);
   const [isModalCreateOpen, setIsModalCreateOpen] = useState<boolean>(false);
   const [isModalUpdateOpen, setIsModalUpdateOpen] = useState<boolean>(false);
   const { t } = useTranslation();
