@@ -289,7 +289,7 @@ export const SelectedBoardPage: React.FC = () => {
   };
 
   return (
-    <Content style={{ padding: '0 50px', height: 'calc(100vh - 100px - 64px' }}>
+    <Content style={{ padding: '0 50px', maxHeight: 'calc(100vh - 80px - 64px)' }}>
       <div className={styles.boardHeader}>
         <Button type="default">
           <Link to="/boards">Back</Link>
@@ -299,7 +299,18 @@ export const SelectedBoardPage: React.FC = () => {
           <Button icon={<PlusOutlined />} type="primary" onClick={showModal}>
             {t('Add column')}
           </Button>
-          <Tooltip placement={'bottom'} title="Create your first column and task to begin tour">
+          {tourInactive ? (
+            <Tooltip placement={'bottom'} title="Create your first column and task to begin tour">
+              <Button
+                type="default"
+                onClick={() => setOpen(true)}
+                disabled={tourInactive}
+                icon={<BulbTwoTone />}
+              >
+                Tour
+              </Button>
+            </Tooltip>
+          ) : (
             <Button
               type="default"
               onClick={() => setOpen(true)}
@@ -308,7 +319,7 @@ export const SelectedBoardPage: React.FC = () => {
             >
               Tour
             </Button>
-          </Tooltip>
+          )}
         </div>
       </div>
       <DragDropContext onDragEnd={onDragEnd}>
