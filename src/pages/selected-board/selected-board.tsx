@@ -19,6 +19,7 @@ import { Column as ColumnInterface, ColumnsSetRequest } from '../../api/сolumns
 import { getBoardById, selectBoard, selectBoardStatus } from '../../features/boards/boards-slice';
 import { useTranslation } from 'react-i18next';
 import type { TourProps } from 'antd';
+import { PageLoadingIndicator } from '../../components';
 
 export const SelectedBoardPage: React.FC = () => {
   const ref1 = useRef(null);
@@ -31,6 +32,8 @@ export const SelectedBoardPage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useAppDispatch();
   const columns = useAppSelector(selectColumns);
+  const columnsStatus = useAppSelector((state) => state.columns.status);
+
   const [form] = Form.useForm<{ title: string }>();
   const columnTitle = Form.useWatch('title', form);
   const tasks = useAppSelector(selectTasks);
@@ -286,6 +289,9 @@ export const SelectedBoardPage: React.FC = () => {
       }
     }
   };
+  if (columnsStatus !== 'succeeded' || boardStatus !== 'idle') {
+    return <PageLoadingIndicator />;
+  }
 
   return (
     <Content style={{ padding: '0 50px', maxHeight: 'calc(100vh - 80px - 64px)' }}>
@@ -293,7 +299,10 @@ export const SelectedBoardPage: React.FC = () => {
         <Button type="default">
           <Link to="/boards">{t('Back')}</Link>
         </Button>
-        <h1>{board?.title}</h1>
+        <h2>
+          <p style={{ display: 'inline' }}> {t('Board title')} </p>
+          {board?.title}
+        </h2>
         <div className={styles.boardControllers}>
           <Button icon={<PlusOutlined />} type="primary" onClick={showModal}>
             {t('Add column')}
@@ -347,6 +356,7 @@ export const SelectedBoardPage: React.FC = () => {
                   </Draggable>
                 )}
               ></List>
+
               {provided.placeholder}
             </div>
           )}
@@ -368,7 +378,7 @@ export const SelectedBoardPage: React.FC = () => {
       >
         <Form form={form} layout="vertical" autoComplete="off">
           <Form.Item name="title" label={t('Title')}>
-            <Input maxLength={30} />
+            <Input placeholder={t('Placeholder name column') as string} maxLength={30} />
           </Form.Item>
         </Form>
       </Modal>

@@ -123,10 +123,10 @@ const TasksList: React.FC<TaskListProps> = ({ columnId, tourRefs }) => {
       >
         <Form form={form} layout="vertical" autoComplete="off">
           <Form.Item name="title" label={t('Title')}>
-            <Input maxLength={30} />
+            <Input placeholder={t('Placeholder name task') as string} maxLength={30} />
           </Form.Item>
           <Form.Item name="description" label={t('Description')}>
-            <Input.TextArea maxLength={150} />
+            <Input.TextArea placeholder={t('Placeholder description') as string} maxLength={150} />
           </Form.Item>
         </Form>
       </Modal>

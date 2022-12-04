@@ -20,7 +20,7 @@ export interface TaskItem {
 
 type Statuses = keyof typeof StatusesEnum;
 
-interface InitialState {
+export interface InitialState {
   status: Statuses;
   error: string | null;
 }

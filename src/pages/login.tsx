@@ -7,6 +7,7 @@ import { authSignIn, authSignUp } from '../features/auth/auth-slice';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { useLocation } from 'react-router-dom';
 import { PageLoadingIndicator } from '../components';
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 
 export const LoginPage: React.FC = () => {
@@ -31,7 +32,6 @@ export const LoginPage: React.FC = () => {
       navigate('/boards');
     } else {
       dispatch(authSignUp(values));
-      navigate('/login');
     }
   };
 
@@ -61,7 +61,7 @@ export const LoginPage: React.FC = () => {
                 { max: 10, message: `${t('Validation of max length')}` },
               ]}
             >
-              <Input maxLength={11} />
+              <Input placeholder={t('Input name') as string} prefix={<UserOutlined />} />
             </Form.Item>
           )}
           <Form.Item
@@ -73,7 +73,11 @@ export const LoginPage: React.FC = () => {
               { max: 10, message: `${t('Validation of max length')}` },
             ]}
           >
-            <Input maxLength={11} />
+            <Input
+              placeholder={t('Input login') as string}
+              prefix={<UserOutlined />}
+              maxLength={11}
+            />
           </Form.Item>
           <Form.Item
             name="password"
@@ -87,7 +91,11 @@ export const LoginPage: React.FC = () => {
               { max: 10, message: `${t('Validation of max length')}` },
             ]}
           >
-            <Input.Password maxLength={11} />
+            <Input.Password
+              placeholder={t('Input password') as string}
+              prefix={<LockOutlined />}
+              maxLength={11}
+            />
           </Form.Item>
           <Button htmlType="submit">{t('Submit button')}</Button>
           <Button onClick={() => navigate('../')} style={{ marginLeft: '2rem' }}>
