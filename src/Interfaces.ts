@@ -32,3 +32,21 @@ export interface InitialStateColumns extends InitialState {
 export interface InitialStateTasks extends InitialState {
   taskList: Task[];
 }
+
+export interface Board {
+  _id: string;
+  title: string;
+  owner: string;
+  users: string[];
+}
+
+export interface BoardsState {
+  boards: Board[];
+  currentBoard: Board | null;
+  board: Board;
+  status: 'idle' | 'loading' | 'failed';
+  statusGetBoardById: 'idle' | 'loading' | 'failed';
+  statusDeleteBoard: 'idle' | 'loading' | 'failed';
+  statusUpdateBoard: 'idle' | 'loading' | 'failed';
+  statusCreateBoard: 'idle' | 'loading' | 'failed';
+}
