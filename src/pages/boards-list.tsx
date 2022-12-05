@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Content } from 'antd/lib/layout/layout';
-import { Button, Popconfirm } from 'antd';
+import { Button, Popconfirm, Spin } from 'antd';
 import { PageHeader } from '@ant-design/pro-layout';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { deleteBoard, getAllBoards, getBoardById } from '../features/boards/boards-slice';
@@ -14,7 +14,14 @@ import { Input } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 
 export const BoardsListPage: React.FC = () => {
-  const { boards, status } = useAppSelector((state) => state.boards);
+  const {
+    boards,
+    statusDeleteBoard,
+    statusUpdateBoard,
+    status,
+    statusGetBoardById,
+    statusCreateBoard,
+  } = useAppSelector((state) => state.boards);
   const dispatch = useAppDispatch();
   const [isModalCreateOpen, setIsModalCreateOpen] = useState<boolean>(false);
   const [isModalUpdateOpen, setIsModalUpdateOpen] = useState<boolean>(false);
@@ -35,30 +42,35 @@ export const BoardsListPage: React.FC = () => {
   if (status === 'loading') {
     return <PageLoadingIndicator />;
   }
-  const handleDeleteOk = async (boardId: string) => {
+  const handleDeleteOk = (boardId: string) => {
     if (boardId) {
-      await dispatch(deleteBoard(boardId));
-      dispatch(getAllBoards(userId));
+      dispatch(deleteBoard(boardId));
     }
   };
 
   return (
-    <Content style={{ padding: '0 50px', minHeight: '70vh', marginTop: '2rem' }}>
+    <Content style={{ padding: '0 50px', minHeight: '70vh' }}>
+      <div style={{ height: '20px' }}>
+        {(statusDeleteBoard === 'loading' ||
+          statusUpdateBoard === 'loading' ||
+          statusGetBoardById === 'loading' ||
+          statusCreateBoard === 'loading') && <Spin />}
+      </div>
+
       <ModalCreateBoard
         key="create-board"
         isModalOpen={isModalCreateOpen}
         setIsModalOpen={setIsModalCreateOpen}
       />
 
-      <div style={{ height: '10px' }}>
-        <ModalUpdateBoard
-          key="update-board"
-          isModalOpen={isModalUpdateOpen}
-          setIsModalOpen={setIsModalUpdateOpen}
-        />
-      </div>
+      <ModalUpdateBoard
+        key="update-board"
+        isModalOpen={isModalUpdateOpen}
+        setIsModalOpen={setIsModalUpdateOpen}
+      />
+
       <PageHeader
-        style={{ padding: '24px' }}
+        style={{ paddingBottom: '20px' }}
         extra={[
           <Button
             key="1"

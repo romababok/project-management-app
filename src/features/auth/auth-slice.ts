@@ -164,6 +164,9 @@ export const authSlice = createSlice({
       })
       .addCase(authSignUp.fulfilled, (state) => {
         state.status = 'idle';
+        notification.success({
+          message: i18next.t('User registered'),
+        });
       })
       .addCase(authSignUp.rejected, setError)
 

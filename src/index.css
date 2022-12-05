@@ -13,3 +13,12 @@ code {
 .ant-card .ant-card-head {
   border-bottom: 0px;
 }
+
+.ant-card .ant-card-actions {
+  border-radius: 8px;
+}
+.owner {
+  color: white;
+  background-color: #003eb3;
+  cursor: pointer;
+}

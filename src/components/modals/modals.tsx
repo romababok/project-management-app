@@ -1,10 +1,10 @@
-import { Button, Form, Input, Modal, Select, Spin } from 'antd';
+import { Button, Form, Input, Modal, Select } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { createBoard, getAllBoards, updateBoardById } from '../../features/boards/boards-slice';
+import { createBoard, updateBoardById } from '../../features/boards/boards-slice';
 
 export interface FormFields {
   title: string;
@@ -82,8 +82,6 @@ export const ModalUpdateBoard = ({ isModalOpen, setIsModalOpen }: ModalBoardProp
   const [form] = useForm();
   const board = useAppSelector((state) => state.boards.board);
   const { t } = useTranslation();
-  const userId = useAppSelector((state) => state.auth.userData._id);
-  const { statusFromModal } = useAppSelector((state) => state.boards);
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -92,7 +90,7 @@ export const ModalUpdateBoard = ({ isModalOpen, setIsModalOpen }: ModalBoardProp
 
   const onFinish = async (values: { title: string }) => {
     const { title } = values;
-    await dispatch(
+    dispatch(
       updateBoardById({
         title,
         users: board.users,
@@ -100,12 +98,10 @@ export const ModalUpdateBoard = ({ isModalOpen, setIsModalOpen }: ModalBoardProp
         owner: board.owner,
       })
     );
-    dispatch(getAllBoards(userId));
+
     closeModal();
   };
-  if (statusFromModal === 'loading') {
-    return <Spin />;
-  }
+
   return (
     <Modal
       title={t('Edit board')}

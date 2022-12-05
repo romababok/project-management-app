@@ -10,7 +10,7 @@ import {
   updateColumnsSet,
 } from '../../api/сolumns';
 import { RootState } from '../../app/store';
-import { InitialStateColumns } from '../../Interfaces';
+import { InitialStateColumns } from '../../types/Interfaces';
 
 interface ThunkArgsInterface {
   boardId: string;

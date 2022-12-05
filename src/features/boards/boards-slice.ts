@@ -12,21 +12,7 @@ import axios from 'axios';
 import { notification } from 'antd';
 import { RootState } from '../../app/store';
 import i18next from 'i18next';
-
-export interface Board {
-  _id: string;
-  title: string;
-  owner: string;
-  users: string[];
-}
-
-export interface BoardsState {
-  boards: Board[];
-  currentBoard: Board | null;
-  board: Board;
-  status: 'idle' | 'loading' | 'failed';
-  statusFromModal: 'idle' | 'loading' | 'failed';
-}
+import { BoardsState } from '../../types/Interfaces';
 
 const initialState: BoardsState = {
   boards: [],
@@ -37,7 +23,10 @@ const initialState: BoardsState = {
     owner: '',
     users: [],
   },
-  statusFromModal: 'idle',
+  statusGetBoardById: 'idle',
+  statusUpdateBoard: 'idle',
+  statusDeleteBoard: 'idle',
+  statusCreateBoard: 'idle',
   status: 'idle',
 };
 
@@ -135,16 +124,40 @@ export const boardsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(updateBoardById.pending, (state) => {
-        state.status = 'loading';
+        state.statusUpdateBoard = 'loading';
       })
-      .addCase(updateBoardById.fulfilled, (state) => {
-        state.status = 'idle';
+      .addCase(updateBoardById.fulfilled, (state, action) => {
+        state.statusUpdateBoard = 'idle';
+        if (action.payload) {
+          const newList = state.boards.map((el) => {
+            if (el._id === action.payload._id) {
+              return {
+                _id: el._id,
+                title: action.payload.title,
+                owner: el.owner,
+                users: el.users,
+              };
+            }
+            return el;
+          });
+          state.boards = newList;
+        }
       })
       .addCase(updateBoardById.rejected, (state) => {
-        state.status = 'failed';
+        state.statusUpdateBoard = 'failed';
       })
-      .addCase(deleteBoard.fulfilled, (state) => {
-        state.status = 'idle';
+      .addCase(deleteBoard.pending, (state) => {
+        state.statusDeleteBoard = 'loading';
+      })
+      .addCase(deleteBoard.rejected, (state) => {
+        state.statusDeleteBoard = 'failed';
+      })
+      .addCase(deleteBoard.fulfilled, (state, action) => {
+        state.statusDeleteBoard = 'idle';
+        if (action.payload) {
+          const newBoards = state.boards.filter((board) => board._id !== action.payload?._id);
+          state.boards = newBoards;
+        }
       })
       .addCase(getAllBoards.pending, (state) => {
         state.status = 'loading';
@@ -157,25 +170,25 @@ export const boardsSlice = createSlice({
         state.status = 'failed';
       })
       .addCase(createBoard.pending, (state) => {
-        state.status = 'loading';
+        state.statusCreateBoard = 'loading';
       })
       .addCase(createBoard.fulfilled, (state, action) => {
-        state.status = 'idle';
+        state.statusCreateBoard = 'idle';
         state.boards.push(action.payload);
       })
       .addCase(createBoard.rejected, (state) => {
-        state.status = 'failed';
+        state.statusCreateBoard = 'failed';
       })
       .addCase(getBoardById.pending, (state) => {
-        state.statusFromModal = 'loading';
+        state.statusGetBoardById = 'loading';
       })
       .addCase(getBoardById.fulfilled, (state, action) => {
-        state.statusFromModal = 'idle';
+        state.statusGetBoardById = 'idle';
         state.currentBoard = action.payload;
         state.board = action.payload;
       })
       .addCase(getBoardById.rejected, (state) => {
-        state.statusFromModal = 'failed';
+        state.statusGetBoardById = 'failed';
       });
   },
 });

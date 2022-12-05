@@ -10,7 +10,7 @@ import {
   updateTaskSet,
 } from '../../api/tasks';
 import { RootState } from '../../app/store';
-import { InitialStateTasks } from '../../Interfaces';
+import { InitialStateTasks } from '../../types/Interfaces';
 
 const initialState: InitialStateTasks = {
   taskList: [],
