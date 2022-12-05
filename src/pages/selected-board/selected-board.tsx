@@ -46,11 +46,13 @@ export const SelectedBoardPage: React.FC = () => {
   const boardStatus = useAppSelector(selectBoardStatus);
 
   const [windowSize, setWindowSize] = useState(window.innerWidth);
+  const [domainLink, setDomainLink] = useState(window.origin);
 
   useEffect(() => {
     if (boardId) {
       dispatch(getBoardById(boardId));
       window.addEventListener('resize', handleWindowResize);
+      setDomainLink(window.origin);
     }
     return () => {
       dispatch({ type: 'boards/resetCurrentBoard' });
@@ -304,8 +306,8 @@ export const SelectedBoardPage: React.FC = () => {
   return (
     <Content style={{ padding: '0 50px', maxHeight: 'calc(100vh - 80px - 64px)' }}>
       <div className={styles.boardHeader}>
-        <Button type="default">
-          <Link to="/boards">{t('Back')}</Link>
+        <Button type="default" href={`${domainLink}/boards`}>
+          {t('Back')}
         </Button>
         <h2>
           <p style={{ display: 'inline' }}> {t('Board title')} </p>
