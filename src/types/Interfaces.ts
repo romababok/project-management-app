@@ -1,5 +1,5 @@
-import { Task } from './api/tasks';
-import { Column } from './api/сolumns';
+import { Task } from '../api/tasks';
+import { Column } from '../api/сolumns';
 
 enum StatusesEnum {
   'idle',

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { baseApiUrl } from '.';
-import { TaskItem } from '../Interfaces';
+import { TaskItem } from '../types/Interfaces';
 
 export interface TaskRequest {
   title: string;

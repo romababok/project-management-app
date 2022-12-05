@@ -12,7 +12,7 @@ import axios from 'axios';
 import { notification } from 'antd';
 import { RootState } from '../../app/store';
 import i18next from 'i18next';
-import { BoardsState } from '../../Interfaces';
+import { BoardsState } from '../../types/Interfaces';
 
 const initialState: BoardsState = {
   boards: [],

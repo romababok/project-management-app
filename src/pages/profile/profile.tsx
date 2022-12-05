@@ -21,7 +21,7 @@ import { deleteUser, updateUser } from '../../features/auth/auth-slice';
 import { User } from '../../api/users';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
-import { TaskItem } from '../../Interfaces';
+import { TaskItem } from '../../types/Interfaces';
 import { getUserTasks } from '../../api/tasks';
 import i18next from 'i18next';
 
