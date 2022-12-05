@@ -50,25 +50,22 @@ export const BoardsListPage: React.FC = () => {
 
   return (
     <Content style={{ padding: '0 50px', minHeight: '70vh' }}>
-      <div style={{ height: '20px' }}>
+      <div style={{ height: '20px', paddingTop: '15px' }}>
         {(statusDeleteBoard === 'loading' ||
           statusUpdateBoard === 'loading' ||
           statusGetBoardById === 'loading' ||
           statusCreateBoard === 'loading') && <Spin />}
       </div>
-
       <ModalCreateBoard
         key="create-board"
         isModalOpen={isModalCreateOpen}
         setIsModalOpen={setIsModalCreateOpen}
       />
-
       <ModalUpdateBoard
         key="update-board"
         isModalOpen={isModalUpdateOpen}
         setIsModalOpen={setIsModalUpdateOpen}
       />
-
       <PageHeader
         style={{ paddingBottom: '20px' }}
         extra={[
@@ -84,54 +81,50 @@ export const BoardsListPage: React.FC = () => {
             key="2"
             placeholder={t('Input search text') as string}
             onChange={(e) => onSearch(e.target.value)}
-            style={{ width: 200 }}
           />,
         ]}
       ></PageHeader>
-
-      <div className="site-layout-content">
-        <List
-          grid={{
-            gutter: 18,
-            xs: 1,
-            sm: 2,
-            md: 4,
-            lg: 3,
-            xl: 4,
-            xxl: 3,
-          }}
-          dataSource={filteredBoards}
-          renderItem={(board) => (
-            <List.Item>
-              {board._id && (
-                <Card
-                  title={<Link to={board._id}>{board.title}</Link>}
-                  bodyStyle={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
-                  actions={[
-                    <EditOutlined
-                      key="edit"
-                      onClick={async () => {
-                        await dispatch(getBoardById(board._id));
-                        setIsModalUpdateOpen(true);
-                      }}
-                    />,
-                    <Popconfirm
-                      key="delete"
-                      placement="bottomRight"
-                      title="Are you sure you want to delete this board?"
-                      onConfirm={() => handleDeleteOk(board._id)}
-                      okText="Yes"
-                      cancelText="No"
-                    >
-                      <DeleteOutlined key="delete" />
-                    </Popconfirm>,
-                  ]}
-                ></Card>
-              )}
-            </List.Item>
-          )}
-        />
-      </div>
+      <List
+        grid={{
+          gutter: 18,
+          xs: 1,
+          sm: 2,
+          md: 4,
+          lg: 3,
+          xl: 4,
+          xxl: 3,
+        }}
+        dataSource={filteredBoards}
+        renderItem={(board) => (
+          <List.Item>
+            {board._id && (
+              <Card
+                title={<Link to={board._id}>{board.title}</Link>}
+                bodyStyle={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
+                actions={[
+                  <EditOutlined
+                    key="edit"
+                    onClick={async () => {
+                      await dispatch(getBoardById(board._id));
+                      setIsModalUpdateOpen(true);
+                    }}
+                  />,
+                  <Popconfirm
+                    key="delete"
+                    placement="bottomRight"
+                    title="Are you sure you want to delete this board?"
+                    onConfirm={() => handleDeleteOk(board._id)}
+                    okText="Yes"
+                    cancelText="No"
+                  >
+                    <DeleteOutlined key="delete" />
+                  </Popconfirm>,
+                ]}
+              ></Card>
+            )}
+          </List.Item>
+        )}
+      />
     </Content>
   );
 };

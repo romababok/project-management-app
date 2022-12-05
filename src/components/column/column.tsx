@@ -1,7 +1,7 @@
 import React, { ChangeEventHandler, useState } from 'react';
-import { Button, Input, Popconfirm, Spin } from 'antd';
+import { Button, Input, Popconfirm } from 'antd';
 import { DeleteOutlined, CheckOutlined, CloseOutlined } from '@ant-design/icons';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { useAppDispatch } from '../../app/hooks';
 import { columnsDelete, columnsUpdate } from '../../features/columns/columns-slice';
 import styles from './column.module.scss';
 import { useParams } from 'react-router-dom';
@@ -27,7 +27,6 @@ const Column: React.FC<ColumnProps> = ({ columnId, title, order, tourRefs }) => 
 
   const [columnTitle, setColumnTitle] = useState(title);
   const [editMode, setEditMode] = useState(false);
-  const taskStatus = useAppSelector((state) => state.taskList.status);
   const { t } = useTranslation();
 
   const handleDeleteOk = () => {
@@ -91,7 +90,6 @@ const Column: React.FC<ColumnProps> = ({ columnId, title, order, tourRefs }) => 
           </div>
         )}
       </div>
-      <div style={{ height: '15px' }}>{taskStatus === 'loading' && <Spin />}</div>
       <TasksList columnId={columnId} tourRefs={tourRefs} />
     </Content>
   );
