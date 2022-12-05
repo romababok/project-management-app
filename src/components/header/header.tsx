@@ -130,7 +130,7 @@ export const HeaderOfApp: React.FC = () => {
     },
     { label: <Link to="/boards">{t('Header go to main page')}</Link>, key: '/boards' },
     {
-      label: <Avatar className={styles.menu__userIcon}>{name.slice(0, 1).toUpperCase()}</Avatar>,
+      label: <Avatar className={styles.menu__userIcon}>{name?.slice(0, 1).toUpperCase()}</Avatar>,
       key: 'user',
       className: styles.menu__user,
       children: [

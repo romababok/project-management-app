@@ -49,8 +49,8 @@ export const BoardsListPage: React.FC = () => {
   };
 
   return (
-    <Content style={{ padding: '0 50px', minHeight: '70vh', marginTop: '2rem' }}>
-      <div style={{ height: '20px', paddingBottom: '30px' }}>
+    <Content style={{ padding: '0 50px', minHeight: '70vh' }}>
+      <div style={{ height: '20px' }}>
         {(statusDeleteBoard === 'loading' ||
           statusUpdateBoard === 'loading' ||
           statusGetBoardById === 'loading' ||
@@ -63,15 +63,14 @@ export const BoardsListPage: React.FC = () => {
         setIsModalOpen={setIsModalCreateOpen}
       />
 
-      <div style={{ height: '10px' }}>
-        <ModalUpdateBoard
-          key="update-board"
-          isModalOpen={isModalUpdateOpen}
-          setIsModalOpen={setIsModalUpdateOpen}
-        />
-      </div>
+      <ModalUpdateBoard
+        key="update-board"
+        isModalOpen={isModalUpdateOpen}
+        setIsModalOpen={setIsModalUpdateOpen}
+      />
+
       <PageHeader
-        style={{ padding: '24px' }}
+        style={{ paddingBottom: '20px' }}
         extra={[
           <Button
             key="1"
