@@ -330,42 +330,41 @@ export const SelectedBoardPage: React.FC = () => {
           )}
         </div>
       </div>
-      {columnsStatus === 'loading' ? (
-        <Spin />
-      ) : (
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId={boardId ?? ''} direction="horizontal" type="column">
-            {(provided) => (
-              <div ref={provided.innerRef} {...provided.droppableProps}>
-                <List
-                  className={styles.boardList}
-                  dataSource={columnsToSort.sort((a, b) => a.order - b.order)}
-                  renderItem={(column, index) => (
-                    <Draggable draggableId={column._id} index={index} key={column._id}>
-                      {(provided) => (
-                        <List.Item
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          ref={provided.innerRef}
-                        >
-                          <Column
-                            tourRefs={tourRefs}
-                            title={column.title}
-                            columnId={column._id}
-                            order={column.order}
-                          ></Column>
-                        </List.Item>
-                      )}
-                    </Draggable>
-                  )}
-                ></List>
+      <div style={{ height: '20px', paddingBottom: '30px' }}>
+        {columnsStatus === 'loading' && <Spin />}
+      </div>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId={boardId ?? ''} direction="horizontal" type="column">
+          {(provided) => (
+            <div ref={provided.innerRef} {...provided.droppableProps}>
+              <List
+                className={styles.boardList}
+                dataSource={columnsToSort.sort((a, b) => a.order - b.order)}
+                renderItem={(column, index) => (
+                  <Draggable draggableId={column._id} index={index} key={column._id}>
+                    {(provided) => (
+                      <List.Item
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        ref={provided.innerRef}
+                      >
+                        <Column
+                          tourRefs={tourRefs}
+                          title={column.title}
+                          columnId={column._id}
+                          order={column.order}
+                        ></Column>
+                      </List.Item>
+                    )}
+                  </Draggable>
+                )}
+              ></List>
 
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
-      )}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
       <Modal
         title={t('Add column')}
         open={isModalOpen}
