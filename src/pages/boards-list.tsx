@@ -50,7 +50,7 @@ export const BoardsListPage: React.FC = () => {
 
   return (
     <Content style={{ padding: '0 50px', minHeight: '70vh' }}>
-      <div style={{ height: '20px' }}>
+      <div style={{ height: '20px', paddingTop: '10px' }}>
         {(statusDeleteBoard === 'loading' ||
           statusUpdateBoard === 'loading' ||
           statusGetBoardById === 'loading' ||
