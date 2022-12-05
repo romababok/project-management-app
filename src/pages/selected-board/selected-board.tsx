@@ -45,12 +45,16 @@ export const SelectedBoardPage: React.FC = () => {
   const board = useAppSelector(selectBoard);
   const boardStatus = useAppSelector(selectBoardStatus);
 
+  const [windowSize, setWindowSize] = useState(window.innerWidth);
+
   useEffect(() => {
     if (boardId) {
       dispatch(getBoardById(boardId));
+      window.addEventListener('resize', handleWindowResize);
     }
     return () => {
       dispatch({ type: 'boards/resetCurrentBoard' });
+      window.removeEventListener('resize', handleWindowResize);
     };
   }, []);
 
@@ -78,6 +82,10 @@ export const SelectedBoardPage: React.FC = () => {
   useEffect(() => {
     tasks.length > 0 ? setTourInactive(false) : setTourInactive(true);
   }, [tasks]);
+
+  const handleWindowResize = () => {
+    setWindowSize(window.innerWidth);
+  };
 
   const steps: TourProps['steps'] = [
     {
@@ -307,26 +315,30 @@ export const SelectedBoardPage: React.FC = () => {
           <Button icon={<PlusOutlined />} type="primary" onClick={showModal}>
             {t('Add column')}
           </Button>
-          {tourInactive ? (
-            <Tooltip placement={'bottom'} title={t('Tour message')}>
-              <Button
-                type="default"
-                onClick={() => setOpen(true)}
-                disabled={tourInactive}
-                icon={<BulbTwoTone />}
-              >
-                {t('Tour')}
-              </Button>
-            </Tooltip>
-          ) : (
-            <Button
-              type="default"
-              onClick={() => setOpen(true)}
-              disabled={tourInactive}
-              icon={<BulbTwoTone />}
-            >
-              {t('Tour')}
-            </Button>
+          {windowSize > 560 && (
+            <>
+              {tourInactive ? (
+                <Tooltip placement={'bottom'} title={t('Tour message')}>
+                  <Button
+                    type="default"
+                    onClick={() => setOpen(true)}
+                    disabled={tourInactive}
+                    icon={<BulbTwoTone />}
+                  >
+                    {t('Tour')}
+                  </Button>
+                </Tooltip>
+              ) : (
+                <Button
+                  type="default"
+                  onClick={() => setOpen(true)}
+                  disabled={tourInactive}
+                  icon={<BulbTwoTone />}
+                >
+                  {t('Tour')}
+                </Button>
+              )}
+            </>
           )}
         </div>
       </div>
@@ -382,7 +394,7 @@ export const SelectedBoardPage: React.FC = () => {
           </Form.Item>
         </Form>
       </Modal>
-      <Tour open={open} onClose={() => setOpen(false)} steps={steps} />
+      <Tour open={open} onClose={() => setOpen(false)} steps={steps} type="primary" />
     </Content>
   );
 };
