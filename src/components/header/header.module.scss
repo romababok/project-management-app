@@ -130,7 +130,7 @@ $switcher-color: #1890ff;
 }
 .language__block,
 .language__blockToken{
-    width: 65px;
+    width: 70px;
 }
 .language__block{
   position: absolute;
@@ -140,7 +140,7 @@ $switcher-color: #1890ff;
 .language__blockToken{
   position: absolute;
   top: 17px;
-  right: 500px;
+  right: 510px;
 }
 @media (max-width: 900px) {
   .language__block{

@@ -167,7 +167,7 @@ export const ProfilePage: React.FC = () => {
         <div className={styles.tasks}>
           <Title level={4}>{t('My tasks')}</Title>
           <List
-            footer={<Divider plain>It is all, nothing more 🤐</Divider>}
+            footer={<Divider plain>{t('Tasks list end')}</Divider>}
             header={
               <Input
                 placeholder={t('Tasks placeholder') as string}
