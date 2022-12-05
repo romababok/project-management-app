@@ -1,7 +1,7 @@
 import React, { MouseEventHandler, useState } from 'react';
 import { Content } from 'antd/lib/layout/layout';
 import './task.styles.scss';
-import { Button, Modal, Popconfirm } from 'antd';
+import { Button, Divider, Modal, Popconfirm } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { useAppDispatch } from '../../app/hooks';
 import { tasksDelete, tasksUpdate } from '../../features/task-list/task-list-slice';
@@ -103,7 +103,8 @@ const Task: React.FC<TaskProps> = ({ title, desc, columnId, taskId, order, tourR
           </Button>,
         ]}
       >
-        <h4>{t('Description')}:</h4>
+        <Divider />
+        <h4 style={{ marginBottom: '1rem' }}>{t('Description')}</h4>
         <Paragraph ellipsis={{ rows: 2 }} editable={{ onChange: seTaskDesc, maxLength: 150 }}>
           {taskDesc}
         </Paragraph>

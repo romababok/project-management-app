@@ -71,7 +71,7 @@ const TasksList: React.FC<TaskListProps> = ({ columnId, tourRefs }) => {
   return (
     <Content className={styles.taskContent} ref={tourRefs?.ref4}>
       <Droppable droppableId={columnId} type="task">
-        {(provided, snapshot) => (
+        {(provided) => (
           <div ref={provided.innerRef} {...provided.droppableProps}>
             <List
               className={styles.taskList}
@@ -81,7 +81,6 @@ const TasksList: React.FC<TaskListProps> = ({ columnId, tourRefs }) => {
                   <Draggable draggableId={task._id} index={index} key={task._id}>
                     {(provided) => (
                       <List.Item
-                        //TODO: add snapshot.isDragginOver
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
                         ref={provided.innerRef}
