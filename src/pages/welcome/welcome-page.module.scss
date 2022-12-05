@@ -10,7 +10,7 @@ $border-color: #40a9ff;
 }
 
 .welcome__block {
-    padding: 3rem 0 8rem 0;
+    padding: 3rem 0 6rem 0;
     background-image: url(../../assets/images/main-image.jpg);
     background-repeat: no-repeat;
     background-size: 700px 500px;
@@ -28,14 +28,14 @@ $border-color: #40a9ff;
         background-position: right bottom;
     }
 }
-@media (max-width: 1000px) {
+@media (max-width: 1100px) {
     .welcome__block {
-        background-position: right bottom;
+        background-size: 500px 300px;
     }
 }
-@media (max-width: 950px) {
+@media (max-width: 970px) {
     .welcome__block {
-        padding: 1rem 0 8rem 0;
+        padding: 1rem 0 9rem 0;
         background-size: 500px 300px;
         background-position: center bottom;
     }
@@ -100,6 +100,9 @@ $border-color: #40a9ff;
     .welcome__col{
         .welcome__buttons {
             flex-direction: column;
+        }
+        .welcome__text{
+            font-size: 18px;
         }
     }
 }
