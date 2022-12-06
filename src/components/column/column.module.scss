@@ -1,0 +1,33 @@
+.column {
+  padding: 1rem; 
+  background-color: rgba(2, 22, 54, 0.8705882353); 
+  border-radius: 3px;
+  width: 20rem;
+  margin-right: 1rem;
+  overflow-y: auto;
+  max-height: 50vh;
+}
+
+.columninfo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 40px;
+  padding: 0 24px;
+}
+
+h3 {
+  color: white;
+}
+
+@media (max-height: 600px) {
+  .column{
+    max-height: 10rem;
+  }
+}
+
+@media (max-height: 500px) {
+  .column{
+    max-height: 5rem;
+  }
+}

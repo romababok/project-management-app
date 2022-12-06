@@ -1,0 +1,92 @@
+$footer-color: #021636de;
+
+.footer__block {
+    .footer {
+        background-color: $footer-color;
+        font-size: 18px;
+    }
+}
+
+.footer__container {
+    .footer__left {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 2rem;
+        .text {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 18px;
+        }
+    
+    }
+}
+@media (max-width: 768px) {
+    .footer__container {
+        .footer__left {
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+    }
+}
+.footer__left {
+    .logo__link {
+        .rss__logo {
+            width: 6rem;
+            height: 2rem;
+            background-image: url(../../assets/icons/rss-logo.svg);
+            background-size: contain;
+            background-position: 0 0;
+            background-repeat: no-repeat;
+        }
+        :hover{
+            opacity: 0.6;
+            transition: all 0.3s;
+        }
+    }
+}
+
+.footer__container{
+    .footer__right {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        gap: 4rem;
+    }
+}
+@media (max-width: 768px) {
+    .footer__container {
+        .footer__right {
+            justify-content: center;
+            gap: 2rem;
+        }
+    }
+}
+@media (max-width: 400px) {
+    .footer__container {
+        .footer__right {
+           gap: 1rem;
+        }
+    }
+}
+
+.footer__right {
+    .footer__link {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 18px;
+    }
+    .footer__link:hover {
+        opacity: 0.8;
+        transform: translateY(1px);
+        transition: all 0.3s;
+    }
+}
+@media (max-width: 400px) {
+    .footer__right {
+        .footer__link {
+            font-size: 14px;
+        }
+    }
+}
+
+

@@ -1,0 +1,11 @@
+.taskContent {
+  .taskList {
+    :global .ant-list-items {
+      display: flex;
+      flex-direction: column; 
+      :global .ant-list-item {
+        width: 100%;
+      }
+    }
+  }
+}

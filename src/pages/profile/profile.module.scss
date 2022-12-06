@@ -1,0 +1,158 @@
+$profile-color: #bedaf8de;
+
+.profile__page {
+    padding: 1rem 2rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 7rem;
+    align-items: flex-start;
+    width: 100%;
+    min-height: 70vh;
+    background-color: #fff;
+    background-image: url(../../assets/images/solving-problem.jpg);
+    background-size: 500px 300px;
+    background-position: left bottom;
+    background-repeat: no-repeat;
+    .skeleton {
+        margin-top: 5rem;
+        width: 500px;
+    }
+    .skeleton__tasks {
+        margin-top: 5rem;
+        margin-bottom: 4rem;
+        width: 350px;
+    }
+    .tasks{
+        margin-top: 2rem;
+        margin-bottom: 3rem;
+        .tasks__list{
+            height: 290px;
+            overflow-y: auto;
+            width: 350px;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.211);
+            background-color: #fff;
+            .tasks__icon{
+                font-size: 20px;
+                padding-top: 20px;
+            }
+            .tasks__button{
+                margin-left: 8px;
+            }
+        }
+    }
+}
+@media (max-width: 990px) {
+    .profile__page{
+        gap: 3rem;
+        .skeleton {
+            width: 60%;
+        }
+    }
+}
+@media (max-width: 920px) {
+    .profile__page{
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        .skeleton {
+            width: 60%;
+        }
+        .profile__container {
+            margin: 2rem 0 0 0;
+        }
+    }
+}
+@media (max-width: 850px) {
+    .profile__page{
+        background-image: none;
+        .skeleton {
+            width: 80%;
+        }
+    }
+}
+
+@media (max-width: 450px) {
+    .profile__page{
+        padding: 1rem 1rem;
+        .tasks{
+            .tasks__list {
+                margin-top: 1rem;
+                width: 250px;
+                height: 200px;
+             }
+        }
+        .skeleton__tasks{
+            margin-top: 2rem;
+            width: 250px;
+        }
+    }
+}
+
+.profile__container {
+    margin: 3rem 0 6rem 0;
+    padding: 2rem 2rem;
+    background-color: $profile-color;
+    width: 30rem;
+    border-radius: 20px;
+    box-shadow: 0px 0px 5px black;
+    .profile__avatar {
+        background-color: #4096ff;
+    }
+}
+@media (max-width: 600px) {
+    .profile__container{
+        width: 90%;
+    }
+}
+.profile__window {
+    margin-top: 2rem;
+    margin-bottom: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.name__title,
+.login__title,
+.userid__title {
+    font-size: 18px;
+}
+.name__text,
+.login__text,
+.userid__text {
+    font-size: 18px;
+}
+.name__block,
+.login__block,
+.userid__block {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+@media (max-width: 500px) {
+    .userid__block{
+        flex-direction: column;
+        align-items: start;
+        justify-content: start;
+    }
+}
+.profile__buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+@media (max-width: 490px) {
+    .profile__buttons{
+        flex-direction: column;
+    }
+}
+.edit__window{
+    text-align: center;
+    font-size: 18px;
+    .window__form {
+        margin: 1rem 0rem;
+    }
+}
